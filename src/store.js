@@ -252,6 +252,13 @@ function requireAuth(callback) {
       window.location.href = 'login.html';
       return;
     }
+    // Dismiss the auth-guard overlay
+    const guard = document.getElementById('authGuard');
+    if (guard) {
+      guard.style.transition = 'opacity 0.3s ease';
+      guard.style.opacity = '0';
+      setTimeout(() => guard.remove(), 300);
+    }
     updateUserDisplay(user);
     addLogoutButton();
     callback(user);

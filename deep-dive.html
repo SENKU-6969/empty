@@ -15,6 +15,12 @@
 </head>
 
 <body>
+    <!-- Auth Guard Overlay -->
+    <div id="authGuard" style="position:fixed;inset:0;background:var(--bg-primary);z-index:99999;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:16px;">
+      <div style="font-size:48px;">⚡</div>
+      <div style="color:var(--neon-blue);font-size:14px;font-weight:600;font-family:'Inter',sans-serif;">Checking authentication…</div>
+    </div>
+
     <!-- Sidebar -->
     <nav class="sidebar">
         <div class="sidebar-logo">
