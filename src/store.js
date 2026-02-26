@@ -1,46 +1,52 @@
 /* ====================================================
-   EduMetrics AI — Data Store (localStorage)
+   EduMetrics AI — Data Store (Firestore Cloud Sync)
+   Each user's data lives at: users/{uid}/tests & users/{uid}/formulas
    ==================================================== */
 
-const STORE_KEY = 'edumetrics_tests';
-const FORMULA_KEY = 'edumetrics_formulas';
+// ---- Collection references (scoped to current user) ----
+
+function testsCol() {
+  const uid = firebase.auth().currentUser?.uid;
+  if (!uid) throw new Error('Not authenticated');
+  return db.collection('users').doc(uid).collection('tests');
+}
+
+function formulasCol() {
+  const uid = firebase.auth().currentUser?.uid;
+  if (!uid) throw new Error('Not authenticated');
+  return db.collection('users').doc(uid).collection('formulas');
+}
 
 // ---- Test CRUD ----
 
-function getAllTests() {
-  try {
-    return JSON.parse(localStorage.getItem(STORE_KEY) || '[]');
-  } catch { return []; }
+async function getAllTests() {
+  const snap = await testsCol().get();
+  return snap.docs.map(d => ({ id: d.id, ...d.data() }));
 }
 
-function saveTest(test) {
-  const tests = getAllTests();
-  const idx = tests.findIndex(t => t.id === test.id);
-  if (idx >= 0) {
-    tests[idx] = test;
+async function saveTest(test) {
+  const col = testsCol();
+  if (test.id) {
+    await col.doc(test.id).set(test);
   } else {
-    tests.push(test);
+    const ref = await col.add(test);
+    test.id = ref.id;
   }
-  localStorage.setItem(STORE_KEY, JSON.stringify(tests));
   return test;
 }
 
-function getTestById(id) {
-  return getAllTests().find(t => t.id === id) || null;
+async function getTestById(id) {
+  const doc = await testsCol().doc(id).get();
+  if (!doc.exists) return null;
+  return { id: doc.id, ...doc.data() };
 }
 
-function deleteTest(id) {
-  const tests = getAllTests().filter(t => t.id !== id);
-  localStorage.setItem(STORE_KEY, JSON.stringify(tests));
+async function deleteTest(id) {
+  await testsCol().doc(id).delete();
 }
 
-function createTestId() {
-  return 'test_' + Date.now() + '_' + Math.random().toString(36).slice(2, 7);
-}
-
-function newTest({name, date, maxMarks, marks, rank, percentage}) {
+function newTest({ name, date, maxMarks, marks, rank, percentage }) {
   return {
-    id: createTestId(),
     name,
     date,
     maxMarks: parseFloat(maxMarks),
@@ -58,35 +64,32 @@ function newTest({name, date, maxMarks, marks, rank, percentage}) {
 
 // ---- Formula CRUD ----
 
-function getAllFormulas() {
-  try {
-    return JSON.parse(localStorage.getItem(FORMULA_KEY) || '[]');
-  } catch { return []; }
+async function getAllFormulas() {
+  const snap = await formulasCol().get();
+  return snap.docs.map(d => ({ id: d.id, ...d.data() }));
 }
 
-function saveFormula(formula) {
-  const formulas = getAllFormulas();
-  const idx = formulas.findIndex(f => f.id === formula.id);
-  if (idx >= 0) {
-    formulas[idx] = formula;
+async function saveFormula(formula) {
+  const col = formulasCol();
+  if (formula.id) {
+    await col.doc(formula.id).set(formula);
   } else {
-    formulas.push(formula);
+    const ref = await col.add(formula);
+    formula.id = ref.id;
   }
-  localStorage.setItem(FORMULA_KEY, JSON.stringify(formulas));
+  return formula;
 }
 
-function deleteFormula(id) {
-  const formulas = getAllFormulas().filter(f => f.id !== id);
-  localStorage.setItem(FORMULA_KEY, JSON.stringify(formulas));
+async function deleteFormula(id) {
+  await formulasCol().doc(id).delete();
 }
 
-function newFormula({topic, content, sourceTestId, sourceTestName}) {
+function newFormula({ topic, content, sourceTestId, sourceTestName }) {
   return {
-    id: 'formula_' + Date.now() + '_' + Math.random().toString(36).slice(2, 7),
     topic,
     content,
-    sourceTestId,
-    sourceTestName,
+    sourceTestId: sourceTestId || null,
+    sourceTestName: sourceTestName || null,
     reviewed: false,
     createdAt: new Date().toISOString()
   };
@@ -100,19 +103,21 @@ function formatDate(dateStr) {
   return d.toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' });
 }
 
-function getTestsSortedByDate() {
-  return getAllTests().sort((a, b) => new Date(a.date) - new Date(b.date));
+async function getTestsSortedByDate() {
+  const tests = await getAllTests();
+  return tests.sort((a, b) => new Date(a.date) - new Date(b.date));
 }
 
-// ---- AI Logic ----
+// ---- AI Logic (pure functions — no I/O) ----
 
-function detectRecurringWeaknesses(currentTestId, text) {
+async function detectRecurringWeaknesses(currentTestId, text) {
   if (!text || text.trim().length < 3) return [];
-  const tests = getAllTests().filter(t => t.id !== currentTestId);
+  const tests = await getAllTests();
+  const others = tests.filter(t => t.id !== currentTestId);
   const keywords = extractKeywords(text);
   const matches = [];
 
-  for (const test of tests) {
+  for (const test of others) {
     const allText = [test.weaknesses, test.missedFormulas, test.actionPlan].join(' ').toLowerCase();
     for (const kw of keywords) {
       if (kw.length > 3 && allText.includes(kw.toLowerCase())) {
@@ -127,7 +132,6 @@ function detectRecurringWeaknesses(currentTestId, text) {
       }
     }
   }
-
   return matches;
 }
 
@@ -139,21 +143,18 @@ function extractKeywords(text) {
     .filter(w => w.length > 3 && !stopWords.has(w));
 }
 
-function detectGhostMistake(timeSpent, subjectMarks, maxMarks) {
-  // timeSpent: {P, C, M}, subjectMarks: {P, C, M}
+function detectGhostMistake(timeSpent, subjectMarks) {
   const totalTime = (timeSpent.P || 0) + (timeSpent.C || 0) + (timeSpent.M || 0);
   const totalMarks = (subjectMarks.P || 0) + (subjectMarks.C || 0) + (subjectMarks.M || 0);
   if (totalTime === 0 || totalMarks === 0) return [];
 
-  const subjects = ['P', 'C', 'M'];
   const subjectNames = { P: 'Physics', C: 'Chemistry', M: 'Maths' };
   const alerts = [];
 
-  for (const s of subjects) {
+  for (const s of ['P', 'C', 'M']) {
     const timeShare = ((timeSpent[s] || 0) / totalTime) * 100;
     const marksShare = ((subjectMarks[s] || 0) / totalMarks) * 100;
     const diff = timeShare - marksShare;
-
     if (diff > 20) {
       alerts.push({
         subject: subjectNames[s],
@@ -171,7 +172,6 @@ function predictNextScore(tests) {
   if (tests.length < 2) return null;
   const sorted = [...tests].sort((a, b) => new Date(a.date) - new Date(b.date));
   const pcts = sorted.map(t => t.percentage);
-  // Simple linear regression
   const n = pcts.length;
   const xs = pcts.map((_, i) => i);
   const sumX = xs.reduce((a, b) => a + b, 0);
@@ -188,29 +188,19 @@ function predictNextScore(tests) {
 }
 
 function getWeaknessTopicClusters(tests) {
-  const mechanics = ['friction', 'newton', 'laws of motion', 'rotational', 'torque', 'moment of inertia', 'angular', 'circular', 'centripetal'];
-  const optics = ['optics', 'lens', 'mirror', 'refraction', 'reflection', 'snell', 'ray', 'focal'];
-  const electrostatics = ['electrostatics', 'coulomb', 'electric field', 'capacitor', 'gauss', 'charge'];
-  const organic = ['organic', 'carbon', 'hydrocarbon', 'ester', 'alcohol', 'reaction mechanism'];
-  const calculus = ['calculus', 'integral', 'derivative', 'limit', 'differentiation'];
-
-  const allText = tests.map(t => [t.weaknesses, t.missedFormulas].join(' ')).join(' ').toLowerCase();
-
   const clusters = [
-    { name: 'Mechanics', keywords: mechanics, subject: 'P', severity: 0 },
-    { name: 'Optics', keywords: optics, subject: 'P', severity: 0 },
-    { name: 'Electrostatics', keywords: electrostatics, subject: 'P', severity: 0 },
-    { name: 'Organic Chemistry', keywords: organic, subject: 'C', severity: 0 },
-    { name: 'Calculus', keywords: calculus, subject: 'M', severity: 0 },
+    { name: 'Mechanics', keywords: ['friction','newton','laws of motion','rotational','torque','angular','circular','centripetal'], subject: 'P', severity: 0 },
+    { name: 'Optics', keywords: ['optics','lens','mirror','refraction','reflection','snell','ray','focal'], subject: 'P', severity: 0 },
+    { name: 'Electrostatics', keywords: ['electrostatics','coulomb','electric field','capacitor','gauss','charge'], subject: 'P', severity: 0 },
+    { name: 'Organic Chemistry', keywords: ['organic','carbon','hydrocarbon','ester','alcohol','reaction mechanism'], subject: 'C', severity: 0 },
+    { name: 'Calculus', keywords: ['calculus','integral','derivative','limit','differentiation'], subject: 'M', severity: 0 },
   ];
-
+  const allText = tests.map(t => [t.weaknesses, t.missedFormulas].join(' ')).join(' ').toLowerCase();
   for (const cluster of clusters) {
     for (const kw of cluster.keywords) {
-      const matches = (allText.match(new RegExp(kw, 'g')) || []).length;
-      cluster.severity += matches;
+      cluster.severity += (allText.match(new RegExp(kw, 'g')) || []).length;
     }
   }
-
   return clusters.filter(c => c.severity > 0).sort((a, b) => b.severity - a.severity);
 }
 
@@ -229,21 +219,50 @@ function getGraphAIAnnotations(sorted) {
     const marksUp = curr.marks > prev.marks;
     const rankDown = curr.rank && prev.rank && curr.rank > prev.rank;
     const rankUp = curr.rank && prev.rank && curr.rank < prev.rank;
-
-    if (marksUp && rankDown) {
-      annotations.push({ index: i, type: 'competition', msg: `📈 Marks improved but rank dropped — competition was tougher that day.` });
-    } else if (!marksUp && rankUp) {
-      annotations.push({ index: i, type: 'relative', msg: `⬇️ Marks dipped but rank improved — others found it harder too.` });
-    } else if (marksUp && rankUp) {
-      annotations.push({ index: i, type: 'great', msg: `🚀 Great improvement! Both marks and rank improved.` });
-    }
+    if (marksUp && rankDown) annotations.push({ index: i, msg: `📈 Marks improved but rank dropped — competition was tougher that day.` });
+    else if (!marksUp && rankUp) annotations.push({ index: i, msg: `⬇️ Marks dipped but rank improved — others found it harder too.` });
+    else if (marksUp && rankUp) annotations.push({ index: i, msg: `🚀 Great improvement! Both marks and rank improved.` });
   }
   return annotations;
 }
 
-// Seed demo data if empty
-function seedDemoData() {
-  if (getAllTests().length > 0) return;
+// ---- Auth helpers ----
+
+function updateUserDisplay(user) {
+  const nameEl = document.querySelector('.student-name');
+  const goalEl = document.querySelector('.student-goal');
+  if (nameEl) nameEl.textContent = user.displayName || user.email.split('@')[0];
+  if (goalEl) goalEl.textContent = user.email;
+}
+
+function addLogoutButton() {
+  const footer = document.querySelector('.sidebar-footer');
+  if (!footer) return;
+  const btn = document.createElement('button');
+  btn.className = 'btn btn-ghost';
+  btn.style.cssText = 'width:100%; margin-top:10px; justify-content:center; font-size:12px; padding:8px;';
+  btn.innerHTML = '↩ Sign Out';
+  btn.onclick = () => firebase.auth().signOut().then(() => location.href = 'login.html');
+  footer.appendChild(btn);
+}
+
+function requireAuth(callback) {
+  firebase.auth().onAuthStateChanged(user => {
+    if (!user) {
+      window.location.href = 'login.html';
+      return;
+    }
+    updateUserDisplay(user);
+    addLogoutButton();
+    callback(user);
+  });
+}
+
+// ---- Seed demo data (runs only if user has 0 tests) ----
+async function seedDemoData() {
+  const existing = await getAllTests();
+  if (existing.length > 0) return;
+
   const demos = [
     { name: 'JEE Mains Mock 1', date: '2026-01-05', maxMarks: 300, marks: 132, rank: 68, percentage: 44 },
     { name: 'JEE Mains Mock 2', date: '2026-01-20', maxMarks: 300, marks: 156, rank: 52, percentage: 52 },
@@ -252,23 +271,23 @@ function seedDemoData() {
   ];
   const subData = [
     { P: 35, C: 55, M: 42, timeP: 80, timeC: 50, timeM: 50, w: 'Rotational Motion, Friction problems', mf: 'Forgot torque formula', ap: 'Revise rotational chapter' },
-    { P: 48, C: 60, M: 48, timeP: 70, timeC: 45, timeM: 65, w: 'Optics, Lens formula sign convention', mf: 'Snell\'s law constant mixed up', ap: 'Create optics formula card' },
+    { P: 48, C: 60, M: 48, timeP: 70, timeC: 45, timeM: 65, w: 'Optics, Lens formula sign convention', mf: "Snell's law constant mixed up", ap: 'Create optics formula card' },
     { P: 52, C: 68, M: 54, timeP: 65, timeC: 50, timeM: 65, w: 'Rotational Motion again, Integration by parts', mf: 'Kinematic equation under rotation', ap: 'Do 10 rotational problems, review calculus' },
     { P: 60, C: 75, M: 63, timeP: 80, timeC: 45, timeM: 55, w: 'Electrostatics, Organic Chemistry mechanisms', mf: 'Gauss law application', ap: 'Electrostatics chapter revision' },
   ];
-  demos.forEach((d, i) => {
-    const t = newTest(d);
+
+  for (let i = 0; i < demos.length; i++) {
+    const t = newTest(demos[i]);
     const sd = subData[i];
     t.subjects = { P: sd.P, C: sd.C, M: sd.M };
     t.timeSpent = { P: sd.timeP, C: sd.timeC, M: sd.timeM };
     t.weaknesses = sd.w;
     t.missedFormulas = sd.mf;
     t.actionPlan = sd.ap;
-    saveTest(t);
-
+    await saveTest(t);
     if (sd.mf) {
       const f = newFormula({ topic: sd.mf.split(',')[0].trim(), content: sd.mf, sourceTestId: t.id, sourceTestName: t.name });
-      saveFormula(f);
+      await saveFormula(f);
     }
-  });
+  }
 }

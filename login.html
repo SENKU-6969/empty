@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>EduMetrics AI — Sign In</title>
+  <meta name="description" content="Sign in to EduMetrics AI to access your personal study dashboard with cloud sync." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="src/style.css" />
+  <style>
+    body {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      background: var(--bg-primary);
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Animated background blobs */
+    body::before {
+      content: '';
+      position: fixed;
+      width: 600px; height: 600px;
+      background: radial-gradient(circle, rgba(0,180,255,0.08) 0%, transparent 70%);
+      top: -200px; left: -200px;
+      animation: blob1 8s ease-in-out infinite;
+    }
+    body::after {
+      content: '';
+      position: fixed;
+      width: 500px; height: 500px;
+      background: radial-gradient(circle, rgba(255,61,90,0.07) 0%, transparent 70%);
+      bottom: -150px; right: -150px;
+      animation: blob2 10s ease-in-out infinite;
+    }
+
+    @keyframes blob1 { 0%,100%{transform:translate(0,0)} 50%{transform:translate(40px,30px)} }
+    @keyframes blob2 { 0%,100%{transform:translate(0,0)} 50%{transform:translate(-30px,-20px)} }
+
+    .login-wrapper {
+      width: 100%;
+      max-width: 420px;
+      padding: 24px;
+      position: relative;
+      z-index: 10;
+    }
+
+    .login-logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      justify-content: center;
+      margin-bottom: 36px;
+    }
+
+    .login-logo-icon {
+      width: 48px; height: 48px;
+      background: linear-gradient(135deg, var(--neon-blue), var(--neon-purple));
+      border-radius: 14px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 24px;
+      box-shadow: var(--neon-blue-glow);
+    }
+
+    .login-logo-text {
+      font-size: 22px;
+      font-weight: 800;
+      color: var(--text-primary);
+      letter-spacing: -0.5px;
+    }
+
+    .login-logo-ai { color: var(--neon-blue); font-style: italic; }
+
+    .login-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-glow);
+      border-radius: var(--radius-xl);
+      padding: 36px;
+      box-shadow: 0 25px 80px rgba(0,0,0,0.5), 0 0 0 1px rgba(0,180,255,0.06);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .login-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, var(--neon-blue), var(--neon-purple), var(--neon-red));
+    }
+
+    /* Tabs */
+    .auth-tabs {
+      display: flex;
+      background: var(--bg-surface-2);
+      border-radius: var(--radius-sm);
+      padding: 4px;
+      margin-bottom: 28px;
+    }
+
+    .auth-tab {
+      flex: 1;
+      padding: 9px;
+      text-align: center;
+      font-size: 13.5px;
+      font-weight: 600;
+      color: var(--text-secondary);
+      border-radius: 6px;
+      cursor: pointer;
+      transition: var(--transition);
+      border: none;
+      background: none;
+      font-family: inherit;
+    }
+
+    .auth-tab.active {
+      background: var(--neon-blue-dim);
+      color: var(--neon-blue);
+      border: 1px solid rgba(0,180,255,0.2);
+    }
+
+    .login-title {
+      font-size: 20px;
+      font-weight: 800;
+      color: var(--text-primary);
+      margin-bottom: 6px;
+    }
+
+    .login-subtitle {
+      font-size: 13px;
+      color: var(--text-secondary);
+      margin-bottom: 24px;
+    }
+
+    .form-group { display: flex; flex-direction: column; gap: 7px; margin-bottom: 16px; }
+
+    .error-msg {
+      background: var(--neon-red-dim);
+      border: 1px solid rgba(255,61,90,0.3);
+      border-radius: var(--radius-sm);
+      padding: 10px 14px;
+      font-size: 13px;
+      color: var(--neon-red);
+      margin-bottom: 16px;
+      display: none;
+      animation: fadeInDown 0.3s ease;
+    }
+
+    .error-msg.show { display: block; }
+
+    .success-msg {
+      background: var(--neon-green-dim);
+      border: 1px solid rgba(0,255,136,0.3);
+      border-radius: var(--radius-sm);
+      padding: 10px 14px;
+      font-size: 13px;
+      color: var(--neon-green);
+      margin-bottom: 16px;
+      display: none;
+      animation: fadeInDown 0.3s ease;
+    }
+
+    .success-msg.show { display: block; }
+
+    .btn-auth {
+      width: 100%;
+      justify-content: center;
+      padding: 13px;
+      font-size: 14.5px;
+      position: relative;
+    }
+
+    .btn-auth:disabled { opacity: 0.6; cursor: not-allowed; transform: none !important; }
+
+    .spinner {
+      display: inline-block;
+      width: 16px; height: 16px;
+      border: 2px solid rgba(255,255,255,0.3);
+      border-top-color: #fff;
+      border-radius: 50%;
+      animation: spin 0.7s linear infinite;
+      margin-right: 8px;
+      vertical-align: middle;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    .divider {
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 12px;
+      margin: 20px 0;
+      position: relative;
+    }
+    .divider::before {
+      content: '';
+      position: absolute;
+      top: 50%; left: 0; right: 0;
+      height: 1px;
+      background: var(--border);
+    }
+    .divider span {
+      background: var(--bg-surface);
+      padding: 0 12px;
+      position: relative;
+    }
+
+    .login-footer {
+      text-align: center;
+      margin-top: 24px;
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+  </style>
+</head>
+<body>
+  <div class="login-wrapper">
+    <!-- Logo -->
+    <div class="login-logo">
+      <div class="login-logo-icon">⚡</div>
+      <div class="login-logo-text">EduMetrics <span class="login-logo-ai">AI</span></div>
+    </div>
+
+    <!-- Card -->
+    <div class="login-card">
+      <!-- Tabs -->
+      <div class="auth-tabs">
+        <button class="auth-tab active" id="tabSignIn" onclick="switchTab('signin')">Sign In</button>
+        <button class="auth-tab" id="tabSignUp" onclick="switchTab('signup')">Create Account</button>
+      </div>
+
+      <div id="titleText" class="login-title">Welcome back 👋</div>
+      <div id="subtitleText" class="login-subtitle">Sign in to sync your study data across all devices.</div>
+
+      <div class="error-msg" id="errorMsg"></div>
+      <div class="success-msg" id="successMsg"></div>
+
+      <form id="authForm" onsubmit="handleAuth(event)">
+        <div class="form-group">
+          <label>Email Address</label>
+          <input type="email" id="authEmail" placeholder="you@example.com" required autocomplete="email" />
+        </div>
+        <div class="form-group">
+          <label>Password</label>
+          <input type="password" id="authPassword" placeholder="Min. 6 characters" required autocomplete="current-password" />
+        </div>
+        <div class="form-group" id="confirmGroup" style="display:none;">
+          <label>Confirm Password</label>
+          <input type="password" id="authConfirm" placeholder="Re-enter password" autocomplete="new-password" />
+        </div>
+
+        <button type="submit" class="btn btn-primary btn-auth" id="authBtn">
+          Sign In →
+        </button>
+      </form>
+
+      <div class="divider"><span>or</span></div>
+
+      <div style="text-align:center; font-size:13px; color:var(--text-secondary);">
+        By continuing, your data is securely stored in the cloud and synced across all your devices.
+      </div>
+    </div>
+
+    <div class="login-footer">
+      Made with ❤️ by <span style="color:var(--neon-blue); font-weight:600;">Vaibhav Bolia</span>
+    </div>
+  </div>
+
+  <!-- Firebase SDKs -->
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+  <script src="src/firebase.js"></script>
+  <script>
+    let currentTab = 'signin';
+
+    // If already logged in, redirect
+    firebase.auth().onAuthStateChanged(user => {
+      if (user) window.location.href = 'index.html';
+    });
+
+    function switchTab(tab) {
+      currentTab = tab;
+      const isSignup = tab === 'signup';
+
+      document.getElementById('tabSignIn').classList.toggle('active', !isSignup);
+      document.getElementById('tabSignUp').classList.toggle('active', isSignup);
+      document.getElementById('titleText').textContent = isSignup ? 'Create your account 🎯' : 'Welcome back 👋';
+      document.getElementById('subtitleText').textContent = isSignup
+        ? 'Start tracking your PCM journey with AI-powered insights.'
+        : 'Sign in to sync your study data across all devices.';
+      document.getElementById('confirmGroup').style.display = isSignup ? 'flex' : 'none';
+      document.getElementById('authBtn').textContent = isSignup ? 'Create Account →' : 'Sign In →';
+      document.getElementById('authConfirm').required = isSignup;
+      clearMessages();
+    }
+
+    function showError(msg) {
+      const el = document.getElementById('errorMsg');
+      el.textContent = msg;
+      el.classList.add('show');
+      document.getElementById('successMsg').classList.remove('show');
+    }
+
+    function showSuccess(msg) {
+      const el = document.getElementById('successMsg');
+      el.textContent = msg;
+      el.classList.add('show');
+      document.getElementById('errorMsg').classList.remove('show');
+    }
+
+    function clearMessages() {
+      document.getElementById('errorMsg').classList.remove('show');
+      document.getElementById('successMsg').classList.remove('show');
+    }
+
+    function setLoading(loading) {
+      const btn = document.getElementById('authBtn');
+      btn.disabled = loading;
+      if (loading) {
+        btn.innerHTML = `<span class="spinner"></span> ${currentTab === 'signup' ? 'Creating account…' : 'Signing in…'}`;
+      } else {
+        btn.textContent = currentTab === 'signup' ? 'Create Account →' : 'Sign In →';
+      }
+    }
+
+    async function handleAuth(e) {
+      e.preventDefault();
+      clearMessages();
+
+      const email = document.getElementById('authEmail').value.trim();
+      const password = document.getElementById('authPassword').value;
+
+      if (currentTab === 'signup') {
+        const confirm = document.getElementById('authConfirm').value;
+        if (password !== confirm) {
+          showError('Passwords do not match.');
+          return;
+        }
+        if (password.length < 6) {
+          showError('Password must be at least 6 characters.');
+          return;
+        }
+      }
+
+      setLoading(true);
+
+      try {
+        if (currentTab === 'signin') {
+          await firebase.auth().signInWithEmailAndPassword(email, password);
+          // onAuthStateChanged will redirect
+        } else {
+          await firebase.auth().createUserWithEmailAndPassword(email, password);
+          showSuccess('Account created! Redirecting…');
+          // onAuthStateChanged will redirect
+        }
+      } catch (err) {
+        const messages = {
+          'auth/user-not-found': 'No account found with this email. Create one?',
+          'auth/wrong-password': 'Incorrect password. Please try again.',
+          'auth/email-already-in-use': 'An account with this email already exists. Sign in instead.',
+          'auth/invalid-email': 'Please enter a valid email address.',
+          'auth/too-many-requests': 'Too many failed attempts. Please try again later.',
+          'auth/network-request-failed': 'Network error. Check your internet connection.',
+          'auth/invalid-credential': 'Invalid email or password. Please try again.',
+        };
+        showError(messages[err.code] || err.message);
+        setLoading(false);
+      }
+    }
+  </script>
+</body>
+</html>
