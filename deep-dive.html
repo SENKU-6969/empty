@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>EduMetrics AI — Deep Dive</title>
+    <meta name="description"
+        content="Detailed post-mortem analysis for your test. Subject breakdowns, time analysis, and AI-powered weakness detection." />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap"
+        rel="stylesheet" />
+    <link rel="stylesheet" href="src/style.css" />
+</head>
+
+<body>
+    <!-- Sidebar -->
+    <nav class="sidebar">
+        <div class="sidebar-logo">
+            <div class="logo-icon">⚡</div>
+            <span class="logo-text">EduMetrics <span class="logo-ai">AI</span></span>
+        </div>
+        <ul class="sidebar-nav">
+            <li class="nav-item active" onclick="location.href='index.html'">
+                <span class="nav-icon">📊</span>
+                <span class="nav-label">Dashboard</span>
+            </li>
+            <li class="nav-item" onclick="location.href='formula-deck.html'">
+                <span class="nav-icon">🧮</span>
+                <span class="nav-label">Formula Deck</span>
+            </li>
+            <li class="nav-item" onclick="location.href='ai-insights.html'">
+                <span class="nav-icon">🤖</span>
+                <span class="nav-label">AI Insights</span>
+            </li>
+        </ul>
+        <div class="sidebar-footer">
+            <div class="student-card">
+                <div class="student-avatar">🎯</div>
+                <div class="student-info">
+                    <div class="student-name">PCM Student</div>
+                    <div class="student-goal">JEE 2026</div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="back-btn" onclick="location.href='index.html'">← Back to Dashboard</div>
+
+        <!-- Header -->
+        <header class="page-header">
+            <div class="header-left">
+                <h1 class="page-title" id="ddTitle">Test Deep Dive</h1>
+                <p class="page-subtitle" id="ddSubtitle">Post-mortem analysis with AI insights</p>
+            </div>
+            <div class="header-right">
+                <div style="display:flex; flex-direction:column; align-items:flex-end; gap:4px;">
+                    <div style="font-family:'JetBrains Mono'; font-size:28px; font-weight:800; color:var(--neon-blue);"
+                        id="ddScore">—</div>
+                    <div style="font-size:12px; color:var(--text-secondary);" id="ddDate">—</div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Ghost Mistake Alert (top-level AI Alert) -->
+        <div class="ghost-alert" id="ghostAlert">
+            <div class="ghost-alert-title">👻 Ghost Mistake Detected</div>
+            <div class="ghost-alert-body" id="ghostAlertBody"></div>
+        </div>
+
+        <!-- Deep Dive Grid -->
+        <div class="deepdive-grid">
+
+            <!-- Subject Breakdown -->
+            <div class="section-card">
+                <div class="section-card-title">🎯 Subject-wise Marks</div>
+                <div class="subject-grid">
+                    <div class="subject-input-group">
+                        <label><span class="subject-dot physics"></span> Physics</label>
+                        <input type="number" id="physicsMarks" placeholder="Marks" min="0"
+                            oninput="onSubjectChange()" />
+                        <div id="physicsBar" class="progress-bar-track" style="margin-top:4px;">
+                            <div class="progress-bar-fill" style="background:var(--neon-blue); width:0%;"></div>
+                        </div>
+                    </div>
+                    <div class="subject-input-group">
+                        <label><span class="subject-dot chemistry"></span> Chemistry</label>
+                        <input type="number" id="chemistryMarks" placeholder="Marks" min="0"
+                            oninput="onSubjectChange()" />
+                        <div id="chemistryBar" class="progress-bar-track" style="margin-top:4px;">
+                            <div class="progress-bar-fill" style="background:var(--neon-purple); width:0%;"></div>
+                        </div>
+                    </div>
+                    <div class="subject-input-group">
+                        <label><span class="subject-dot math"></span> Maths</label>
+                        <input type="number" id="mathMarks" placeholder="Marks" min="0" oninput="onSubjectChange()" />
+                        <div id="mathBar" class="progress-bar-track" style="margin-top:4px;">
+                            <div class="progress-bar-fill" style="background:var(--neon-amber); width:0%;"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Efficiency Chart -->
+                <div id="efficiencySection" style="margin-top:20px; display:none;">
+                    <div class="section-card-title"
+                        style="font-size:12px; color:var(--text-secondary); margin-bottom:10px; text-transform:uppercase; letter-spacing:0.5px;">
+                        ⚡ Efficiency: Time vs Marks</div>
+                    <div class="efficiency-bars" id="effBars"></div>
+                    <div class="efficiency-legend"
+                        style="display:flex; gap:16px; margin-top:8px; font-size:11px; color:var(--text-muted);">
+                        <span><span style="color:var(--neon-amber);">▬</span> Time Spent %</span>
+                        <span><span style="color:var(--neon-green);">▬</span> Marks %</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Time Analysis -->
+            <div class="section-card">
+                <div class="section-card-title">⏱️ Time Analysis</div>
+                <div>
+                    <div class="slider-group">
+                        <div class="slider-header">
+                            <span class="slider-label"><span class="subject-dot physics"
+                                    style="display:inline-block; width:8px; height:8px; border-radius:50%; background:var(--neon-blue); margin-right:4px;"></span>Physics</span>
+                            <span class="slider-value" id="physicsTimeVal">60 min</span>
+                        </div>
+                        <input type="range" id="physicsTime" min="0" max="180" value="60" step="1"
+                            oninput="updateSlider('physics'); onTimeChange();" />
+                    </div>
+                    <div class="slider-group">
+                        <div class="slider-header">
+                            <span class="slider-label"><span
+                                    style="display:inline-block; width:8px; height:8px; border-radius:50%; background:var(--neon-purple); margin-right:4px;"></span>Chemistry</span>
+                            <span class="slider-value" id="chemistryTimeVal">60 min</span>
+                        </div>
+                        <input type="range" id="chemistryTime" min="0" max="180" value="60" step="1"
+                            oninput="updateSlider('chemistry'); onTimeChange();" />
+                    </div>
+                    <div class="slider-group">
+                        <div class="slider-header">
+                            <span class="slider-label"><span
+                                    style="display:inline-block; width:8px; height:8px; border-radius:50%; background:var(--neon-amber); margin-right:4px;"></span>Maths</span>
+                            <span class="slider-value" id="mathTimeVal">60 min</span>
+                        </div>
+                        <input type="range" id="mathTime" min="0" max="180" value="60" step="1"
+                            oninput="updateSlider('math'); onTimeChange();" />
+                    </div>
+                    <div
+                        style="margin-top:12px; padding:12px; background:var(--bg-surface-2); border-radius:var(--radius-sm); border:1px solid var(--border);">
+                        <div
+                            style="font-size:11px; color:var(--text-muted); margin-bottom:6px; text-transform:uppercase; letter-spacing:0.5px;">
+                            Total</div>
+                        <div style="font-family:'JetBrains Mono'; font-size:20px; font-weight:700; color:var(--text-primary);"
+                            id="totalTimeVal">180 min</div>
+                        <div style="font-size:11px; color:var(--text-muted);">3h 0m</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Weakness Logging -->
+            <div class="section-card full-width">
+                <div class="section-card-title">⚠️ Weakness Logger — AI Powered</div>
+
+                <!-- Recurring Weakness Banner -->
+                <div class="recurring-banner" id="recurringBanner">
+                    <div class="recurring-banner-title">⚠️ Recurring Weakness Detected!</div>
+                    <div id="recurringItems"></div>
+                </div>
+
+                <div class="form-grid" style="margin-top:16px;">
+                    <div class="form-group">
+                        <label>Major Weaknesses Exposed</label>
+                        <textarea id="weaknesses" rows="3"
+                            placeholder="e.g. Couldn't visualize rotational motion, Got stuck on Electrostatics…"
+                            oninput="checkRecurringWeakness(this.value)"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>Missed Topics / Formula Gaffes</label>
+                        <textarea id="missedFormulas" rows="3"
+                            placeholder="e.g. Forgot Snell's constant, Misapplied the quadratic formula…"></textarea>
+                    </div>
+                    <div class="form-group full-width">
+                        <label>Action Plan / Corrections</label>
+                        <textarea id="actionPlan" rows="3"
+                            placeholder="e.g. Re-do 5 problems on Lens maker's formula, Create a flashcard for Kinematics…"></textarea>
+                    </div>
+                </div>
+
+                <div style="display:flex; gap:10px; margin-top:20px; justify-content:flex-end;">
+                    <button class="btn btn-ghost" onclick="location.href='index.html'">Cancel</button>
+                    <button class="btn btn-primary" id="saveBtn" onclick="saveDeepDive()">Save Analysis ✓</button>
+                </div>
+            </div>
+
+        </div><!-- /deepdive-grid -->
+
+        <!-- Footer -->
+        <footer
+            style="margin-top:40px; padding:20px 0; text-align:center; border-top:1px solid var(--border); color:var(--text-muted); font-size:12px;">
+            Made with ❤️ by <span style="color:var(--neon-blue); font-weight:600;">Vaibhav Bolia</span>
+        </footer>
+    </main>
+
+
+    <script src="src/store.js"></script>
+    <script src="src/deep-dive.js"></script>
+</body>
+
+</html>

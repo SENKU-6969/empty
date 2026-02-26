@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>EduMetrics AI — Formula Deck</title>
+    <meta name="description"
+        content="Your Weak Formula Deck — auto-generated flashcards from missed formulas and topics logged in test deep dives." />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap"
+        rel="stylesheet" />
+    <link rel="stylesheet" href="src/style.css" />
+</head>
+
+<body>
+    <nav class="sidebar">
+        <div class="sidebar-logo">
+            <div class="logo-icon">⚡</div>
+            <span class="logo-text">EduMetrics <span class="logo-ai">AI</span></span>
+        </div>
+        <ul class="sidebar-nav">
+            <li class="nav-item" onclick="location.href='index.html'">
+                <span class="nav-icon">📊</span>
+                <span class="nav-label">Dashboard</span>
+            </li>
+            <li class="nav-item active" onclick="location.href='formula-deck.html'">
+                <span class="nav-icon">🧮</span>
+                <span class="nav-label">Formula Deck</span>
+            </li>
+            <li class="nav-item" onclick="location.href='ai-insights.html'">
+                <span class="nav-icon">🤖</span>
+                <span class="nav-label">AI Insights</span>
+            </li>
+        </ul>
+        <div class="sidebar-footer">
+            <div class="student-card">
+                <div class="student-avatar">🎯</div>
+                <div class="student-info">
+                    <div class="student-name">PCM Student</div>
+                    <div class="student-goal">JEE 2026</div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main class="main-content">
+        <header class="page-header">
+            <div class="header-left">
+                <h1 class="page-title">🧮 Formula Deck</h1>
+                <p class="page-subtitle">Auto-generated flashcards from your missed formulas and weak topics</p>
+            </div>
+            <div class="header-right">
+                <button class="btn btn-ghost" onclick="addFormulaManually()">+ Add Manually</button>
+                <button class="btn btn-primary" onclick="clearReviewed()">Clear Reviewed</button>
+            </div>
+        </header>
+
+        <!-- Stats -->
+        <div class="stats-row" style="grid-template-columns: repeat(3,1fr)">
+            <div class="stat-card">
+                <div class="stat-icon">📚</div>
+                <div class="stat-info">
+                    <div class="stat-value" id="statTotal">0</div>
+                    <div class="stat-label">Total Cards</div>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon" style="color:var(--neon-red)">⚠️</div>
+                <div class="stat-info">
+                    <div class="stat-value" id="statPending">0</div>
+                    <div class="stat-label">Pending Review</div>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon" style="color:var(--neon-green)">✅</div>
+                <div class="stat-info">
+                    <div class="stat-value" id="statReviewed">0</div>
+                    <div class="stat-label">Reviewed</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Search -->
+        <div class="search-bar">
+            <span class="search-icon">🔍</span>
+            <input type="text" id="searchInput" placeholder="Search by topic or formula content…"
+                oninput="renderFormulas(this.value)" />
+        </div>
+
+        <!-- Cards -->
+        <div class="formula-grid" id="formulaGrid"></div>
+        <div class="empty-state" id="formulaEmpty" style="display:none;">
+            <p>No formula cards yet. Complete a <strong>Deep Dive</strong> and fill in "Missed Formulas" to
+                auto-generate cards here.</p>
+        </div>
+
+        <!-- Manual Add Modal -->
+        <div class="modal-overlay" id="addFormulaModal" style="display:none;">
+            <div class="modal">
+                <div class="modal-header">
+                    <h2>🧮 Add Formula Card</h2>
+                    <button class="modal-close" onclick="closeFormulaModal()">✕</button>
+                </div>
+                <form onsubmit="handleAddFormula(event)">
+                    <div class="form-grid">
+                        <div class="form-group full-width">
+                            <label>Topic</label>
+                            <input type="text" id="fTopic" placeholder="e.g. Snell's Law, Lens Formula" required />
+                        </div>
+                        <div class="form-group full-width">
+                            <label>Formula / Note</label>
+                            <textarea id="fContent" rows="3" placeholder="e.g. n1·sin(θ1) = n2·sin(θ2)"
+                                required></textarea>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-ghost" onclick="closeFormulaModal()">Cancel</button>
+                        <button type="submit" class="btn btn-primary">Add Card →</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <footer
+            style="margin-top:40px; padding:20px 0; text-align:center; border-top:1px solid var(--border); color:var(--text-muted); font-size:12px;">
+            Made with ❤️ by <span style="color:var(--neon-blue); font-weight:600;">Vaibhav Bolia</span>
+        </footer>
+    </main>
+
+
+
+    <script src="src/store.js"></script>
+    <script src="src/formula-deck.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>EduMetrics AI — Dashboard</title>
+  <meta name="description"
+    content="AI-powered study companion for PCM students. Track performance, identify weaknesses, and get predictive insights." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="src/style.css" />
+</head>
+
+<body>
+  <!-- Sidebar -->
+  <nav class="sidebar" id="sidebar">
+    <div class="sidebar-logo">
+      <div class="logo-icon">⚡</div>
+      <span class="logo-text">EduMetrics <span class="logo-ai">AI</span></span>
+    </div>
+    <ul class="sidebar-nav">
+      <li class="nav-item active" id="nav-dashboard" onclick="location.href='index.html'">
+        <span class="nav-icon">📊</span>
+        <span class="nav-label">Dashboard</span>
+      </li>
+      <li class="nav-item" id="nav-formula" onclick="location.href='formula-deck.html'">
+        <span class="nav-icon">🧮</span>
+        <span class="nav-label">Formula Deck</span>
+      </li>
+      <li class="nav-item" id="nav-insights" onclick="location.href='ai-insights.html'">
+        <span class="nav-icon">🤖</span>
+        <span class="nav-label">AI Insights</span>
+      </li>
+    </ul>
+    <div class="sidebar-footer">
+      <div class="student-card">
+        <div class="student-avatar">🎯</div>
+        <div class="student-info">
+          <div class="student-name">PCM Student</div>
+          <div class="student-goal">JEE 2026</div>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Main Content -->
+  <main class="main-content">
+    <!-- Header -->
+    <header class="page-header">
+      <div class="header-left">
+        <h1 class="page-title">Performance Dashboard</h1>
+        <p class="page-subtitle">Track your academic trajectory with AI-powered insights</p>
+      </div>
+      <div class="header-right">
+        <button class="btn btn-primary" id="addTestBtn">
+          <span>+</span> Add Test
+        </button>
+        <button class="btn btn-ghost" id="exportBtn" onclick="exportDashboard()">
+          <span>📄</span> Export PDF
+        </button>
+      </div>
+    </header>
+
+    <!-- Stats Row -->
+    <section class="stats-row" id="statsRow">
+      <div class="stat-card">
+        <div class="stat-icon">📝</div>
+        <div class="stat-info">
+          <div class="stat-value" id="statTests">0</div>
+          <div class="stat-label">Tests Taken</div>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon" style="color:var(--neon-blue)">📈</div>
+        <div class="stat-info">
+          <div class="stat-value" id="statAvgMarks">—</div>
+          <div class="stat-label">Avg Marks</div>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon" style="color:var(--neon-red)">🏆</div>
+        <div class="stat-info">
+          <div class="stat-value" id="statBestRank">—</div>
+          <div class="stat-label">Best Rank</div>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon" style="color:var(--neon-green)">⚡</div>
+        <div class="stat-info">
+          <div class="stat-value" id="statTrend">—</div>
+          <div class="stat-label">Trend</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- AI Annotation Banner -->
+    <div class="ai-banner" id="aiBanner" style="display:none;">
+      <span class="ai-banner-icon">🤖</span>
+      <span class="ai-banner-text" id="aiBannerText"></span>
+      <button class="ai-banner-close" onclick="document.getElementById('aiBanner').style.display='none'">✕</button>
+    </div>
+
+    <!-- Chart Section -->
+    <section class="chart-section" id="exportTarget">
+      <div class="chart-card">
+        <div class="chart-header">
+          <div class="chart-title">
+            <h2>Performance Graph</h2>
+            <div class="chart-legend">
+              <span class="legend-dot blue"></span><span>Marks</span>
+              <span class="legend-dot red"></span><span>Rank</span>
+            </div>
+          </div>
+          <div class="chart-controls">
+            <button class="chip active" onclick="setFilter('all',this)">All</button>
+            <button class="chip" onclick="setFilter('last5',this)">Last 5</button>
+            <button class="chip" onclick="setFilter('last10',this)">Last 10</button>
+          </div>
+        </div>
+        <div class="chart-wrapper">
+          <canvas id="performanceChart"></canvas>
+          <div class="chart-empty" id="chartEmpty">
+            <div class="empty-icon">📊</div>
+            <p>No tests yet. Click <strong>+ Add Test</strong> to get started!</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Tests Table -->
+    <section class="tests-section">
+      <div class="section-header">
+        <h2>Test History</h2>
+        <span class="badge" id="testsCount">0 tests</span>
+      </div>
+      <div class="tests-list" id="testsList">
+        <div class="empty-state" id="testsEmpty">
+          <p>Your test history will appear here.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer
+      style="margin-top:40px; padding:20px 0; text-align:center; border-top:1px solid var(--border); color:var(--text-muted); font-size:12px;">
+      Made with ❤️ by <span style="color:var(--neon-blue); font-weight:600;">Vaibhav Bolia</span>
+    </footer>
+  </main>
+
+  <!-- Add Test Modal -->
+  <div class="modal-overlay" id="addTestModal" style="display:none;">
+    <div class="modal">
+      <div class="modal-header">
+        <h2>📝 Add New Test</h2>
+        <button class="modal-close" onclick="closeModal()">✕</button>
+      </div>
+      <form id="addTestForm" onsubmit="handleAddTest(event)">
+        <div class="form-grid">
+          <div class="form-group full-width">
+            <label>Test Name *</label>
+            <input type="text" id="testName" placeholder="e.g. JEE Mains Mock 3" required />
+          </div>
+          <div class="form-group">
+            <label>Date *</label>
+            <input type="date" id="testDate" required />
+          </div>
+          <div class="form-group">
+            <label>Max Marks *</label>
+            <input type="number" id="maxMarks" placeholder="e.g. 300" min="1" required />
+          </div>
+          <div class="form-group">
+            <label>Marks Obtained *</label>
+            <input type="number" id="marksObtained" placeholder="e.g. 180" min="0" required
+              oninput="autoCalcPercentage()" />
+          </div>
+          <div class="form-group">
+            <label>Percentage</label>
+            <input type="text" id="percentage" placeholder="Auto-calculated" readonly />
+          </div>
+          <div class="form-group">
+            <label>Rank / Position <span class="optional">(optional)</span></label>
+            <input type="number" id="testRank" placeholder="e.g. 45" min="1" />
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-ghost" onclick="closeModal()">Cancel</button>
+          <button type="submit" class="btn btn-primary">Save Test →</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+
+  <!-- Scripts -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  <script src="src/store.js"></script>
+  <script src="src/dashboard.js"></script>
+</body>
+
+</html>

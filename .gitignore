@@ -1,0 +1,29 @@
+# Byte-Order Mark and OS artifacts
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Editor directories and files
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# Logs
+*.log
+npm-debug.log*
+
+# Local env files
+.env
+.env.local
+
+# Python server cache
+__pycache__/
+*.pyc
+
+# Temporary files
+*.tmp
+*.temp
