@@ -47,7 +47,7 @@ function updateSlider(subject) {
   const m = parseInt(document.getElementById('mathTime').value) || 0;
   const total = p + c + m;
   document.getElementById('totalTimeVal').textContent = total + ' min';
-  document.querySelector('#totalTimeVal + div').textContent = `${Math.floor(total/60)}h ${total%60}m`;
+  document.querySelector('#totalTimeVal + div').textContent = `${Math.floor(total / 60)}h ${total % 60}m`;
 }
 
 // ---- Subject & Time Events ----
@@ -56,9 +56,20 @@ function onSubjectChange() {
   const c = parseFloat(document.getElementById('chemistryMarks').value) || 0;
   const m = parseFloat(document.getElementById('mathMarks').value) || 0;
   const total = p + c + m;
-  document.querySelector('#physicsBar .progress-bar-fill').style.width = (total > 0 ? (p/total)*100 : 0) + '%';
-  document.querySelector('#chemistryBar .progress-bar-fill').style.width = (total > 0 ? (c/total)*100 : 0) + '%';
-  document.querySelector('#mathBar .progress-bar-fill').style.width = (total > 0 ? (m/total)*100 : 0) + '%';
+  document.querySelector('#physicsBar .progress-bar-fill').style.width = (total > 0 ? (p / total) * 100 : 0) + '%';
+  document.querySelector('#chemistryBar .progress-bar-fill').style.width = (total > 0 ? (c / total) * 100 : 0) + '%';
+  document.querySelector('#mathBar .progress-bar-fill').style.width = (total > 0 ? (m / total) * 100 : 0) + '%';
+
+  // Update the header score in real-time
+  if (currentTest) {
+    const maxMarks = currentTest.maxMarks || 360;
+    const pct = Math.round((total / maxMarks) * 100);
+    document.getElementById('ddScore').textContent = total + '/' + maxMarks + ' (' + pct + '%)';
+    // sync back to currentTest so Save picks it up correctly
+    currentTest.marks = total;
+    currentTest.percentage = pct;
+  }
+
   triggerGhostMistakeCheck();
   updateEfficiencyChart();
 }
@@ -82,13 +93,13 @@ function updateEfficiencyChart() {
   if (!totalTime || !totalMarks) { document.getElementById('efficiencySection').style.display = 'none'; return; }
   document.getElementById('efficiencySection').style.display = 'block';
   const subjects = [
-    { key:'P', name:'Physics', marksColor:'var(--neon-blue)' },
-    { key:'C', name:'Chemistry', marksColor:'var(--neon-purple)' },
-    { key:'M', name:'Maths', marksColor:'var(--neon-amber)' },
+    { key: 'P', name: 'Physics', marksColor: 'var(--neon-blue)' },
+    { key: 'C', name: 'Chemistry', marksColor: 'var(--neon-purple)' },
+    { key: 'M', name: 'Maths', marksColor: 'var(--neon-amber)' },
   ];
   document.getElementById('effBars').innerHTML = subjects.map(s => {
-    const tPct = Math.round((timeSpent[s.key]/totalTime)*100);
-    const mPct = Math.round((subjectMarks[s.key]/totalMarks)*100);
+    const tPct = Math.round((timeSpent[s.key] / totalTime) * 100);
+    const mPct = Math.round((subjectMarks[s.key] / totalMarks) * 100);
     return `<div class="efficiency-row">
       <div class="efficiency-subject">${s.name}</div>
       <div class="efficiency-bars-wrap">
@@ -103,8 +114,8 @@ function updateEfficiencyChart() {
 
 // ---- Ghost Mistake ----
 function triggerGhostMistakeCheck() {
-  const timeSpent = { P: parseInt(document.getElementById('physicsTime').value)||0, C: parseInt(document.getElementById('chemistryTime').value)||0, M: parseInt(document.getElementById('mathTime').value)||0 };
-  const subjectMarks = { P: parseFloat(document.getElementById('physicsMarks').value)||0, C: parseFloat(document.getElementById('chemistryMarks').value)||0, M: parseFloat(document.getElementById('mathMarks').value)||0 };
+  const timeSpent = { P: parseInt(document.getElementById('physicsTime').value) || 0, C: parseInt(document.getElementById('chemistryTime').value) || 0, M: parseInt(document.getElementById('mathTime').value) || 0 };
+  const subjectMarks = { P: parseFloat(document.getElementById('physicsMarks').value) || 0, C: parseFloat(document.getElementById('chemistryMarks').value) || 0, M: parseFloat(document.getElementById('mathMarks').value) || 0 };
   const alerts = detectGhostMistake(timeSpent, subjectMarks);
   const alertDiv = document.getElementById('ghostAlert');
   const alertBody = document.getElementById('ghostAlertBody');
@@ -128,8 +139,8 @@ function checkRecurringWeakness(text) {
       itemsDiv.innerHTML = matches.map(m => `
         <div class="recurring-item">
           <strong>"${m.keyword}"</strong> was flagged in <strong>${m.testName}</strong> (${formatDate(m.testDate)})
-          ${m.weakness ? `<div style="margin-top:4px;color:var(--text-muted);">Weakness: ${m.weakness}</div>`:''}
-          ${m.actionPlan ? `<div style="margin-top:4px;color:var(--neon-amber);">📌 Previous Plan: ${m.actionPlan}</div>`:''}
+          ${m.weakness ? `<div style="margin-top:4px;color:var(--text-muted);">Weakness: ${m.weakness}</div>` : ''}
+          ${m.actionPlan ? `<div style="margin-top:4px;color:var(--neon-amber);">📌 Previous Plan: ${m.actionPlan}</div>` : ''}
         </div>`).join('');
       banner.classList.add('show');
     } else {
@@ -151,8 +162,8 @@ async function saveDeepDive() {
   const weaknesses = document.getElementById('weaknesses').value.trim();
   const actionPlan = document.getElementById('actionPlan').value.trim();
 
-  currentTest.subjects = { P: isNaN(pMarks)?null:pMarks, C: isNaN(cMarks)?null:cMarks, M: isNaN(mMarks)?null:mMarks };
-  currentTest.timeSpent = { P: parseInt(document.getElementById('physicsTime').value)||0, C: parseInt(document.getElementById('chemistryTime').value)||0, M: parseInt(document.getElementById('mathTime').value)||0 };
+  currentTest.subjects = { P: isNaN(pMarks) ? null : pMarks, C: isNaN(cMarks) ? null : cMarks, M: isNaN(mMarks) ? null : mMarks };
+  currentTest.timeSpent = { P: parseInt(document.getElementById('physicsTime').value) || 0, C: parseInt(document.getElementById('chemistryTime').value) || 0, M: parseInt(document.getElementById('mathTime').value) || 0 };
   currentTest.weaknesses = weaknesses;
   currentTest.missedFormulas = missedFormulas;
   currentTest.actionPlan = actionPlan;
@@ -165,7 +176,7 @@ async function saveDeepDive() {
     for (const line of lines) {
       const dup = existing.find(f => f.sourceTestId === currentTestId && f.content.toLowerCase() === line.toLowerCase());
       if (!dup) {
-        const f = newFormula({ topic: extractKeywords(line).slice(0,2).join(' ') || line.slice(0,20), content: line, sourceTestId: currentTestId, sourceTestName: currentTest.name });
+        const f = newFormula({ topic: extractKeywords(line).slice(0, 2).join(' ') || line.slice(0, 20), content: line, sourceTestId: currentTestId, sourceTestName: currentTest.name });
         await saveFormula(f);
       }
     }
@@ -174,4 +185,23 @@ async function saveDeepDive() {
   btn.disabled = false; btn.textContent = '✓ Saved!';
   btn.style.background = 'linear-gradient(135deg, var(--neon-green), #00aa55)';
   setTimeout(() => { btn.textContent = 'Save Analysis ✓'; btn.style.background = ''; }, 2000);
+}
+
+// ---- Delete ----
+async function deleteCurrentTest() {
+  if (!currentTest) return;
+  const confirmed = confirm(`⚠️ Delete "${currentTest.name}"?\n\nThis will permanently remove the test and all its analysis data. This cannot be undone.`);
+  if (!confirmed) return;
+
+  const btn = document.getElementById('deleteBtn');
+  btn.disabled = true; btn.textContent = '⏳ Deleting…';
+
+  try {
+    await deleteTest(currentTestId);
+    location.href = 'index.html';
+  } catch (e) {
+    console.error('Delete failed:', e);
+    alert('Failed to delete the test. Please try again.');
+    btn.disabled = false; btn.textContent = '🗑 Delete Test';
+  }
 }

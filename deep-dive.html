@@ -16,9 +16,11 @@
 
 <body>
     <!-- Auth Guard Overlay -->
-    <div id="authGuard" style="position:fixed;inset:0;background:var(--bg-primary);z-index:99999;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:16px;">
-      <div style="font-size:48px;">⚡</div>
-      <div style="color:var(--neon-blue);font-size:14px;font-weight:600;font-family:'Inter',sans-serif;">Checking authentication…</div>
+    <div id="authGuard"
+        style="position:fixed;inset:0;background:var(--bg-primary);z-index:99999;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:16px;">
+        <div style="font-size:48px;">⚡</div>
+        <div style="color:var(--neon-blue);font-size:14px;font-weight:600;font-family:'Inter',sans-serif;">Checking
+            authentication…</div>
     </div>
 
     <!-- Sidebar -->
@@ -195,7 +197,11 @@
                     </div>
                 </div>
 
-                <div style="display:flex; gap:10px; margin-top:20px; justify-content:flex-end;">
+                <div style="display:flex; gap:10px; margin-top:20px; align-items:center;">
+                    <button class="btn btn-ghost" id="deleteBtn" onclick="deleteCurrentTest()"
+                        style="margin-right:auto; color:#ff4d4f; border-color:rgba(255,77,79,0.35); background:rgba(255,77,79,0.08);"
+                        onmouseover="this.style.background='rgba(255,77,79,0.18)'"
+                        onmouseout="this.style.background='rgba(255,77,79,0.08)'">🗑 Delete Test</button>
                     <button class="btn btn-ghost" onclick="location.href='index.html'">Cancel</button>
                     <button class="btn btn-primary" id="saveBtn" onclick="saveDeepDive()">Save Analysis ✓</button>
                 </div>
@@ -212,13 +218,13 @@
 
 
     <!-- Firebase SDKs -->
-  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
-  <!-- App -->
-  <script src="src/firebase.js"></script>
-  <script src="src/store.js"></script>
-  <script src="src/deep-dive.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+    <!-- App -->
+    <script src="src/firebase.js"></script>
+    <script src="src/store.js"></script>
+    <script src="src/deep-dive.js"></script>
 </body>
 
 </html>
