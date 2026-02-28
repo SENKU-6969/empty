@@ -136,7 +136,7 @@ async function detectRecurringWeaknesses(currentTestId, text) {
 }
 
 function extractKeywords(text) {
-  const stopWords = new Set(['the','and','or','but','in','on','at','to','for','of','with','a','an','is','was','are','were','this','that']);
+  const stopWords = new Set(['the', 'and', 'or', 'but', 'in', 'on', 'at', 'to', 'for', 'of', 'with', 'a', 'an', 'is', 'was', 'are', 'were', 'this', 'that']);
   return text.toLowerCase()
     .replace(/[^a-z0-9 ]/g, ' ')
     .split(/\s+/)
@@ -189,11 +189,11 @@ function predictNextScore(tests) {
 
 function getWeaknessTopicClusters(tests) {
   const clusters = [
-    { name: 'Mechanics', keywords: ['friction','newton','laws of motion','rotational','torque','angular','circular','centripetal'], subject: 'P', severity: 0 },
-    { name: 'Optics', keywords: ['optics','lens','mirror','refraction','reflection','snell','ray','focal'], subject: 'P', severity: 0 },
-    { name: 'Electrostatics', keywords: ['electrostatics','coulomb','electric field','capacitor','gauss','charge'], subject: 'P', severity: 0 },
-    { name: 'Organic Chemistry', keywords: ['organic','carbon','hydrocarbon','ester','alcohol','reaction mechanism'], subject: 'C', severity: 0 },
-    { name: 'Calculus', keywords: ['calculus','integral','derivative','limit','differentiation'], subject: 'M', severity: 0 },
+    { name: 'Mechanics', keywords: ['friction', 'newton', 'laws of motion', 'rotational', 'torque', 'angular', 'circular', 'centripetal'], subject: 'P', severity: 0 },
+    { name: 'Optics', keywords: ['optics', 'lens', 'mirror', 'refraction', 'reflection', 'snell', 'ray', 'focal'], subject: 'P', severity: 0 },
+    { name: 'Electrostatics', keywords: ['electrostatics', 'coulomb', 'electric field', 'capacitor', 'gauss', 'charge'], subject: 'P', severity: 0 },
+    { name: 'Organic Chemistry', keywords: ['organic', 'carbon', 'hydrocarbon', 'ester', 'alcohol', 'reaction mechanism'], subject: 'C', severity: 0 },
+    { name: 'Calculus', keywords: ['calculus', 'integral', 'derivative', 'limit', 'differentiation'], subject: 'M', severity: 0 },
   ];
   const allText = tests.map(t => [t.weaknesses, t.missedFormulas].join(' ')).join(' ').toLowerCase();
   for (const cluster of clusters) {
@@ -223,7 +223,9 @@ function getGraphAIAnnotations(sorted) {
     else if (!marksUp && rankUp) annotations.push({ index: i, msg: `⬇️ Marks dipped but rank improved — others found it harder too.` });
     else if (marksUp && rankUp) annotations.push({ index: i, msg: `🚀 Great improvement! Both marks and rank improved.` });
   }
-  return annotations;
+
+  // Return ONLY the most recent annotation (the last one generated)
+  return annotations.length ? [annotations[annotations.length - 1]] : [];
 }
 
 // ---- Auth helpers ----
