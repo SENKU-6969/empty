@@ -254,7 +254,7 @@
     <!-- Auth Guard -->
     <div id="authGuard"
         style="position:fixed;inset:0;background:var(--bg-primary);z-index:99999;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:16px;">
-        <div style="font-size:48px;">⚡</div>
+        <div style="font-size:48px;"><img src="src/icons/icon-logo.svg" class="svg-icon" alt="logo"></div>
         <div style="color:var(--neon-blue);font-size:14px;font-weight:600;font-family:'Inter',sans-serif;">Checking
             authentication…</div>
     </div>
@@ -262,26 +262,26 @@
     <!-- Sidebar -->
     <nav class="sidebar">
         <div class="sidebar-logo">
-            <div class="logo-icon">⚡</div>
+            <div class="logo-icon"><img src="src/icons/icon-logo.svg" class="svg-icon" alt="logo"></div>
             <span class="logo-text">EduMetrics <span class="logo-ai">AI</span></span>
         </div>
         <ul class="sidebar-nav">
             <li class="nav-item active" onclick="location.href='index.html'">
-                <span class="nav-icon">📊</span>
+                <span class="nav-icon"><img src="src/icons/icon-dashboard.svg" class="svg-icon" alt="dashboard"></span>
                 <span class="nav-label">Dashboard</span>
             </li>
             <li class="nav-item" onclick="location.href='formula-deck.html'">
-                <span class="nav-icon">🧮</span>
+                <span class="nav-icon"><img src="src/icons/icon-formula.svg" class="svg-icon" alt="formula"></span>
                 <span class="nav-label">Formula Deck</span>
             </li>
             <li class="nav-item" onclick="location.href='ai-insights.html'">
-                <span class="nav-icon">🤖</span>
+                <span class="nav-icon"><img src="src/icons/icon-ai-nav.svg" class="svg-icon" alt="ai"></span>
                 <span class="nav-label">AI Insights</span>
             </li>
         </ul>
         <div class="sidebar-footer">
             <div class="student-card">
-                <div class="student-avatar">🎯</div>
+                <div class="student-avatar"><img src="src/icons/icon-avatar.svg" class="svg-icon" alt="avatar"></div>
                 <div class="student-info">
                     <div class="student-name">PCM Student</div>
                     <div class="student-goal">JEE 2026</div>
@@ -303,7 +303,7 @@
 
         <!-- Hero / Intro -->
         <div class="import-hero">
-            <div class="import-hero-icon">🔗</div>
+            <div class="import-hero-icon"><img src="src/icons/icon-import.svg" class="svg-icon" alt="import"></div>
             <div>
                 <h2>One-click import from your test portal</h2>
                 <p>CollegeDoors has no public API, but you can use our <strong>browser bookmarklet</strong> — a small
@@ -317,7 +317,7 @@
             <div class="step-card">
                 <div class="step-num">1</div>
                 <h3>Add the bookmarklet</h3>
-                <p>Drag the <strong>"📥 Import to EduMetrics"</strong> button below to your browser's bookmarks bar.</p>
+                <p>Drag the <strong>"<img src="src/icons/icon-import.svg" class="svg-icon" alt="inbox"> Import to EduMetrics"</strong> button below to your browser's bookmarks bar.</p>
             </div>
             <div class="step-card">
                 <div class="step-num">2</div>
@@ -335,13 +335,13 @@
 
         <!-- Bookmarklet -->
         <div class="section-card" style="margin-bottom:28px;">
-            <div class="section-card-title">🔖 Step 1 — Get the Bookmarklet</div>
+            <div class="section-card-title"><img src="src/icons/icon-tag.svg" class="svg-icon" alt="tag"> Step 1 — Get the Bookmarklet</div>
             <p style="font-size:13px;color:var(--text-muted);margin-bottom:14px;">
                 Show your browser's bookmarks bar (<kbd>Ctrl+Shift+B</kbd>), then drag the button below onto it.
             </p>
             <div class="bookmarklet-box">
                 <a id="bookmarkletLink" class="bookmarklet-link" title="Drag me to your bookmarks bar!">
-                    📥 Import to EduMetrics
+                    <img src="src/icons/icon-import.svg" class="svg-icon" alt="inbox"> Import to EduMetrics
                 </a>
                 <div class="bookmarklet-hint">
                     ☝️ <strong>Drag this to your bookmarks bar.</strong><br>
@@ -352,12 +352,12 @@
 
         <!-- Upload Section -->
         <div class="section-card">
-            <div class="section-card-title">📂 Step 3 — Upload JSON File</div>
+            <div class="section-card-title"><img src="src/icons/icon-import.svg" class="svg-icon" alt="folder"> Step 3 — Upload JSON File</div>
 
             <div id="errorMsg"></div>
 
             <div class="upload-zone" id="uploadZone" onclick="document.getElementById('importFile').click()">
-                <div class="upload-zone-icon">📄</div>
+                <div class="upload-zone-icon"><img src="src/icons/icon-export.svg" class="svg-icon" alt="export"></div>
                 <p>Click to select <strong>collegedoors-tests.json</strong>, or drag & drop it here</p>
                 <button class="btn btn-ghost" type="button" style="pointer-events:none;">Choose File</button>
                 <input type="file" id="importFile" accept=".json,application/json" />
@@ -366,7 +366,7 @@
             <!-- Preview Table -->
             <div id="previewSection">
                 <div class="preview-header">
-                    <h3>🧾 Test Preview</h3>
+                    <h3><img src="src/icons/icon-export.svg" class="svg-icon" alt="receipt"> Test Preview</h3>
                     <span id="previewCount"></span>
                 </div>
                 <div class="import-table-wrap">

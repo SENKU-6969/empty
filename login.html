@@ -219,7 +219,7 @@
   <div class="login-wrapper">
     <!-- Logo -->
     <div class="login-logo">
-      <div class="login-logo-icon">⚡</div>
+      <div class="login-logo-icon"><img src="src/icons/icon-logo.svg" class="svg-icon" alt="logo"></div>
       <div class="login-logo-text">EduMetrics <span class="login-logo-ai">AI</span></div>
     </div>
 
@@ -286,7 +286,7 @@
 
       document.getElementById('tabSignIn').classList.toggle('active', !isSignup);
       document.getElementById('tabSignUp').classList.toggle('active', isSignup);
-      document.getElementById('titleText').textContent = isSignup ? 'Create your account 🎯' : 'Welcome back 👋';
+      document.getElementById('titleText').textContent = isSignup ? 'Create your account <img src="src/icons/icon-avatar.svg" class="svg-icon" alt="avatar">' : 'Welcome back 👋';
       document.getElementById('subtitleText').textContent = isSignup
         ? 'Start tracking your PCM journey with AI-powered insights.'
         : 'Sign in to sync your study data across all devices.';

@@ -18,7 +18,7 @@
   <!-- Auth Guard Overlay: hides page until Firebase confirms auth -->
   <div id="authGuard"
     style="position:fixed;inset:0;background:var(--bg-primary);z-index:99999;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:16px;">
-    <div style="font-size:48px;">⚡</div>
+    <div style="font-size:48px;"><img src="src/icons/icon-logo.svg" class="svg-icon" alt="logo"></div>
     <div style="color:var(--neon-blue);font-size:14px;font-weight:600;font-family:'Inter',sans-serif;">Checking
       authentication…</div>
   </div>
@@ -26,26 +26,26 @@
   <!-- Sidebar -->
   <nav class="sidebar" id="sidebar">
     <div class="sidebar-logo">
-      <div class="logo-icon">⚡</div>
+      <div class="logo-icon"><img src="src/icons/icon-logo.svg" class="svg-icon" alt="logo"></div>
       <span class="logo-text">EduMetrics <span class="logo-ai">AI</span></span>
     </div>
     <ul class="sidebar-nav">
       <li class="nav-item active" id="nav-dashboard" onclick="location.href='index.html'">
-        <span class="nav-icon">📊</span>
+        <span class="nav-icon"><img src="src/icons/icon-dashboard.svg" class="svg-icon" alt="dashboard"></span>
         <span class="nav-label">Dashboard</span>
       </li>
       <li class="nav-item" id="nav-formula" onclick="location.href='formula-deck.html'">
-        <span class="nav-icon">🧮</span>
+        <span class="nav-icon"><img src="src/icons/icon-formula.svg" class="svg-icon" alt="formula"></span>
         <span class="nav-label">Formula Deck</span>
       </li>
       <li class="nav-item" id="nav-insights" onclick="location.href='ai-insights.html'">
-        <span class="nav-icon">🤖</span>
+        <span class="nav-icon"><img src="src/icons/icon-ai-nav.svg" class="svg-icon" alt="ai"></span>
         <span class="nav-label">AI Insights</span>
       </li>
     </ul>
     <div class="sidebar-footer">
       <div class="student-card">
-        <div class="student-avatar">🎯</div>
+        <div class="student-avatar"><img src="src/icons/icon-avatar.svg" class="svg-icon" alt="avatar"></div>
         <div class="student-info">
           <div class="student-name">PCM Student</div>
           <div class="student-goal">JEE 2026</div>
@@ -64,14 +64,14 @@
       </div>
       <div class="header-right">
         <button class="btn btn-primary" id="addTestBtn">
-          <span>+</span> Add Test
+          <img src="src/icons/icon-add.svg" class="svg-icon" alt="add"> Add Test
         </button>
         <button class="btn btn-ghost" id="exportBtn" onclick="exportDashboard()">
-          <span>📄</span> Export PDF
+          <span><img src="src/icons/icon-export.svg" class="svg-icon" alt="export"></span> Export PDF
         </button>
         <button class="btn btn-ghost" onclick="location.href='import.html'"
           style="border-color:rgba(0,212,255,0.3);color:var(--neon-blue);">
-          <span>🔗</span> Import Portal
+          <span><img src="src/icons/icon-import.svg" class="svg-icon" alt="import"></span> Import Portal
         </button>
       </div>
     </header>
@@ -79,28 +79,28 @@
     <!-- Stats Row -->
     <section class="stats-row" id="statsRow">
       <div class="stat-card">
-        <div class="stat-icon">📝</div>
+        <div class="stat-icon"><img src="src/icons/icon-tests-taken.svg" class="svg-icon" alt="tests"></div>
         <div class="stat-info">
           <div class="stat-value" id="statTests">0</div>
           <div class="stat-label">Tests Taken</div>
         </div>
       </div>
       <div class="stat-card">
-        <div class="stat-icon" style="color:var(--neon-blue)">📈</div>
+        <div class="stat-icon" style="color:var(--neon-blue)"><img src="src/icons/icon-trend.svg" class="svg-icon" alt="trend"></div>
         <div class="stat-info">
           <div class="stat-value" id="statAvgMarks">—</div>
           <div class="stat-label">Avg Marks</div>
         </div>
       </div>
       <div class="stat-card">
-        <div class="stat-icon" style="color:var(--neon-red)">🏆</div>
+        <div class="stat-icon" style="color:var(--neon-red)"><img src="src/icons/icon-trophy.svg" class="svg-icon" alt="trophy"></div>
         <div class="stat-info">
           <div class="stat-value" id="statBestRank">—</div>
           <div class="stat-label">Best Rank</div>
         </div>
       </div>
       <div class="stat-card">
-        <div class="stat-icon" style="color:var(--neon-green)">⚡</div>
+        <div class="stat-icon" style="color:var(--neon-green)"><img src="src/icons/icon-logo.svg" class="svg-icon" alt="logo"></div>
         <div class="stat-info">
           <div class="stat-value" id="statTrend">—</div>
           <div class="stat-label">Trend</div>
@@ -110,7 +110,7 @@
 
     <!-- AI Annotation Banner -->
     <div class="ai-banner" id="aiBanner" style="display:none;">
-      <span class="ai-banner-icon">🤖</span>
+      <span class="ai-banner-icon"><img src="src/icons/icon-ai-nav.svg" class="svg-icon" alt="ai"></span>
       <span class="ai-banner-text" id="aiBannerText"></span>
       <button class="ai-banner-close" onclick="document.getElementById('aiBanner').style.display='none'">✕</button>
     </div>
@@ -135,7 +135,7 @@
         <div class="chart-wrapper">
           <canvas id="performanceChart"></canvas>
           <div class="chart-empty" id="chartEmpty">
-            <div class="empty-icon">📊</div>
+            <div class="empty-icon"><img src="src/icons/icon-dashboard.svg" class="svg-icon" alt="dashboard"></div>
             <p>No tests yet. Click <strong>+ Add Test</strong> to get started!</p>
           </div>
         </div>
@@ -166,7 +166,7 @@
   <div class="modal-overlay" id="addTestModal" style="display:none;">
     <div class="modal">
       <div class="modal-header">
-        <h2>📝 Add New Test</h2>
+        <h2><img src="src/icons/icon-tests-taken.svg" class="svg-icon" alt="tests"> Add New Test</h2>
         <button class="modal-close" onclick="closeModal()">✕</button>
       </div>
       <form id="addTestForm" onsubmit="handleAddTest(event)">
