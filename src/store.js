@@ -45,7 +45,7 @@ async function deleteTest(id) {
   await testsCol().doc(id).delete();
 }
 
-function newTest({ name, date, maxMarks, marks, rank, percentage }) {
+function newTest({ name, date, maxMarks, marks, rank, percentage, category }) {
   return {
     name,
     date,
@@ -53,6 +53,7 @@ function newTest({ name, date, maxMarks, marks, rank, percentage }) {
     marks: parseFloat(marks),
     rank: rank ? parseInt(rank) : null,
     percentage: parseFloat(percentage),
+    category: category || 'other',
     subjects: { P: null, C: null, M: null },
     timeSpent: { P: 60, C: 60, M: 60 },
     weaknesses: '',

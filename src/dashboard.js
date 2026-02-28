@@ -1,10 +1,54 @@
 /* ====================================================
-   EduMetrics AI — Dashboard Logic (Firebase/Firestore)
+   EduMetStore AI — Dashboard Logic (Firebase/Firestore)
    ==================================================== */
 
 let chart = null;
 let currentFilter = 'all';
 let allTests = [];
+
+// ---- Test Category Presets ----
+const TEST_PRESETS = {
+  'jee-main': {
+    label: 'JEE Main',
+    badge: 'JEE MAIN',
+    maxMarks: 300,
+    subjectMax: { P: 100, C: 100, M: 100 },
+    locked: true,
+    info: '📋 JEE Main · 300 Marks total · Physics 100 | Chemistry 100 | Maths 100'
+  },
+  'jee-adv-2p': {
+    label: 'JEE Advanced (2 Papers)',
+    badge: 'ADV 2P',
+    maxMarks: 360,
+    subjectMax: { P: 120, C: 120, M: 120 },
+    locked: false,
+    info: '📋 JEE Advanced 2 Papers · Default 360 Marks · Physics 120 | Chemistry 120 | Maths 120 (editable)'
+  },
+  'jee-adv-1p': {
+    label: 'JEE Advanced (1 Paper)',
+    badge: 'ADV 1P',
+    maxMarks: 180,
+    subjectMax: { P: 60, C: 60, M: 60 },
+    locked: false,
+    info: '📋 JEE Advanced 1 Paper · Default 180 Marks · Physics 60 | Chemistry 60 | Maths 60 (editable)'
+  },
+  'cet': {
+    label: 'CET (MHT-CET)',
+    badge: 'CET',
+    maxMarks: 200,
+    subjectMax: { P: 50, C: 50, M: 100 },
+    locked: true,
+    info: '📋 MHT-CET · 200 Marks total · Physics 50 | Chemistry 50 | Maths 100'
+  },
+  'other': {
+    label: 'Other',
+    badge: 'OTHER',
+    maxMarks: null,
+    subjectMax: null,
+    locked: false,
+    info: '📋 Custom test — set your own max marks'
+  }
+};
 
 // Auth guard — everything starts here
 requireAuth(async (user) => {
@@ -153,21 +197,73 @@ function renderTestList(tests) {
   const sorted = [...tests].sort((a, b) => new Date(b.date) - new Date(a.date));
   if (!sorted.length) { list.innerHTML = ''; empty.style.display = 'block'; return; }
   empty.style.display = 'none';
-  list.innerHTML = sorted.map(t => `
+  list.innerHTML = sorted.map(t => {
+    const preset = t.category ? TEST_PRESETS[t.category] : null;
+    const badge = preset ? `<span class="category-badge category-badge--${t.category}">${preset.badge}</span>` : '';
+    return `
     <div class="test-row" onclick="openDeepDive('${t.id}')">
       <div class="test-row-indicator"></div>
-      <div style="flex:1; min-width:0;"><div class="test-row-name">${t.name}</div><div class="test-row-date">${formatDate(t.date)}</div></div>
+      <div style="flex:1; min-width:0;">
+        <div class="test-row-name">${t.name} ${badge}</div>
+        <div class="test-row-date">${formatDate(t.date)}</div>
+      </div>
       <div class="test-row-marks"><div class="test-row-score">${t.marks}</div><div class="test-row-max">/ ${t.maxMarks}</div></div>
       <div class="test-row-rank"><div class="test-row-rank-val">${t.rank ? '#' + t.rank : '—'}</div><div class="test-row-rank-label">Rank</div></div>
       <div class="test-row-pct">${t.percentage}%</div>
       <div class="test-row-arrow">›</div>
-    </div>
-  `).join('');
+    </div>`;
+  }).join('');
 }
 
 // ---- Modal ----
 function openModal() { document.getElementById('addTestModal').style.display = 'flex'; document.getElementById('testName').focus(); }
-function closeModal() { document.getElementById('addTestModal').style.display = 'none'; document.getElementById('addTestForm').reset(); document.getElementById('percentage').value = ''; }
+function closeModal() {
+  document.getElementById('addTestModal').style.display = 'none';
+  document.getElementById('addTestForm').reset();
+  document.getElementById('percentage').value = '';
+  document.getElementById('presetInfoRow').style.display = 'none';
+  const maxInput = document.getElementById('maxMarks');
+  maxInput.readOnly = false;
+  maxInput.style.opacity = '';
+  maxInput.placeholder = 'Select a category first';
+}
+
+function applyPreset() {
+  const category = document.getElementById('testCategory').value;
+  const infoRow = document.getElementById('presetInfoRow');
+  const infoEl = document.getElementById('presetInfo');
+  const maxInput = document.getElementById('maxMarks');
+
+  if (!category) {
+    infoRow.style.display = 'none';
+    maxInput.readOnly = false;
+    maxInput.style.opacity = '';
+    maxInput.value = '';
+    maxInput.placeholder = 'Select a category first';
+    return;
+  }
+
+  const preset = TEST_PRESETS[category];
+  infoEl.textContent = preset.info;
+  infoRow.style.display = 'block';
+
+  if (preset.locked) {
+    maxInput.value = preset.maxMarks;
+    maxInput.readOnly = true;
+    maxInput.style.opacity = '0.6';
+  } else {
+    maxInput.readOnly = false;
+    maxInput.style.opacity = '';
+    if (preset.maxMarks) {
+      maxInput.value = preset.maxMarks;
+      maxInput.placeholder = 'e.g. ' + preset.maxMarks;
+    } else {
+      maxInput.value = '';
+      maxInput.placeholder = 'Enter max marks';
+    }
+  }
+  autoCalcPercentage();
+}
 
 function autoCalcPercentage() {
   const marks = parseFloat(document.getElementById('marksObtained').value);
@@ -179,11 +275,12 @@ async function handleAddTest(e) {
   e.preventDefault();
   const name = document.getElementById('testName').value.trim();
   const date = document.getElementById('testDate').value;
+  const category = document.getElementById('testCategory').value;
   const maxMarks = parseFloat(document.getElementById('maxMarks').value);
   const marks = parseFloat(document.getElementById('marksObtained').value);
   const rank = document.getElementById('testRank').value || null;
   const percentage = parseFloat(((marks / maxMarks) * 100).toFixed(1));
-  const test = newTest({ name, date, maxMarks, marks, rank, percentage });
+  const test = newTest({ name, date, maxMarks, marks, rank, percentage, category });
   await saveTest(test);
   closeModal();
   await loadDashboard();

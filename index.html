@@ -182,13 +182,37 @@
             <label>Test Name *</label>
             <input type="text" id="testName" placeholder="e.g. JEE Mains Mock 3" required />
           </div>
+          <div class="form-group full-width">
+            <label>Category *</label>
+            <select id="testCategory" onchange="applyPreset()" required>
+              <option value="">— Select a Category —</option>
+              <option value="jee-main">JEE Main</option>
+              <option value="jee-adv-2p">JEE Advanced (2 Papers)</option>
+              <option value="jee-adv-1p">JEE Advanced (1 Paper)</option>
+              <option value="cet">CET (MHT-CET)</option>
+              <option value="other">Other</option>
+            </select>
+          </div>
+          <!-- Preset info banner -->
+          <div class="form-group full-width" id="presetInfoRow" style="display:none;">
+            <div id="presetInfo" style="
+              background: var(--neon-blue-dim);
+              border: 1px solid rgba(0,180,255,0.25);
+              border-radius: var(--radius-sm);
+              padding: 10px 14px;
+              font-size: 12px;
+              color: var(--neon-blue);
+              font-weight: 500;
+              line-height: 1.7;
+            "></div>
+          </div>
           <div class="form-group">
             <label>Date *</label>
             <input type="date" id="testDate" required />
           </div>
           <div class="form-group">
             <label>Max Marks *</label>
-            <input type="number" id="maxMarks" placeholder="e.g. 300" min="1" required />
+            <input type="number" id="maxMarks" placeholder="Select a category first" min="1" required />
           </div>
           <div class="form-group">
             <label>Marks Obtained *</label>
