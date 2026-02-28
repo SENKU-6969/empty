@@ -839,145 +839,139 @@
             document.getElementById('bookmarkletLink').href = 'javascript:' + classicFn;
 
             // ---- MEGA SYNC BOOKMARKLET (auto-detect page, send via postMessage) ----
-            const megaFn = `(function(){
-  var isAnalysis=window.location.href.indexOf('cdtamainrep')>-1;
-  var isDashboard=window.location.href.indexOf('cdmypage')>-1;
-  var opener=window.opener;
+            // Built from a real function to avoid all template literal escape issues.
+            function megaSyncBookmarklet() {
+                var isAnalysis = window.location.href.indexOf('cdtamainrep') > -1;
+                var isDashboard = window.location.href.indexOf('cdmypage') > -1;
+                var op = window.opener;
 
-  /* ===== ANALYSIS PAGE ===== */
-  if(isAnalysis && typeof tsid !== 'undefined'){
-    var data={type:'cd_test',tsid:window.tsid};
+                /* ===== ANALYSIS PAGE ===== */
+                if (isAnalysis && typeof tsid !== 'undefined') {
+                    var data = { type: 'cd_test', tsid: window.tsid };
 
-    /* --- Total score & rank --- */
-    var totEls=document.querySelectorAll('.cd-mr-res-sub.total .cd-mr-res-tn-val');
-    if(totEls[0]){var m=totEls[0].innerText.match(/(\d+)\s*\/\s*(\d+)/);if(m){data.marks=+m[1];data.maxMarks=+m[2];}}
-    if(totEls[1]){var m2=totEls[1].innerText.match(/(\d+)\s*\/\s*(\d+)/);if(m2){data.rank=+m2[1];data.totalStudents=+m2[2];}}
+                    /* Total score & rank */
+                    var totEls = document.querySelectorAll('.cd-mr-res-sub.total .cd-mr-res-tn-val');
+                    if (totEls[0]) { var m = totEls[0].innerText.match(/(\d+)\s*\/\s*(\d+)/); if (m) { data.marks = +m[1]; data.maxMarks = +m[2]; } }
+                    if (totEls[1]) { var m2 = totEls[1].innerText.match(/(\d+)\s*\/\s*(\d+)/); if (m2) { data.rank = +m2[1]; data.totalStudents = +m2[2]; } }
 
-    /* --- Test name: prefer nav breadcrumb over page title --- */
-    var nameFromNav=document.querySelector('.cd-mp-tn-name,.cd-mn-tn-name');
-    data.testName=(nameFromNav?nameFromNav.innerText.trim():'')||document.title.replace(/VRaZ Academy/i,'').replace(/Test Report/i,'').replace(/-/g,'').trim()||('Test '+data.tsid);
+                    /* Test name */
+                    var nameFromNav = document.querySelector('.cd-mp-tn-name,.cd-mn-tn-name');
+                    data.testName = (nameFromNav ? nameFromNav.innerText.trim() : '') || document.title.replace(/VRaZ Academy/i, '').replace(/Test Report/i, '').replace(/-/g, '').trim() || ('Test ' + data.tsid);
 
-    /* --- Date: try URL, then dashboard row match --- */
-    data.date='';
-    try{var dp=new URLSearchParams(window.location.search);if(dp.get('date'))data.date=dp.get('date');}catch(e){}
+                    /* Date */
+                    data.date = '';
+                    try { var dp = new URLSearchParams(window.location.search); if (dp.get('date')) data.date = dp.get('date'); } catch (e) { }
 
-    /* --- Exam type --- */
-    data.examType='';
-    var typeEl=document.querySelector('.cd-mr-adv-test-info');
-    if(typeEl)data.examType=typeEl.innerText.trim().split('\n')[0];
+                    /* Exam type */
+                    data.examType = '';
+                    var typeEl = document.querySelector('.cd-mr-adv-test-info');
+                    if (typeEl) data.examType = typeEl.innerText.trim().split('\n')[0];
 
-    /* --- Subject marks & time ---
-         Try id="sub-Physics" first, then CSS class fallback (.cd-mr-res-sub.physics)
-         Regex corrected: single-escape level since this is a plain string in js: URI */
-    var subjectMap={Physics:'P',Chemistry:'C',Mathematics:'M',Biology:'B',Botany:'Bo',Zoology:'Z'};
-    data.subjects={};
-    Object.keys(subjectMap).forEach(function(subName){
-      var subEl=document.getElementById('sub-'+subName)||
-                document.querySelector('.cd-mr-res-sub.'+subName.toLowerCase());
-      if(!subEl)return;
-      /* First .cd-mr-res-tn-val child that does NOT contain a slash is the marks */
-      var valEls=subEl.querySelectorAll('.cd-mr-res-tn-val');
-      var valEl=null;
-      for(var vi=0;vi<valEls.length;vi++){if(valEls[vi].innerText.indexOf('/')>-1){valEl=valEls[vi];break;}}
-      if(!valEl&&valEls.length)valEl=valEls[0];
-      if(!valEl)return;
-      var valTxt=valEl.innerText.trim();
-      var sm=valTxt.match(/(\d+)\s*\/\s*(\d+)/);
-      if(!sm){var sn=valTxt.match(/(\d+)/);if(!sn)return;sm=[null,sn[1],sn[1]];}
-      var subData={scored:+sm[1],max:+sm[2],totalTimeSec:0,chapters:{}};
+                    /* Subject marks & time */
+                    var subjectMap = { Physics: 'P', Chemistry: 'C', Mathematics: 'M', Biology: 'B', Botany: 'Bo', Zoology: 'Z' };
+                    data.subjects = {};
+                    Object.keys(subjectMap).forEach(function (subName) {
+                        var subEl = document.getElementById('sub-' + subName) ||
+                            document.querySelector('.cd-mr-res-sub.' + subName.toLowerCase());
+                        if (!subEl) return;
+                        var valEls = subEl.querySelectorAll('.cd-mr-res-tn-val');
+                        var valEl = null;
+                        for (var vi = 0; vi < valEls.length; vi++) { if (valEls[vi].innerText.indexOf('/') > -1) { valEl = valEls[vi]; break; } }
+                        if (!valEl && valEls.length) valEl = valEls[0];
+                        if (!valEl) return;
+                        var valTxt = valEl.innerText.trim();
+                        var sm = valTxt.match(/(\d+)\s*\/\s*(\d+)/);
+                        if (!sm) { var sn = valTxt.match(/(\d+)/); if (!sn) return; sm = [null, sn[1], sn[1]]; }
+                        var subData = { scored: +sm[1], max: +sm[2], totalTimeSec: 0, chapters: {} };
 
-      /* per-chapter from res_data */
-      if(typeof res_data!=='undefined'){
-        var currentSub='';
-        res_data.forEach(function(row){
-          if(row[0]==='Sub'&&row[1]===subName){currentSub=subName;}
-          if(row[0]==='SubSub'&&currentSub===subName){
-            subData.chapters[row[1]]={
-              total:+row[2],answered:+row[3],correct:+row[5],
-              correctInTarget:+row[6],avgTimeCorrectSec:+row[7],
-              incorrect:+row[8],visitedNotAnswered:+row[13]
-            };
-          }
-          if(row[0]==='Sub'&&row[1]!==subName){currentSub='';}
-        });
-      }
+                        /* per-chapter from res_data */
+                        if (typeof res_data !== 'undefined') {
+                            var currentSub = '';
+                            res_data.forEach(function (row) {
+                                if (row[0] === 'Sub' && row[1] === subName) { currentSub = subName; }
+                                if (row[0] === 'SubSub' && currentSub === subName) {
+                                    subData.chapters[row[1]] = {
+                                        total: +row[2], answered: +row[3], correct: +row[5],
+                                        correctInTarget: +row[6], avgTimeCorrectSec: +row[7],
+                                        incorrect: +row[8], visitedNotAnswered: +row[13]
+                                    };
+                                }
+                                if (row[0] === 'Sub' && row[1] !== subName) { currentSub = ''; }
+                            });
+                        }
 
-      /* per-question & total time from [Subject]data */
-      var varName=subName+'data';
-      var sd=window[varName];
-      if(sd&&sd['ydata']){
-        var totalSec=0;
-        var perQ=[];
-        var ydata=sd['ydata'];var anscol=sd['anscol'];var qprops=sd['qprops'];
-        Object.keys(ydata).forEach(function(qid){
-          var sec=ydata[qid]||0;
-          totalSec+=sec;
-          var qp=qprops&&qprops[qid]?qprops[qid]:{};
-          perQ.push({
-            qId:+qid,
-            subject:subName,
-            timeSec:sec,
-            result:anscol?anscol[qid]:'',
-            topic:qp.topic_name||'',
-            chapter:qp.chapter_name||'',
-            section:qp.section_name||'',
-            difficulty:qp.display_diff_level||''
-          });
-        });
-        subData.totalTimeSec=totalSec;
-        subData.perQuestion=perQ;
-      }
-      data.subjects[subName]=subData;
-    });
+                        /* per-question & total time from [Subject]data */
+                        var varName = subName + 'data';
+                        var sd = window[varName];
+                        if (sd && sd['ydata']) {
+                            var totalSec = 0;
+                            var perQ = [];
+                            var ydata = sd['ydata']; var anscol = sd['anscol']; var qprops = sd['qprops'];
+                            Object.keys(ydata).forEach(function (qid) {
+                                var sec = ydata[qid] || 0;
+                                totalSec += sec;
+                                var qp = qprops && qprops[qid] ? qprops[qid] : {};
+                                perQ.push({
+                                    qId: +qid, subject: subName, timeSec: sec,
+                                    result: anscol ? anscol[qid] : '',
+                                    topic: qp.topic_name || '', chapter: qp.chapter_name || '',
+                                    section: qp.section_name || '', difficulty: qp.display_diff_level || ''
+                                });
+                            });
+                            subData.totalTimeSec = totalSec;
+                            subData.perQuestion = perQ;
+                        }
+                        data.subjects[subName] = subData;
+                    });
 
-    /* --- Flatten perQuestion across subjects --- */
-    data.perQuestion=[];
-    data.chapters={};
-    Object.keys(data.subjects).forEach(function(s){
-      var sd=data.subjects[s];
-      if(sd.perQuestion)data.perQuestion=data.perQuestion.concat(sd.perQuestion);
-      if(sd.chapters)data.chapters[s]=sd.chapters;
-    });
+                    /* Flatten perQuestion across subjects */
+                    data.perQuestion = [];
+                    data.chapters = {};
+                    Object.keys(data.subjects).forEach(function (s) {
+                        var sd = data.subjects[s];
+                        if (sd.perQuestion) data.perQuestion = data.perQuestion.concat(sd.perQuestion);
+                        if (sd.chapters) data.chapters[s] = sd.chapters;
+                    });
 
-    if(opener){opener.postMessage(data,'*');alert('✅ Sent data for this test to EduMetrics!');}
-    else{alert('⚠️ EduMetrics window not found. Please start the sync from EduMetrics first (click "Start Mega Sync").');}
-    return;
-  }
+                    if (op) { op.postMessage(data, '*'); alert('Sent data for this test to EduMetrics!'); }
+                    else { alert('EduMetrics window not found. Please start the sync from EduMetrics first (click Start Mega Sync).'); }
+                    return;
+                }
 
-  /* ===== DASHBOARD PAGE ===== */
-  if(isDashboard){
-    var rows=document.querySelectorAll('table tbody tr');
-    if(!rows.length){alert('No test table found.');return;}
-    var tests=[];
-    rows.forEach(function(row){
-      var cells=row.querySelectorAll('td');
-      if(cells.length<5)return;
-      /* Column order on cdmypage: 0=tsid, 1=mode, 2=?, 3=date, 4=?, 5=examType, 6=name, 7=score, 8=time */
-      var tsidTxt=(cells[0]?cells[0].innerText.trim():'');
-      var dateTxt=(cells[3]?cells[3].innerText.trim():'');
-      var examTypeTxt=(cells[5]?cells[5].innerText.trim():'');
-      var nameTxt=(cells[6]?cells[6].innerText.trim():'');
-      var scoreTxt=(cells[7]?cells[7].innerText.trim():'');
-      var tsid=parseInt(tsidTxt)||null;
-      if(!tsid&&!nameTxt)return;
-      var marks=0,maxMarks=0;
-      var sm=scoreTxt.match(/(\d+)/);
-      if(sm)marks=+sm[1];
-      var dateISO='';
-      var dm=dateTxt.match(/(\d{1,2}[-\/]\w+[-\/]\d{2,4})/);
-      if(dm){try{dateISO=new Date(dm[1]).toISOString().slice(0,10);}catch(e){}}
-      tests.push({tsid:tsid,testName:nameTxt,date:dateISO,examType:examTypeTxt,marks:marks,maxMarks:maxMarks});
-    });
-    if(!tests.length){alert('No tests found in the dashboard table.');return;}
-    var msg='Sent '+tests.length+' tests to EduMetrics queue.\n\nNow: open each test\'s Analysis page and click this bookmarklet.\nYou can sync as few or as many as you like — click \'Done\' on EduMetrics to finish at any time.';
-    if(opener){opener.postMessage({type:'cd_dashboard',tests:tests},'*');alert('✅ '+msg);}
-    else{alert('⚠️ EduMetrics window not found. Please start the sync from EduMetrics first.');}
-    return;
-  }
+                /* ===== DASHBOARD PAGE ===== */
+                if (isDashboard) {
+                    var rows = document.querySelectorAll('table tbody tr');
+                    if (!rows.length) { alert('No test table found.'); return; }
+                    var tests = [];
+                    rows.forEach(function (row) {
+                        var cells = row.querySelectorAll('td');
+                        if (cells.length < 5) return;
+                        var tsidTxt = (cells[0] ? cells[0].innerText.trim() : '');
+                        var dateTxt = (cells[3] ? cells[3].innerText.trim() : '');
+                        var examTypeTxt = (cells[5] ? cells[5].innerText.trim() : '');
+                        var nameTxt = (cells[6] ? cells[6].innerText.trim() : '');
+                        var scoreTxt = (cells[7] ? cells[7].innerText.trim() : '');
+                        var tsid = parseInt(tsidTxt) || null;
+                        if (!tsid && !nameTxt) return;
+                        var marks = 0, maxMarks = 0;
+                        var sm = scoreTxt.match(/(\d+)/);
+                        if (sm) marks = +sm[1];
+                        var dateISO = '';
+                        var dm = dateTxt.match(/(\d{1,2}[-\/]\w+[-\/]\d{2,4})/);
+                        if (dm) { try { dateISO = new Date(dm[1]).toISOString().slice(0, 10); } catch (e) { } }
+                        tests.push({ tsid: tsid, testName: nameTxt, date: dateISO, examType: examTypeTxt, marks: marks, maxMarks: maxMarks });
+                    });
+                    if (!tests.length) { alert('No tests found in the dashboard table.'); return; }
+                    if (op) { op.postMessage({ type: 'cd_dashboard', tests: tests }, '*'); alert('Sent ' + tests.length + ' tests to EduMetrics! Now open each test Analysis page and click this bookmarklet again. Click Done on EduMetrics when finished.'); }
+                    else { alert('EduMetrics window not found. Please start the sync from EduMetrics first.'); }
+                    return;
+                }
 
-  alert('Please run this bookmarklet on:\n• The CollegeDoors dashboard (cdmypage.php)\n• A test Analysis page (cdtamainrep_adv.php)');
-})();`;
-            document.getElementById('megaBookmarkletLink').href = 'javascript:' + megaFn;
+                alert('Please run this bookmarklet on the CollegeDoors dashboard (cdmypage.php) or a test Analysis page (cdtamainrep_adv.php).');
+            }
+            // Serialize the function body into a javascript: URI
+            var megaFnBody = megaSyncBookmarklet.toString();
+            document.getElementById('megaBookmarkletLink').href = 'javascript:void((' + megaFnBody + ')());';
         })();
     </script>
 
