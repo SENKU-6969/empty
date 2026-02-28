@@ -120,7 +120,7 @@ function triggerGhostMistakeCheck() {
   const alertDiv = document.getElementById('ghostAlert');
   const alertBody = document.getElementById('ghostAlertBody');
   if (alerts.length) {
-    alertBody.innerHTML = alerts.map(a => `<div style="margin-bottom:6px;">⚠️ <strong>${a.message}</strong></div>`).join('');
+    alertBody.innerHTML = alerts.map(a => `<div style="margin-bottom:6px;"><img src="src/icons/icon-warning.svg" class="svg-icon" alt="warning"> <strong>${a.message}</strong></div>`).join('');
     alertDiv.classList.add('show');
   } else {
     alertDiv.classList.remove('show');
@@ -140,7 +140,7 @@ function checkRecurringWeakness(text) {
         <div class="recurring-item">
           <strong>"${m.keyword}"</strong> was flagged in <strong>${m.testName}</strong> (${formatDate(m.testDate)})
           ${m.weakness ? `<div style="margin-top:4px;color:var(--text-muted);">Weakness: ${m.weakness}</div>` : ''}
-          ${m.actionPlan ? `<div style="margin-top:4px;color:var(--neon-amber);">📌 Previous Plan: ${m.actionPlan}</div>` : ''}
+          ${m.actionPlan ? `<div style="margin-top:4px;color:var(--neon-amber);"><img src="src/icons/icon-pin.svg" class="svg-icon" alt="pin"> Previous Plan: ${m.actionPlan}</div>` : ''}
         </div>`).join('');
       banner.classList.add('show');
     } else {
@@ -190,7 +190,7 @@ async function saveDeepDive() {
 // ---- Delete ----
 async function deleteCurrentTest() {
   if (!currentTest) return;
-  const confirmed = confirm(`⚠️ Delete "${currentTest.name}"?\n\nThis will permanently remove the test and all its analysis data. This cannot be undone.`);
+  const confirmed = confirm(`<img src="src/icons/icon-warning.svg" class="svg-icon" alt="warning"> Delete "${currentTest.name}"?\n\nThis will permanently remove the test and all its analysis data. This cannot be undone.`);
   if (!confirmed) return;
 
   const btn = document.getElementById('deleteBtn');
@@ -202,6 +202,6 @@ async function deleteCurrentTest() {
   } catch (e) {
     console.error('Delete failed:', e);
     alert('Failed to delete the test. Please try again.');
-    btn.disabled = false; btn.textContent = '🗑 Delete Test';
+    btn.disabled = false; btn.textContent = '<img src="src/icons/icon-delete.svg" class="svg-icon" alt="delete"> Delete Test';
   }
 }

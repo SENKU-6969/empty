@@ -92,7 +92,7 @@ function renderChart(tests) {
           titleColor: '#e8edf5', bodyColor: '#8892a4', padding: 14,
           callbacks: {
             title: items => tests[items[0].dataIndex]?.name || '',
-            afterBody: items => { const t = tests[items[0].dataIndex]; return t ? [`📅 ${formatDate(t.date)}`, `💡 Click to open Deep Dive`] : []; }
+            afterBody: items => { const t = tests[items[0].dataIndex]; return t ? [`<img src="src/icons/icon-activity.svg" class="svg-icon" alt="activity"> ${formatDate(t.date)}`, `<img src="src/icons/icon-hint.svg" class="svg-icon" alt="hint"> Click to open Deep Dive`] : []; }
           }
         }
       },
@@ -155,7 +155,7 @@ async function handleAddTest(e) {
   await saveTest(test);
   closeModal();
   await loadDashboard();
-  showToast('Test added! Click it to open Deep Dive 🎯');
+  showToast('Test added! Click it to open Deep Dive <img src="src/icons/icon-avatar.svg" class="svg-icon" alt="avatar">');
 }
 
 function openDeepDive(testId) { window.location.href = `deep-dive.html?id=${testId}`; }
@@ -167,7 +167,7 @@ function showLoader(show) {
     loader = document.createElement('div');
     loader.id = 'pageLoader';
     loader.style.cssText = 'position:fixed;inset:0;background:var(--bg-primary);z-index:9999;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:16px;';
-    loader.innerHTML = `<div style="font-size:48px;">⚡</div><div style="color:var(--neon-blue);font-size:14px;font-weight:600;">Loading your data…</div><div style="width:200px;height:3px;background:var(--bg-surface-3);border-radius:2px;overflow:hidden;"><div style="height:100%;background:var(--neon-blue);animation:loadBar 1.2s ease-in-out infinite;border-radius:2px;"></div></div><style>@keyframes loadBar{0%{width:0;margin-left:0}50%{width:100%;margin-left:0}100%{width:0;margin-left:100%}}</style>`;
+    loader.innerHTML = `<div style="font-size:48px;"><img src="src/icons/icon-logo.svg" class="svg-icon" alt="logo"></div><div style="color:var(--neon-blue);font-size:14px;font-weight:600;">Loading your data…</div><div style="width:200px;height:3px;background:var(--bg-surface-3);border-radius:2px;overflow:hidden;"><div style="height:100%;background:var(--neon-blue);animation:loadBar 1.2s ease-in-out infinite;border-radius:2px;"></div></div><style>@keyframes loadBar{0%{width:0;margin-left:0}50%{width:100%;margin-left:0}100%{width:0;margin-left:100%}}</style>`;
     document.body.appendChild(loader);
   }
   loader.style.display = show ? 'flex' : 'none';
@@ -218,7 +218,7 @@ async function exportDashboard() {
       }
     }
     pdf.save('EduMetrics_Report.pdf');
-    showToast('PDF exported! 📄');
+    showToast('PDF exported! <img src="src/icons/icon-export.svg" class="svg-icon" alt="export">');
   } catch (err) { console.error(err); showToast('Export failed. Try again.'); }
-  finally { btn.disabled = false; btn.innerHTML = '<span>📄</span> Export PDF'; }
+  finally { btn.disabled = false; btn.innerHTML = '<span><img src="src/icons/icon-export.svg" class="svg-icon" alt="export"></span> Export PDF'; }
 }

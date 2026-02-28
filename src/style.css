@@ -44,6 +44,14 @@
   --transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
+/* ---- SVG Icons ---- */
+.svg-icon {
+  width: 1em;
+  height: 1em;
+  vertical-align: middle;
+  display: inline-block;
+}
+
 /* ---- Reset ---- */
 *, *::before, *::after {
   box-sizing: border-box;

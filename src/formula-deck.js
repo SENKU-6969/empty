@@ -28,10 +28,10 @@ async function renderFormulas(query) {
       <div class="formula-topic">${escapeHtml(f.topic)}</div>
       <div class="formula-content">${escapeHtml(f.content)}</div>
       <div class="formula-meta">
-        <span>${f.sourceTestName ? `📝 ${escapeHtml(f.sourceTestName)}` : 'Manual entry'} · ${formatDate((f.createdAt||'').split('T')[0])}</span>
+        <span>${f.sourceTestName ? `<img src="src/icons/icon-tests-taken.svg" class="svg-icon" alt="tests"> ${escapeHtml(f.sourceTestName)}` : 'Manual entry'} · ${formatDate((f.createdAt||'').split('T')[0])}</span>
         <div style="display:flex;gap:8px;">
           <button class="formula-reviewed-btn" onclick="toggleReviewed('${f.id}')">${f.reviewed?'↩ Unmark':'✓ Mark Reviewed'}</button>
-          <button class="formula-reviewed-btn" style="background:var(--neon-red-dim);border-color:rgba(255,61,90,0.25);color:var(--neon-red);" onclick="deleteCard('${f.id}')">🗑</button>
+          <button class="formula-reviewed-btn" style="background:var(--neon-red-dim);border-color:rgba(255,61,90,0.25);color:var(--neon-red);" onclick="deleteCard('${f.id}')"><img src="src/icons/icon-delete.svg" class="svg-icon" alt="delete"></button>
         </div>
       </div>
     </div>`).join('');
