@@ -86,21 +86,24 @@
         </div>
       </div>
       <div class="stat-card">
-        <div class="stat-icon" style="color:var(--neon-blue)"><img src="src/icons/icon-trend.svg" class="svg-icon" alt="trend"></div>
+        <div class="stat-icon" style="color:var(--neon-blue)"><img src="src/icons/icon-trend.svg" class="svg-icon"
+            alt="trend"></div>
         <div class="stat-info">
           <div class="stat-value" id="statAvgMarks">—</div>
           <div class="stat-label">Avg Marks</div>
         </div>
       </div>
       <div class="stat-card">
-        <div class="stat-icon" style="color:var(--neon-red)"><img src="src/icons/icon-trophy.svg" class="svg-icon" alt="trophy"></div>
+        <div class="stat-icon" style="color:var(--neon-red)"><img src="src/icons/icon-trophy.svg" class="svg-icon"
+            alt="trophy"></div>
         <div class="stat-info">
           <div class="stat-value" id="statBestRank">—</div>
           <div class="stat-label">Best Rank</div>
         </div>
       </div>
       <div class="stat-card">
-        <div class="stat-icon" style="color:var(--neon-green)"><img src="src/icons/icon-logo.svg" class="svg-icon" alt="logo"></div>
+        <div class="stat-icon" style="color:var(--neon-green)"><img src="src/icons/icon-logo.svg" class="svg-icon"
+            alt="logo"></div>
         <div class="stat-info">
           <div class="stat-value" id="statTrend">—</div>
           <div class="stat-label">Trend</div>
@@ -122,8 +125,12 @@
           <div class="chart-title">
             <h2>Performance Graph</h2>
             <div class="chart-legend">
-              <span class="legend-dot blue"></span><span>Marks</span>
-              <span class="legend-dot red"></span><span>Rank</span>
+              <span class="legend-item" id="legendMarks" onclick="toggleChartDataset('marks')"
+                style="cursor:pointer; display:inline-flex; align-items:center; gap:6px; transition:opacity 0.2s;"><span
+                  class="legend-dot blue"></span><span>Marks</span></span>
+              <span class="legend-item" id="legendRank" onclick="toggleChartDataset('rank')"
+                style="cursor:pointer; display:inline-flex; align-items:center; gap:6px; transition:opacity 0.2s; margin-left:12px;"><span
+                  class="legend-dot red"></span><span>Rank</span></span>
             </div>
           </div>
           <div class="chart-controls">

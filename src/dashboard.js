@@ -57,6 +57,26 @@ function updateStats(tests) {
   }
 }
 
+let showMarks = true;
+let showRank = true;
+
+function toggleChartDataset(datasetName) {
+  if (datasetName === 'marks') showMarks = !showMarks;
+  if (datasetName === 'rank') showRank = !showRank;
+
+  // ensure at least one is visible
+  if (!showMarks && !showRank) {
+    showMarks = true;
+    showRank = true;
+  }
+
+  // Update UI toggles
+  document.getElementById('legendMarks').style.opacity = showMarks ? '1' : '0.4';
+  document.getElementById('legendRank').style.opacity = showRank ? '1' : '0.4';
+
+  renderChart(getFilteredTests());
+}
+
 // ---- Chart ----
 function renderChart(tests) {
   const canvas = document.getElementById('performanceChart');
@@ -72,14 +92,20 @@ function renderChart(tests) {
   redGrad.addColorStop(0, 'rgba(255,61,90,0.3)'); redGrad.addColorStop(1, 'rgba(255,61,90,0.02)');
 
   if (chart) chart.destroy();
+
+  const datasets = [];
+  if (showMarks) {
+    datasets.push({ label: 'Marks', data: tests.map(t => t.marks), borderColor: '#00b4ff', backgroundColor: blueGrad, borderWidth: 2.5, pointRadius: 6, pointHoverRadius: 9, pointBackgroundColor: '#00b4ff', pointBorderColor: '#07090f', pointBorderWidth: 2, tension: 0.35, fill: true, yAxisID: 'y' });
+  }
+  if (showRank) {
+    datasets.push({ label: 'Rank', data: tests.map(t => t.rank), borderColor: '#ff3d5a', backgroundColor: redGrad, borderWidth: 2.5, pointRadius: 6, pointHoverRadius: 9, pointBackgroundColor: '#ff3d5a', pointBorderColor: '#07090f', pointBorderWidth: 2, tension: 0.35, fill: true, yAxisID: 'y1' });
+  }
+
   chart = new Chart(ctx, {
     type: 'line',
     data: {
       labels,
-      datasets: [
-        { label: 'Marks', data: tests.map(t => t.marks), borderColor: '#00b4ff', backgroundColor: blueGrad, borderWidth: 2.5, pointRadius: 6, pointHoverRadius: 9, pointBackgroundColor: '#00b4ff', pointBorderColor: '#07090f', pointBorderWidth: 2, tension: 0.35, fill: true, yAxisID: 'y' },
-        { label: 'Rank', data: tests.map(t => t.rank), borderColor: '#ff3d5a', backgroundColor: redGrad, borderWidth: 2.5, pointRadius: 6, pointHoverRadius: 9, pointBackgroundColor: '#ff3d5a', pointBorderColor: '#07090f', pointBorderWidth: 2, tension: 0.35, fill: true, yAxisID: 'y1' }
-      ]
+      datasets
     },
     options: {
       responsive: true, maintainAspectRatio: false,
@@ -98,8 +124,8 @@ function renderChart(tests) {
       },
       scales: {
         x: { grid: { color: 'rgba(255,255,255,0.04)' }, ticks: { color: '#8892a4', font: { family: 'Inter', size: 11 } } },
-        y: { type: 'linear', position: 'left', grid: { color: 'rgba(255,255,255,0.04)' }, ticks: { color: '#00b4ff', font: { family: 'JetBrains Mono', size: 11 } }, title: { display: true, text: '← Marks', color: '#00b4ff', font: { size: 11 } } },
-        y1: { type: 'linear', position: 'right', reverse: true, grid: { drawOnChartArea: false }, min: 1, ticks: { color: '#ff3d5a', font: { family: 'JetBrains Mono', size: 11 } }, title: { display: true, text: 'Rank →', color: '#ff3d5a', font: { size: 11 } } }
+        y: { display: showMarks, type: 'linear', position: 'left', grid: { color: 'rgba(255,255,255,0.04)' }, ticks: { color: '#00b4ff', font: { family: 'JetBrains Mono', size: 11 } }, title: { display: true, text: '← Marks', color: '#00b4ff', font: { size: 11 } } },
+        y1: { display: showRank, type: 'linear', position: 'right', reverse: true, grid: { drawOnChartArea: false }, min: 1, ticks: { color: '#ff3d5a', font: { family: 'JetBrains Mono', size: 11 } }, title: { display: true, text: 'Rank →', color: '#ff3d5a', font: { size: 11 } } }
       }
     }
   });
