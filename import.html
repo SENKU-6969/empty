@@ -41,6 +41,294 @@
             line-height: 1.6;
         }
 
+        /* ---- Mega Sync hero ---- */
+        .mega-sync-hero {
+            background: linear-gradient(135deg, rgba(0, 212, 255, 0.08), rgba(99, 240, 120, 0.06), rgba(139, 92, 246, 0.08));
+            border: 1px solid rgba(0, 212, 255, 0.3);
+            border-radius: var(--radius-lg);
+            padding: 28px 32px;
+            margin-bottom: 28px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .mega-sync-hero::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(ellipse at top left, rgba(0, 212, 255, 0.05) 0%, transparent 60%);
+            pointer-events: none;
+        }
+
+        .mega-sync-header {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .mega-sync-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: linear-gradient(135deg, rgba(0, 212, 255, 0.15), rgba(99, 240, 120, 0.1));
+            border: 1px solid rgba(0, 212, 255, 0.4);
+            border-radius: 20px;
+            padding: 4px 12px;
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            color: var(--neon-blue);
+            text-transform: uppercase;
+            flex-shrink: 0;
+        }
+
+        .mega-sync-hero h2 {
+            font-size: 20px;
+            font-weight: 800;
+            margin: 0;
+            background: linear-gradient(135deg, var(--neon-blue), #63f078);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .mega-sync-desc {
+            font-size: 13px;
+            color: var(--text-secondary);
+            line-height: 1.7;
+            margin-bottom: 20px;
+            max-width: 600px;
+        }
+
+        .mega-data-chips {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 24px;
+        }
+
+        .mega-chip {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 4px 12px;
+            font-size: 11px;
+            color: var(--text-secondary);
+        }
+
+        .mega-chip-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: var(--neon-green);
+        }
+
+        .mega-actions {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .btn-mega {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: linear-gradient(135deg, var(--neon-blue), #63f078);
+            color: #000;
+            font-weight: 800;
+            font-size: 14px;
+            padding: 12px 24px;
+            border-radius: var(--radius-sm);
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 0 30px rgba(0, 212, 255, 0.35);
+            transition: all 0.2s;
+            letter-spacing: 0.2px;
+        }
+
+        .btn-mega:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 0 40px rgba(0, 212, 255, 0.5);
+        }
+
+        .btn-mega:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* Bookmarklet box */
+        .bookmarklet-box {
+            background: var(--bg-surface-2);
+            border: 2px dashed var(--border);
+            border-radius: var(--radius-md);
+            padding: 16px 20px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-top: 10px;
+        }
+
+        .bookmarklet-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: linear-gradient(135deg, var(--neon-blue), #7c3aed);
+            color: #000;
+            font-weight: 700;
+            font-size: 13px;
+            padding: 10px 18px;
+            border-radius: var(--radius-sm);
+            text-decoration: none;
+            cursor: grab;
+            white-space: nowrap;
+            border: none;
+            box-shadow: 0 0 20px rgba(0, 212, 255, 0.3);
+        }
+
+        .bookmarklet-link:active {
+            cursor: grabbing;
+        }
+
+        .bookmarklet-hint {
+            font-size: 12px;
+            color: var(--text-muted);
+            line-height: 1.5;
+        }
+
+        /* ---- Mega Sync Panel (shown during sync) ---- */
+        #megaSyncPanel {
+            display: none;
+            margin-top: 20px;
+        }
+
+        .mega-panel-inner {
+            background: var(--bg-surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            overflow: hidden;
+        }
+
+        .mega-panel-title {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 14px 18px;
+            border-bottom: 1px solid var(--border);
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .mega-panel-body {
+            padding: 16px 18px;
+        }
+
+        .mega-status {
+            display: none;
+            padding: 12px 16px;
+            border-radius: var(--radius-sm);
+            font-size: 13px;
+            margin-bottom: 14px;
+            line-height: 1.6;
+        }
+
+        .mega-status-info {
+            background: rgba(0, 212, 255, 0.08);
+            border: 1px solid rgba(0, 212, 255, 0.25);
+            color: var(--text-primary);
+        }
+
+        .mega-status-success {
+            background: rgba(99, 240, 120, 0.08);
+            border: 1px solid rgba(99, 240, 120, 0.25);
+            color: var(--neon-green);
+        }
+
+        .mega-status-error {
+            background: rgba(255, 77, 79, 0.08);
+            border: 1px solid rgba(255, 77, 79, 0.3);
+            color: #ff4d4f;
+        }
+
+        .mega-progress-row {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+
+        .mega-progress-bar-bg {
+            flex: 1;
+            height: 6px;
+            background: var(--bg-surface-2);
+            border-radius: 3px;
+            overflow: hidden;
+        }
+
+        .mega-progress-bar-fill {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, var(--neon-blue), #63f078);
+            border-radius: 3px;
+            transition: width 0.4s ease;
+        }
+
+        #megaProgressLabel {
+            font-size: 12px;
+            color: var(--text-muted);
+            white-space: nowrap;
+        }
+
+        #syncLog {
+            max-height: 160px;
+            overflow-y: auto;
+            background: var(--bg-surface-2);
+            border-radius: var(--radius-sm);
+            padding: 10px 12px;
+            margin-bottom: 12px;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        #syncLog:empty::after {
+            content: 'Waiting for sync data…';
+            color: var(--text-muted);
+            font-size: 11px;
+        }
+
+        /* Queue table */
+        #syncQueueSection {
+            display: none;
+            margin-top: 14px;
+        }
+
+        .sync-queue-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 12px;
+        }
+
+        .sync-queue-table th {
+            text-align: left;
+            padding: 7px 10px;
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--text-muted);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .sync-queue-table td {
+            padding: 7px 10px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+        }
+
+        /* ---- Steps row ---- */
         .steps-row {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
@@ -76,45 +364,6 @@
         }
 
         .step-card p {
-            font-size: 12px;
-            color: var(--text-muted);
-            line-height: 1.5;
-        }
-
-        /* Bookmarklet drag area */
-        .bookmarklet-box {
-            background: var(--bg-surface-2);
-            border: 2px dashed var(--border);
-            border-radius: var(--radius-md);
-            padding: 20px;
-            display: flex;
-            align-items: center;
-            gap: 16px;
-            margin-top: 10px;
-        }
-
-        .bookmarklet-link {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            background: linear-gradient(135deg, var(--neon-blue), #7c3aed);
-            color: #000;
-            font-weight: 700;
-            font-size: 13px;
-            padding: 10px 18px;
-            border-radius: var(--radius-sm);
-            text-decoration: none;
-            cursor: grab;
-            white-space: nowrap;
-            border: none;
-            box-shadow: 0 0 20px rgba(0, 212, 255, 0.3);
-        }
-
-        .bookmarklet-link:active {
-            cursor: grabbing;
-        }
-
-        .bookmarklet-hint {
             font-size: 12px;
             color: var(--text-muted);
             line-height: 1.5;
@@ -247,6 +496,23 @@
             font-size: 13px;
             margin-bottom: 16px;
         }
+
+        .divider-or {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            margin: 24px 0;
+            color: var(--text-muted);
+            font-size: 12px;
+        }
+
+        .divider-or::before,
+        .divider-or::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: var(--border);
+        }
     </style>
 </head>
 
@@ -301,14 +567,133 @@
             </div>
         </header>
 
-        <!-- Hero / Intro -->
+        <!-- ═══════════════════════════════════════════════════════
+             MEGA SYNC SECTION
+        ═══════════════════════════════════════════════════════ -->
+        <div class="mega-sync-hero">
+            <div class="mega-sync-header">
+                <div class="mega-sync-badge">⚡ New · Mega Sync</div>
+                <h2>Full Live Sync — All Data, One Click</h2>
+            </div>
+            <p class="mega-sync-desc">
+                Automatically pulls <strong>total score, rank, subject-wise marks, chapter breakdowns,
+                    per-question timing (seconds), difficulty, and topic tags</strong> — all captured live from
+                your CollegeDoors session. No file downloads, no copy-paste.
+            </p>
+            <div class="mega-data-chips">
+                <div class="mega-chip">
+                    <div class="mega-chip-dot"></div> Total Score &amp; Rank
+                </div>
+                <div class="mega-chip">
+                    <div class="mega-chip-dot"></div> Subject Marks (P/C/M)
+                </div>
+                <div class="mega-chip">
+                    <div class="mega-chip-dot"></div> Subject Time Spent
+                </div>
+                <div class="mega-chip">
+                    <div class="mega-chip-dot"></div> Chapter Breakdown
+                </div>
+                <div class="mega-chip">
+                    <div class="mega-chip-dot" style="background:var(--neon-blue)"></div> Per-Question Time (sec)
+                </div>
+                <div class="mega-chip">
+                    <div class="mega-chip-dot" style="background:var(--neon-blue)"></div> Topic &amp; Difficulty
+                </div>
+                <div class="mega-chip">
+                    <div class="mega-chip-dot" style="background:var(--neon-amber)"></div> Total Students
+                </div>
+            </div>
+
+            <!-- Step 1: Drag bookmarklet -->
+            <div class="section-card" style="margin-bottom:16px; background: var(--bg-surface-2);">
+                <div class="section-card-title" style="font-size:13px;">
+                    📌 Step 1 — Drag this bookmarklet to your browser bookmarks bar (one-time setup)
+                </div>
+                <p style="font-size:12px;color:var(--text-muted);margin:8px 0 12px;">
+                    Show your bookmarks bar with <kbd>Ctrl+Shift+B</kbd>, then drag the button below onto it.
+                </p>
+                <div class="bookmarklet-box">
+                    <a id="megaBookmarkletLink" class="bookmarklet-link" title="Drag me to your bookmarks bar!">
+                        📡 EduMetrics Mega Sync
+                    </a>
+                    <div class="bookmarklet-hint">
+                        <strong>Drag this to your bookmarks bar.</strong><br>
+                        Then go to CollegeDoors dashboard or any test analysis page and click it.
+                        It auto-detects the page and sends data back here.
+                    </div>
+                </div>
+            </div>
+
+            <!-- Step 2: Start sync -->
+            <div class="mega-actions">
+                <button class="btn-mega" id="megaSyncBtn" onclick="startMegaSync()">
+                    ⚡ Start Mega Sync
+                </button>
+                <span style="font-size:12px;color:var(--text-muted);max-width:320px;line-height:1.5;">
+                    Opens CollegeDoors in a new window. Log in if needed, then click the bookmarklet on the dashboard
+                    page.
+                </span>
+            </div>
+
+            <!-- Live Sync Panel -->
+            <div id="megaSyncPanel">
+                <div class="mega-panel-inner" style="margin-top:16px;">
+                    <div class="mega-panel-title">
+                        <span>📡 Live Sync Status</span>
+                    </div>
+                    <div class="mega-panel-body">
+                        <div id="megaStatus" class="mega-status"></div>
+
+                        <div class="mega-progress-row">
+                            <div class="mega-progress-bar-bg">
+                                <div class="mega-progress-bar-fill" id="megaProgressBar"></div>
+                            </div>
+                            <span id="megaProgressLabel">0 / 0 tests</span>
+                        </div>
+
+                        <div id="syncLog"></div>
+
+                        <!-- Queue table -->
+                        <div id="syncQueueSection">
+                            <div style="font-size:12px;font-weight:600;margin-bottom:8px;color:var(--text-secondary);">
+                                Test Queue from Dashboard</div>
+                            <div style="overflow-x:auto;max-height:240px;overflow-y:auto;">
+                                <table class="sync-queue-table">
+                                    <thead>
+                                        <tr>
+                                            <th>TSID</th>
+                                            <th>Test Name</th>
+                                            <th>Date</th>
+                                            <th>Exam Type</th>
+                                            <th>Status</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="syncQueueBody"></tbody>
+                                </table>
+                            </div>
+                            <p style="font-size:11px;color:var(--text-muted);margin-top:10px;line-height:1.6;">
+                                💡 <strong>How to sync each test:</strong> Open CollegeDoors → click a test's "Analysis"
+                                button → click the 📡 bookmarklet. Repeat for each test you want to sync. The queue
+                                above tracks which ones are done.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="divider-or">or use the classic method below</div>
+
+        <!-- ═══════════════════════════════════════════════════════
+             CLASSIC IMPORT SECTION
+        ═══════════════════════════════════════════════════════ -->
         <div class="import-hero">
             <div class="import-hero-icon"><img src="src/icons/icon-import.svg" class="svg-icon" alt="import"></div>
             <div>
-                <h2>One-click import from your test portal</h2>
-                <p>CollegeDoors has no public API, but you can use our <strong>browser bookmarklet</strong> — a small
-                    script that reads the test table on the portal while you're logged in, and downloads a JSON file.
-                    Upload that file here and all your tests get added to EduMetrics instantly.</p>
+                <h2>Classic import (basic data only)</h2>
+                <p>Downloads a JSON file via the basic bookmarklet below — captures test name, score, date and rank
+                    from the dashboard table only. No per-question or timing data. Use Mega Sync above for full data.
+                </p>
             </div>
         </div>
 
@@ -328,16 +713,16 @@
             </div>
             <div class="step-card">
                 <div class="step-num">3</div>
-                <h3>Upload & import here</h3>
+                <h3>Upload &amp; import here</h3>
                 <p>Upload the downloaded <code>collegedoors-tests.json</code> in the section below. Preview and confirm,
                     then your tests appear on the dashboard.</p>
             </div>
         </div>
 
-        <!-- Bookmarklet -->
+        <!-- Classic Bookmarklet -->
         <div class="section-card" style="margin-bottom:28px;">
             <div class="section-card-title"><img src="src/icons/icon-tag.svg" class="svg-icon" alt="tag"> Step 1 — Get
-                the Bookmarklet</div>
+                the Classic Bookmarklet</div>
             <p style="font-size:13px;color:var(--text-muted);margin-bottom:14px;">
                 Show your browser's bookmarks bar (<kbd>Ctrl+Shift+B</kbd>), then drag the button below onto it.
             </p>
@@ -348,7 +733,7 @@
                 <div class="bookmarklet-hint">
                     <img src="src/icons/icon-pointer.svg" class="svg-icon" alt="pointer"> <strong>Drag this to your
                         bookmarks bar.</strong><br>
-                    Then visit the CollegeDoors portal and click it — your tests download as a JSON file.
+                    Then visit the CollegeDoors portal dashboard and click it — your tests download as a JSON file.
                 </div>
             </div>
         </div>
@@ -362,7 +747,7 @@
 
             <div class="upload-zone" id="uploadZone" onclick="document.getElementById('importFile').click()">
                 <div class="upload-zone-icon"><img src="src/icons/icon-export.svg" class="svg-icon" alt="export"></div>
-                <p>Click to select <strong>collegedoors-tests.json</strong>, or drag & drop it here</p>
+                <p>Click to select <strong>collegedoors-tests.json</strong>, or drag &amp; drop it here</p>
                 <button class="btn btn-ghost" type="button" style="pointer-events:none;">Choose File</button>
                 <input type="file" id="importFile" accept=".json,application/json" />
             </div>
@@ -414,42 +799,176 @@
     <script src="src/store.js"></script>
     <script src="src/import.js"></script>
 
-    <!-- Build the bookmarklet href dynamically so it isn't stripped by the browser -->
     <script>
+        /* ================================================================
+           BOOKMARKLET BUILDERS
+           Both are built dynamically so the browser doesn't strip javascript:
+        ================================================================ */
         (function () {
-            // The scraper runs on cdmypage.php. It reads the test table and downloads JSON.
-            const scraperFn = `(function(){
+            // ---- CLASSIC BOOKMARKLET (dashboard table → JSON download) ----
+            const classicFn = `(function(){
   var rows=document.querySelectorAll('table tbody tr');
   if(!rows.length){alert('No test table found. Make sure you are on the cdmypage.php page.');return;}
   var tests=[];
   rows.forEach(function(row){
     var cells=row.querySelectorAll('td');
-    if(cells.length<7)return;
-    var nameEl=cells[4];var scoreEl=cells[5];var dateEl=cells[2];var rankEl=cells[6]||null;
+    if(cells.length<5)return;
+    var tsidEl=cells[0];var dateEl=cells[3];var examEl=cells[5];var nameEl=cells[6];var scoreEl=cells[7];var timeEl=cells[8];
     var name=(nameEl?nameEl.innerText.trim():'');
     var scoreTxt=(scoreEl?scoreEl.innerText.trim():'');
     var dateTxt=(dateEl?dateEl.innerText.trim():'');
-    var rankTxt=(rankEl?rankEl.innerText.trim():'');
+    var tsid=parseInt((tsidEl?tsidEl.innerText.trim():''))||null;
+    var examType=(examEl?examEl.innerText.trim():'');
     if(!name&&!scoreTxt)return;
     var marks=0,maxMarks=0;
-    var m=scoreTxt.match(/(\\d+)\\s*\\/\\s*(\\d+)/);
-    if(m){marks=parseInt(m[1]);maxMarks=parseInt(m[2]);}else{marks=parseFloat(scoreTxt)||0;maxMarks=marks;}
-    var rank=parseInt(rankTxt)||null;
+    var m=scoreTxt.match(/(\\d+)/);
+    if(m){marks=parseInt(m[1]);maxMarks=marks;}
     var dateMatch=dateTxt.match(/(\\d{2}-\\w{3}-\\d{2,4})/);
     var dateISO='';
     if(dateMatch){try{dateISO=new Date(dateMatch[1]).toISOString().slice(0,10);}catch(e){}}
-    tests.push({name:name,date:dateISO,marks:marks,maxMarks:maxMarks,rank:rank});
+    tests.push({tsid:tsid,name:name,date:dateISO,marks:marks,maxMarks:maxMarks,examType:examType});
   });
-  if(!tests.length){alert('Could not extract any tests. The portal layout may have changed.');return;}
+  if(!tests.length){alert('Could not extract any tests.');return;}
   var blob=new Blob([JSON.stringify(tests,null,2)],{type:'application/json'});
   var a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='collegedoors-tests.json';a.click();
   alert('Downloaded '+tests.length+' tests! Now go to EduMetrics and upload this file.');
 })();`;
-            document.getElementById('bookmarkletLink').href = 'javascript:' + scraperFn;
+            document.getElementById('bookmarkletLink').href = 'javascript:' + classicFn;
+
+            // ---- MEGA SYNC BOOKMARKLET (auto-detect page, send via postMessage) ----
+            const megaFn = `(function(){
+  var isAnalysis=window.location.href.indexOf('cdtamainrep')>-1;
+  var isDashboard=window.location.href.indexOf('cdmypage')>-1;
+  var opener=window.opener;
+
+  /* ===== ANALYSIS PAGE ===== */
+  if(isAnalysis && typeof tsid !== 'undefined'){
+    var data={type:'cd_test',tsid:window.tsid};
+
+    /* --- Total score & rank --- */
+    var totEls=document.querySelectorAll('.cd-mr-res-sub.total .cd-mr-res-tn-val');
+    if(totEls[0]){var m=totEls[0].innerText.match(/(\\d+)\\s*\\/\\s*(\\d+)/);if(m){data.marks=+m[1];data.maxMarks=+m[2];}}
+    if(totEls[1]){var m2=totEls[1].innerText.match(/(\\d+)\\s*\\/\\s*(\\d+)/);if(m2){data.rank=+m2[1];data.totalStudents=+m2[2];}}
+
+    /* --- Test name from page title / nav --- */
+    data.testName=document.title.replace(/VRaZ Academy/i,'').replace(/Test Report/i,'').replace(/-/g,'').trim()||('Test '+data.tsid);
+
+    /* --- Date from URL param or meta --- */
+    data.date='';
+    try{var p=new URLSearchParams(window.location.search);if(p.get('date'))data.date=p.get('date');}catch(e){}
+
+    /* --- Exam type from page --- */
+    data.examType='';
+    var typeEl=document.querySelector('.cd-mr-adv-test-info');
+    if(typeEl)data.examType=typeEl.innerText.trim().split('\\n')[0];
+
+    /* --- Subject marks & time --- */
+    var subjectMap={Physics:'P',Chemistry:'C',Mathematics:'M',Biology:'B',Botany:'Bo',Zoology:'Z'};
+    data.subjects={};
+    Object.keys(subjectMap).forEach(function(subName){
+      var subEl=document.getElementById('sub-'+subName);
+      if(!subEl)return;
+      var valEl=subEl.querySelector('.cd-mr-res-tn-val');
+      if(!valEl)return;
+      var sm=valEl.innerText.match(/(\\d+)\\s*\\/\\s*(\\d+)/);
+      if(!sm)return;
+      var subData={scored:+sm[1],max:+sm[2],totalTimeSec:0,chapters:{}};
+
+      /* per-chapter from res_data */
+      if(typeof res_data!=='undefined'){
+        var currentSub='';
+        res_data.forEach(function(row){
+          if(row[0]==='Sub'&&row[1]===subName){currentSub=subName;}
+          if(row[0]==='SubSub'&&currentSub===subName){
+            subData.chapters[row[1]]={
+              total:+row[2],answered:+row[3],correct:+row[5],
+              correctInTarget:+row[6],avgTimeCorrectSec:+row[7],
+              incorrect:+row[8],visitedNotAnswered:+row[13]
+            };
+          }
+          if(row[0]==='Sub'&&row[1]!==subName){currentSub='';}
+        });
+      }
+
+      /* per-question & total time from [Subject]data */
+      var varName=subName+'data';
+      var sd=window[varName];
+      if(sd&&sd['ydata']){
+        var totalSec=0;
+        var perQ=[];
+        var ydata=sd['ydata'];var anscol=sd['anscol'];var qprops=sd['qprops'];
+        Object.keys(ydata).forEach(function(qid){
+          var sec=ydata[qid]||0;
+          totalSec+=sec;
+          var qp=qprops&&qprops[qid]?qprops[qid]:{};
+          perQ.push({
+            qId:+qid,
+            subject:subName,
+            timeSec:sec,
+            result:anscol?anscol[qid]:'',
+            topic:qp.topic_name||'',
+            chapter:qp.chapter_name||'',
+            section:qp.section_name||'',
+            difficulty:qp.display_diff_level||''
+          });
+        });
+        subData.totalTimeSec=totalSec;
+        subData.perQuestion=perQ;
+      }
+      data.subjects[subName]=subData;
+    });
+
+    /* --- Flatten perQuestion across subjects --- */
+    data.perQuestion=[];
+    data.chapters={};
+    Object.keys(data.subjects).forEach(function(s){
+      var sd=data.subjects[s];
+      if(sd.perQuestion)data.perQuestion=data.perQuestion.concat(sd.perQuestion);
+      if(sd.chapters)data.chapters[s]=sd.chapters;
+    });
+
+    if(opener){opener.postMessage(data,'*');alert('✅ Sent data for this test to EduMetrics!');}
+    else{alert('⚠️ EduMetrics window not found. Please start the sync from EduMetrics first (click "Start Mega Sync").');}
+    return;
+  }
+
+  /* ===== DASHBOARD PAGE ===== */
+  if(isDashboard){
+    var rows=document.querySelectorAll('table tbody tr');
+    if(!rows.length){alert('No test table found.');return;}
+    var tests=[];
+    rows.forEach(function(row){
+      var cells=row.querySelectorAll('td');
+      if(cells.length<7)return;
+      var tsidTxt=(cells[0]?cells[0].innerText.trim():'');
+      var dateTxt=(cells[3]?cells[3].innerText.trim():'');
+      var examTypeTxt=(cells[5]?cells[5].innerText.trim():'');
+      var nameTxt=(cells[6]?cells[6].innerText.trim():'');
+      var scoreTxt=(cells[7]?cells[7].innerText.trim():'');
+      var timeTxt=(cells[8]?cells[8].innerText.trim():'');
+      var tsid=parseInt(tsidTxt)||null;
+      if(!tsid&&!nameTxt)return;
+      var marks=0,maxMarks=0;
+      var sm=scoreTxt.match(/(\\d+)/);
+      if(sm)marks=+sm[1];
+      var dateISO='';
+      var dm=dateTxt.match(/(\\d{1,2}[-\\/]\\w+[-\\/]\\d{2,4})/);
+      if(dm){try{dateISO=new Date(dm[1]).toISOString().slice(0,10);}catch(e){}}
+      tests.push({tsid:tsid,testName:nameTxt,date:dateISO,examType:examTypeTxt,marks:marks,maxMarks:maxMarks});
+    });
+    if(!tests.length){alert('No tests found in the dashboard table.');return;}
+    if(opener){opener.postMessage({type:'cd_dashboard',tests:tests},'*');alert('✅ Sent '+tests.length+' tests to EduMetrics! Now open each test Analysis page and click this bookmarklet again.');}
+    else{alert('⚠️ EduMetrics window not found. Please start the sync from EduMetrics first.');}
+    return;
+  }
+
+  alert('Please run this bookmarklet on:\\n• The CollegeDoors dashboard (cdmypage.php)\\n• A test Analysis page (cdtamainrep_adv.php)');
+})();`;
+            document.getElementById('megaBookmarkletLink').href = 'javascript:' + megaFn;
         })();
     </script>
 
-    <!-- Drag & drop support -->
+    <!-- Drag & drop support for classic upload -->
     <script>
         const zone = document.getElementById('uploadZone');
         zone.addEventListener('dragover', e => { e.preventDefault(); zone.classList.add('drag-over'); });
