@@ -638,11 +638,8 @@
             <!-- Live Sync Panel -->
             <div id="megaSyncPanel">
                 <div class="mega-panel-inner" style="margin-top:16px;">
-                    <div class="mega-panel-title" style="justify-content:space-between;">
+                    <div class="mega-panel-title">
                         <span>📡 Live Sync Status</span>
-                        <button id="megaDoneBtn" onclick="finishMegaSync()"
-                            style="display:none;background:linear-gradient(135deg,var(--neon-green),#00aa55);color:#000;font-weight:700;font-size:12px;padding:7px 16px;border-radius:var(--radius-sm);border:none;cursor:pointer;">✅
-                            Done — Save &amp; Go to Dashboard</button>
                     </div>
                     <div class="mega-panel-body">
                         <div id="megaStatus" class="mega-status"></div>
@@ -655,6 +652,11 @@
                         </div>
 
                         <div id="syncLog"></div>
+
+                        <!-- Done button: always visible when panel is shown -->
+                        <button id="megaDoneBtn" onclick="finishMegaSync()"
+                            style="display:block;width:100%;margin-top:14px;padding:14px 24px;background:linear-gradient(135deg,var(--neon-green),#00aa55);color:#000;font-weight:800;font-size:14px;border-radius:var(--radius-sm);border:none;cursor:pointer;letter-spacing:0.3px;box-shadow:0 0 20px rgba(99,240,120,0.25);transition:all 0.2s;">✅
+                            Done — Save &amp; Go to Dashboard</button>
 
                         <!-- Queue table -->
                         <div id="syncQueueSection">

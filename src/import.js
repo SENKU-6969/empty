@@ -53,9 +53,6 @@ function startMegaSync() {
 
 function showMegaPanel() {
     document.getElementById('megaSyncPanel').style.display = 'block';
-    // Show Done button immediately — user can save at any point
-    const doneBtn = document.getElementById('megaDoneBtn');
-    if (doneBtn) doneBtn.style.display = 'inline-block';
     document.getElementById('megaSyncPanel').scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 
