@@ -220,7 +220,7 @@ function getGraphAIAnnotations(sorted) {
     const rankDown = curr.rank && prev.rank && curr.rank > prev.rank;
     const rankUp = curr.rank && prev.rank && curr.rank < prev.rank;
     if (marksUp && rankDown) annotations.push({ index: i, msg: `<img src="src/icons/icon-trend.svg" class="svg-icon" alt="trend"> Marks improved but rank dropped — competition was tougher that day.` });
-    else if (!marksUp && rankUp) annotations.push({ index: i, msg: `⬇️ Marks dipped but rank improved — others found it harder too.` });
+    else if (!marksUp && rankUp) annotations.push({ index: i, msg: `<img src="src/icons/icon-arrow-down.svg" class="svg-icon" alt="arrow down"> Marks dipped but rank improved — others found it harder too.` });
     else if (marksUp && rankUp) annotations.push({ index: i, msg: `🚀 Great improvement! Both marks and rank improved.` });
   }
 
