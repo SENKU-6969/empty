@@ -45,7 +45,7 @@ async function deleteTest(id) {
   await testsCol().doc(id).delete();
 }
 
-function newTest({ name, date, maxMarks, marks, rank, percentage, category }) {
+function newTest({ name, date, maxMarks, marks, rank, percentage, category, tsid, totalStudents }) {
   return {
     name,
     date,
@@ -56,11 +56,25 @@ function newTest({ name, date, maxMarks, marks, rank, percentage, category }) {
     category: category || 'other',
     subjects: { P: null, C: null, M: null },
     timeSpent: { P: 60, C: 60, M: 60 },
+    // Mega Sync enriched fields
+    tsid: tsid || null,                // CollegeDoors test session ID
+    totalStudents: totalStudents || null, // total students in this test
+    chapters: null,                    // { Physics: { 'ChapterName': { correct, total, avgTimeSec } } }
+    perQuestion: null,                 // [{ qId, subject, topic, chapter, difficulty, timeSec, result }]
     weaknesses: '',
     missedFormulas: '',
     actionPlan: '',
     createdAt: new Date().toISOString()
   };
+}
+
+// Find a test by its CollegeDoors tsid (for duplicate detection in Mega Sync)
+async function findTestByTsid(tsid) {
+  if (!tsid) return null;
+  const snap = await testsCol().where('tsid', '==', tsid).limit(1).get();
+  if (snap.empty) return null;
+  const doc = snap.docs[0];
+  return { id: doc.id, ...doc.data() };
 }
 
 // ---- Formula CRUD ----
