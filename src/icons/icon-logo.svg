@@ -1,25 +1,19 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="140 100 120 105">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="64" height="64">
   <defs>
-    <filter id="neon-glow" x="-30%" y="-30%" width="160%" height="160%">
-      <feGaussianBlur stdDeviation="1.8" result="tightBlur" />
-      <feGaussianBlur stdDeviation="5"   result="wideBlur"  />
+    <filter id="blue-glow" x="-25%" y="-25%" width="150%" height="150%">
+      <feGaussianBlur stdDeviation="2.5" result="coloredBlur" />
       <feMerge>
-        <feMergeNode in="wideBlur" />
-        <feMergeNode in="tightBlur" />
+        <feMergeNode in="coloredBlur" />
         <feMergeNode in="SourceGraphic" />
       </feMerge>
     </filter>
   </defs>
-
   <g fill="none" stroke-linecap="round" stroke-linejoin="round">
-    <!-- white base stroke -->
-    <path d="M 155 120 L 245 120 A 45 45 0 0 0 155 120 A 45 45 0 0 0 235 145"
-          stroke="#FFFFFF" stroke-width="9" />
-    <!-- neon blue glow layer -->
-    <path d="M 155 120 L 245 120 A 45 45 0 0 0 155 120 A 45 45 0 0 0 235 145"
-          stroke="#1E90FF" stroke-width="5" filter="url(#neon-glow)" />
-    <!-- bright white highlight -->
-    <path d="M 155 120 L 245 120 A 45 45 0 0 0 155 120 A 45 45 0 0 0 235 145"
-          stroke="#FFFFFF" stroke-width="1.5" filter="url(#neon-glow)" opacity="0.85" />
+    <g stroke="#FFFFFF" stroke-width="2.5">
+      <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" />
+    </g>
+    <g stroke="#1E90FF" stroke-width="2" filter="url(#blue-glow)">
+      <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" />
+    </g>
   </g>
 </svg>
