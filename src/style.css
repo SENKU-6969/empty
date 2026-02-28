@@ -52,7 +52,10 @@
   display: inline-block;
 }
 
-.btn .svg-icon {
+.btn .svg-icon,
+.bookmarklet-link .svg-icon,
+.bookmarklet-hint .svg-icon,
+.section-card-title .svg-icon {
   background: rgba(10, 20, 40, 0.6);
   /* Deep blueish box */
   border: 1px solid rgba(0, 180, 255, 0.3);
