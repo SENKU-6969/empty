@@ -110,7 +110,13 @@ function renderAIAnnotations(tests) {
   const sorted = [...tests].sort((a, b) => new Date(a.date) - new Date(b.date));
   const annotations = getGraphAIAnnotations(sorted);
   const banner = document.getElementById('aiBanner');
-  if (annotations.length) { document.getElementById('aiBannerText').textContent = annotations.map(a => a.msg).join('  •  '); banner.style.display = 'flex'; }
+  if (annotations.length) {
+    // Use innerHTML instead of textContent to correctly render the SVG icons
+    document.getElementById('aiBannerText').innerHTML = annotations.map(a => a.msg).join('  •  ');
+    banner.style.display = 'flex';
+  } else {
+    banner.style.display = 'none';
+  }
 }
 
 // ---- Test List ----
@@ -205,16 +211,16 @@ async function exportDashboard() {
     pdf.addImage(canvas.toDataURL('image/png'), 'PNG', 14, 28, W - 28, Math.min(imgH, H - 60));
     const tests = (await getTestsSortedByDate()).reverse();
     if (tests.length) {
-      pdf.addPage(); pdf.setFillColor(7,9,15); pdf.rect(0,0,W,H,'F');
-      pdf.setFont('helvetica','bold'); pdf.setFontSize(14); pdf.setTextColor(0,180,255); pdf.text('Test History', 14, 16);
-      let y = 26; pdf.setFontSize(9); pdf.setTextColor(136,146,164);
-      pdf.text('Test',14,y); pdf.text('Date',90,y); pdf.text('Marks',130,y); pdf.text('%',155,y); pdf.text('Rank',170,y);
-      y += 2; pdf.setDrawColor(30,35,55); pdf.line(14,y,W-14,y); y += 6;
+      pdf.addPage(); pdf.setFillColor(7, 9, 15); pdf.rect(0, 0, W, H, 'F');
+      pdf.setFont('helvetica', 'bold'); pdf.setFontSize(14); pdf.setTextColor(0, 180, 255); pdf.text('Test History', 14, 16);
+      let y = 26; pdf.setFontSize(9); pdf.setTextColor(136, 146, 164);
+      pdf.text('Test', 14, y); pdf.text('Date', 90, y); pdf.text('Marks', 130, y); pdf.text('%', 155, y); pdf.text('Rank', 170, y);
+      y += 2; pdf.setDrawColor(30, 35, 55); pdf.line(14, y, W - 14, y); y += 6;
       for (const t of tests) {
-        if (y > H-14) { pdf.addPage(); y=14; }
-        pdf.setTextColor(232,237,245); pdf.text(t.name.slice(0,35),14,y);
-        pdf.setTextColor(136,146,164); pdf.text(formatDate(t.date),90,y); pdf.text(`${t.marks}/${t.maxMarks}`,130,y);
-        pdf.text(`${t.percentage}%`,155,y); pdf.text(t.rank?`#${t.rank}`:'—',170,y); y+=8;
+        if (y > H - 14) { pdf.addPage(); y = 14; }
+        pdf.setTextColor(232, 237, 245); pdf.text(t.name.slice(0, 35), 14, y);
+        pdf.setTextColor(136, 146, 164); pdf.text(formatDate(t.date), 90, y); pdf.text(`${t.marks}/${t.maxMarks}`, 130, y);
+        pdf.text(`${t.percentage}%`, 155, y); pdf.text(t.rank ? `#${t.rank}` : '—', 170, y); y += 8;
       }
     }
     pdf.save('EduMetrics_Report.pdf');
