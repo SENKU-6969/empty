@@ -44,11 +44,19 @@ function startMegaSync() {
 
     megaSyncActive = true;
     showMegaPanel();
-    showMegaStatus('info', '🌐 CollegeDoors opened. Log in if needed, then click the <strong>📡 EduMetrics Mega Sync</strong> bookmarklet on that page.');
+    showMegaStatus('info', '🌐 CollegeDoors opened. Log in if needed, then click the <strong>📡 EduMetrics Mega Sync</strong> bookmarklet on the dashboard page.');
 
     // Listen for messages from the CollegeDoors tab
     window.removeEventListener('message', handleSyncMessage); // avoid double listeners
     window.addEventListener('message', handleSyncMessage);
+}
+
+function showMegaPanel() {
+    document.getElementById('megaSyncPanel').style.display = 'block';
+    // Show Done button immediately — user can save at any point
+    const doneBtn = document.getElementById('megaDoneBtn');
+    if (doneBtn) doneBtn.style.display = 'inline-block';
+    document.getElementById('megaSyncPanel').scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 
 function handleSyncMessage(event) {
@@ -78,7 +86,7 @@ async function handleDashboardSync(msg) {
     existingTests = await getAllTests();
 
     updateMegaProgress(0, tests.length);
-    showMegaStatus('info', `📋 Found <strong>${tests.length} tests</strong> on your CollegeDoors dashboard. Now navigate to each test's Analysis page and click the bookmarklet, or use "All" mode below.`);
+    showMegaStatus('info', `📋 Found <strong>${tests.length} tests</strong> in your CollegeDoors history.<br>Open each test's <strong>Analysis page</strong> on CollegeDoors and click the bookmarklet — sync as many as you want, then click <strong>✅ Done</strong> above when finished.`);
 
     // Render queue preview
     renderSyncQueue(tests);
@@ -109,8 +117,8 @@ async function handleTestSync(msg) {
     }
 
     megaSyncIndex++;
-    updateMegaProgress(megaSyncIndex, megaSyncQueue.length);
-
+    updateMegaProgress(megaSyncIndex, megaSyncQueue.length || megaSyncIndex);
+    // Auto-finish only when ALL tests from the queue have been processed
     if (megaSyncQueue.length > 0 && megaSyncIndex >= megaSyncQueue.length) {
         finishMegaSync();
     }

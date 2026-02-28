@@ -638,8 +638,11 @@
             <!-- Live Sync Panel -->
             <div id="megaSyncPanel">
                 <div class="mega-panel-inner" style="margin-top:16px;">
-                    <div class="mega-panel-title">
+                    <div class="mega-panel-title" style="justify-content:space-between;">
                         <span>📡 Live Sync Status</span>
+                        <button id="megaDoneBtn" onclick="finishMegaSync()"
+                            style="display:none;background:linear-gradient(135deg,var(--neon-green),#00aa55);color:#000;font-weight:700;font-size:12px;padding:7px 16px;border-radius:var(--radius-sm);border:none;cursor:pointer;">✅
+                            Done — Save &amp; Go to Dashboard</button>
                     </div>
                     <div class="mega-panel-body">
                         <div id="megaStatus" class="mega-status"></div>
@@ -847,31 +850,40 @@
 
     /* --- Total score & rank --- */
     var totEls=document.querySelectorAll('.cd-mr-res-sub.total .cd-mr-res-tn-val');
-    if(totEls[0]){var m=totEls[0].innerText.match(/(\\d+)\\s*\\/\\s*(\\d+)/);if(m){data.marks=+m[1];data.maxMarks=+m[2];}}
-    if(totEls[1]){var m2=totEls[1].innerText.match(/(\\d+)\\s*\\/\\s*(\\d+)/);if(m2){data.rank=+m2[1];data.totalStudents=+m2[2];}}
+    if(totEls[0]){var m=totEls[0].innerText.match(/(\d+)\s*\/\s*(\d+)/);if(m){data.marks=+m[1];data.maxMarks=+m[2];}}
+    if(totEls[1]){var m2=totEls[1].innerText.match(/(\d+)\s*\/\s*(\d+)/);if(m2){data.rank=+m2[1];data.totalStudents=+m2[2];}}
 
-    /* --- Test name from page title / nav --- */
-    data.testName=document.title.replace(/VRaZ Academy/i,'').replace(/Test Report/i,'').replace(/-/g,'').trim()||('Test '+data.tsid);
+    /* --- Test name: prefer nav breadcrumb over page title --- */
+    var nameFromNav=document.querySelector('.cd-mp-tn-name,.cd-mn-tn-name');
+    data.testName=(nameFromNav?nameFromNav.innerText.trim():'')||document.title.replace(/VRaZ Academy/i,'').replace(/Test Report/i,'').replace(/-/g,'').trim()||('Test '+data.tsid);
 
-    /* --- Date from URL param or meta --- */
+    /* --- Date: try URL, then dashboard row match --- */
     data.date='';
-    try{var p=new URLSearchParams(window.location.search);if(p.get('date'))data.date=p.get('date');}catch(e){}
+    try{var dp=new URLSearchParams(window.location.search);if(dp.get('date'))data.date=dp.get('date');}catch(e){}
 
-    /* --- Exam type from page --- */
+    /* --- Exam type --- */
     data.examType='';
     var typeEl=document.querySelector('.cd-mr-adv-test-info');
-    if(typeEl)data.examType=typeEl.innerText.trim().split('\\n')[0];
+    if(typeEl)data.examType=typeEl.innerText.trim().split('\n')[0];
 
-    /* --- Subject marks & time --- */
+    /* --- Subject marks & time ---
+         Try id="sub-Physics" first, then CSS class fallback (.cd-mr-res-sub.physics)
+         Regex corrected: single-escape level since this is a plain string in js: URI */
     var subjectMap={Physics:'P',Chemistry:'C',Mathematics:'M',Biology:'B',Botany:'Bo',Zoology:'Z'};
     data.subjects={};
     Object.keys(subjectMap).forEach(function(subName){
-      var subEl=document.getElementById('sub-'+subName);
+      var subEl=document.getElementById('sub-'+subName)||
+                document.querySelector('.cd-mr-res-sub.'+subName.toLowerCase());
       if(!subEl)return;
-      var valEl=subEl.querySelector('.cd-mr-res-tn-val');
+      /* First .cd-mr-res-tn-val child that does NOT contain a slash is the marks */
+      var valEls=subEl.querySelectorAll('.cd-mr-res-tn-val');
+      var valEl=null;
+      for(var vi=0;vi<valEls.length;vi++){if(valEls[vi].innerText.indexOf('/')>-1){valEl=valEls[vi];break;}}
+      if(!valEl&&valEls.length)valEl=valEls[0];
       if(!valEl)return;
-      var sm=valEl.innerText.match(/(\\d+)\\s*\\/\\s*(\\d+)/);
-      if(!sm)return;
+      var valTxt=valEl.innerText.trim();
+      var sm=valTxt.match(/(\d+)\s*\/\s*(\d+)/);
+      if(!sm){var sn=valTxt.match(/(\d+)/);if(!sn)return;sm=[null,sn[1],sn[1]];}
       var subData={scored:+sm[1],max:+sm[2],totalTimeSec:0,chapters:{}};
 
       /* per-chapter from res_data */
@@ -939,30 +951,31 @@
     var tests=[];
     rows.forEach(function(row){
       var cells=row.querySelectorAll('td');
-      if(cells.length<7)return;
+      if(cells.length<5)return;
+      /* Column order on cdmypage: 0=tsid, 1=mode, 2=?, 3=date, 4=?, 5=examType, 6=name, 7=score, 8=time */
       var tsidTxt=(cells[0]?cells[0].innerText.trim():'');
       var dateTxt=(cells[3]?cells[3].innerText.trim():'');
       var examTypeTxt=(cells[5]?cells[5].innerText.trim():'');
       var nameTxt=(cells[6]?cells[6].innerText.trim():'');
       var scoreTxt=(cells[7]?cells[7].innerText.trim():'');
-      var timeTxt=(cells[8]?cells[8].innerText.trim():'');
       var tsid=parseInt(tsidTxt)||null;
       if(!tsid&&!nameTxt)return;
       var marks=0,maxMarks=0;
-      var sm=scoreTxt.match(/(\\d+)/);
+      var sm=scoreTxt.match(/(\d+)/);
       if(sm)marks=+sm[1];
       var dateISO='';
-      var dm=dateTxt.match(/(\\d{1,2}[-\\/]\\w+[-\\/]\\d{2,4})/);
+      var dm=dateTxt.match(/(\d{1,2}[-\/]\w+[-\/]\d{2,4})/);
       if(dm){try{dateISO=new Date(dm[1]).toISOString().slice(0,10);}catch(e){}}
       tests.push({tsid:tsid,testName:nameTxt,date:dateISO,examType:examTypeTxt,marks:marks,maxMarks:maxMarks});
     });
     if(!tests.length){alert('No tests found in the dashboard table.');return;}
-    if(opener){opener.postMessage({type:'cd_dashboard',tests:tests},'*');alert('✅ Sent '+tests.length+' tests to EduMetrics! Now open each test Analysis page and click this bookmarklet again.');}
+    var msg='Sent '+tests.length+' tests to EduMetrics queue.\n\nNow: open each test\'s Analysis page and click this bookmarklet.\nYou can sync as few or as many as you like — click \'Done\' on EduMetrics to finish at any time.';
+    if(opener){opener.postMessage({type:'cd_dashboard',tests:tests},'*');alert('✅ '+msg);}
     else{alert('⚠️ EduMetrics window not found. Please start the sync from EduMetrics first.');}
     return;
   }
 
-  alert('Please run this bookmarklet on:\\n• The CollegeDoors dashboard (cdmypage.php)\\n• A test Analysis page (cdtamainrep_adv.php)');
+  alert('Please run this bookmarklet on:\n• The CollegeDoors dashboard (cdmypage.php)\n• A test Analysis page (cdtamainrep_adv.php)');
 })();`;
             document.getElementById('megaBookmarkletLink').href = 'javascript:' + megaFn;
         })();
