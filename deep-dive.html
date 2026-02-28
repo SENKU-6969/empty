@@ -203,7 +203,24 @@
                     </div>
                 </div>
 
-                <div style="display:flex; gap:10px; margin-top:20px; align-items:center;">
+                <div
+                    style="display:flex; align-items:center; gap:12px; margin-top:20px; padding:12px 16px; background:var(--bg-surface-2); border:1px solid var(--border); border-radius:var(--radius-md);">
+                    <label
+                        style="font-size:12px; font-weight:600; color:var(--text-secondary); text-transform:uppercase; letter-spacing:0.5px; white-space:nowrap; flex-shrink:0;">Test
+                        Category</label>
+                    <select id="ddCategory" onchange="onCategoryChange()"
+                        style="flex:1; background:var(--bg-surface-3); border:1px solid var(--border); border-radius:var(--radius-sm); color:var(--text-primary); font-family:inherit; font-size:13px; padding:8px 12px; outline:none; cursor:pointer;">
+                        <option value="">— Not categorized —</option>
+                        <option value="jee-main">JEE Main</option>
+                        <option value="jee-adv-2p">JEE Advanced (2 Papers)</option>
+                        <option value="jee-adv-1p">JEE Advanced (1 Paper)</option>
+                        <option value="cet">CET (MHT-CET)</option>
+                        <option value="other">Other</option>
+                    </select>
+                    <span id="ddCategoryBadge" style="flex-shrink:0;"></span>
+                </div>
+
+                <div style="display:flex; gap:10px; margin-top:12px; align-items:center;">
                     <button class="btn btn-ghost" id="deleteBtn" onclick="deleteCurrentTest()"
                         style="margin-right:auto; color:#ff4d4f; border-color:rgba(255,77,79,0.35); background:rgba(255,77,79,0.08);"
                         onmouseover="this.style.background='rgba(255,77,79,0.18)'"
@@ -213,6 +230,7 @@
                     <button class="btn btn-primary" id="saveBtn" onclick="saveDeepDive()">Save Analysis ✓</button>
                 </div>
             </div>
+
 
         </div><!-- /deepdive-grid -->
 

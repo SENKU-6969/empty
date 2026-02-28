@@ -2,6 +2,16 @@
    EduMetrics AI — Deep Dive Logic (Firebase/Firestore)
    ==================================================== */
 
+// ---- Preset map (mirrors dashboard.js presets) ----
+const DD_PRESETS = {
+  'jee-main': { badge: 'JEE MAIN', cls: 'jee-main' },
+  'jee-adv-2p': { badge: 'ADV 2P', cls: 'jee-adv-2p' },
+  'jee-adv-1p': { badge: 'ADV 1P', cls: 'jee-adv-1p' },
+  'cet': { badge: 'CET', cls: 'cet' },
+  'other': { badge: 'OTHER', cls: 'other' },
+};
+
+
 let currentTest = null;
 let currentTestId = null;
 
@@ -21,6 +31,11 @@ function loadTestData() {
   document.getElementById('ddScore').textContent = t.marks + '/' + t.maxMarks + ' (' + t.percentage + '%)';
   document.getElementById('ddDate').textContent = t.rank ? 'Rank #' + t.rank : 'No rank recorded';
 
+  // Load category into dropdown and badge
+  const catSel = document.getElementById('ddCategory');
+  catSel.value = t.category || '';
+  updateCategoryBadge(t.category || '');
+
   if (t.subjects?.P !== null) document.getElementById('physicsMarks').value = t.subjects.P;
   if (t.subjects?.C !== null) document.getElementById('chemistryMarks').value = t.subjects.C;
   if (t.subjects?.M !== null) document.getElementById('mathMarks').value = t.subjects.M;
@@ -37,6 +52,20 @@ function loadTestData() {
   onSubjectChange(); onTimeChange();
   if (t.weaknesses) checkRecurringWeakness(t.weaknesses);
 }
+
+// ---- Category ----
+function onCategoryChange() {
+  const val = document.getElementById('ddCategory').value;
+  updateCategoryBadge(val);
+}
+
+function updateCategoryBadge(val) {
+  const badgeEl = document.getElementById('ddCategoryBadge');
+  if (!val || !DD_PRESETS[val]) { badgeEl.innerHTML = ''; return; }
+  const p = DD_PRESETS[val];
+  badgeEl.innerHTML = `<span class="category-badge category-badge--${p.cls}">${p.badge}</span>`;
+}
+
 
 // ---- Slider ----
 function updateSlider(subject) {
@@ -167,6 +196,8 @@ async function saveDeepDive() {
   currentTest.weaknesses = weaknesses;
   currentTest.missedFormulas = missedFormulas;
   currentTest.actionPlan = actionPlan;
+  currentTest.category = document.getElementById('ddCategory').value || currentTest.category || 'other';
+
 
   await saveTest(currentTest);
 
