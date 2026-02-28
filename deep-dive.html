@@ -25,10 +25,10 @@
 
     <!-- Sidebar -->
     <nav class="sidebar">
-        <div class="sidebar-logo">
+        <a href="index.html" class="sidebar-logo" style="text-decoration: none; color: inherit; cursor: pointer;">
             <div class="logo-icon"><img src="src/icons/icon-logo.svg" class="svg-icon" alt="logo"></div>
             <span class="logo-text">EduMetrics <span class="logo-ai">AI</span></span>
-        </div>
+        </a>
         <ul class="sidebar-nav">
             <li class="nav-item active" onclick="location.href='index.html'">
                 <span class="nav-icon"><img src="src/icons/icon-dashboard.svg" class="svg-icon" alt="dashboard"></span>
@@ -75,7 +75,8 @@
 
         <!-- Ghost Mistake Alert (top-level AI Alert) -->
         <div class="ghost-alert" id="ghostAlert">
-            <div class="ghost-alert-title"><img src="src/icons/icon-ghost.svg" class="svg-icon" alt="ghost"> Ghost Mistake Detected</div>
+            <div class="ghost-alert-title"><img src="src/icons/icon-ghost.svg" class="svg-icon" alt="ghost"> Ghost
+                Mistake Detected</div>
             <div class="ghost-alert-body" id="ghostAlertBody"></div>
         </div>
 
@@ -84,7 +85,8 @@
 
             <!-- Subject Breakdown -->
             <div class="section-card">
-                <div class="section-card-title"><img src="src/icons/icon-avatar.svg" class="svg-icon" alt="avatar"> Subject-wise Marks</div>
+                <div class="section-card-title"><img src="src/icons/icon-avatar.svg" class="svg-icon" alt="avatar">
+                    Subject-wise Marks</div>
                 <div class="subject-grid">
                     <div class="subject-input-group">
                         <label><span class="subject-dot physics"></span> Physics</label>
@@ -115,7 +117,8 @@
                 <div id="efficiencySection" style="margin-top:20px; display:none;">
                     <div class="section-card-title"
                         style="font-size:12px; color:var(--text-secondary); margin-bottom:10px; text-transform:uppercase; letter-spacing:0.5px;">
-                        <img src="src/icons/icon-logo.svg" class="svg-icon" alt="logo"> Efficiency: Time vs Marks</div>
+                        <img src="src/icons/icon-logo.svg" class="svg-icon" alt="logo"> Efficiency: Time vs Marks
+                    </div>
                     <div class="efficiency-bars" id="effBars"></div>
                     <div class="efficiency-legend"
                         style="display:flex; gap:16px; margin-top:8px; font-size:11px; color:var(--text-muted);">
@@ -127,7 +130,8 @@
 
             <!-- Time Analysis -->
             <div class="section-card">
-                <div class="section-card-title"><img src="src/icons/icon-activity.svg" class="svg-icon" alt="time"> Time Analysis</div>
+                <div class="section-card-title"><img src="src/icons/icon-activity.svg" class="svg-icon" alt="time"> Time
+                    Analysis</div>
                 <div>
                     <div class="slider-group">
                         <div class="slider-header">
@@ -170,11 +174,13 @@
 
             <!-- Weakness Logging -->
             <div class="section-card full-width">
-                <div class="section-card-title"><img src="src/icons/icon-warning.svg" class="svg-icon" alt="warning"> Weakness Logger — AI Powered</div>
+                <div class="section-card-title"><img src="src/icons/icon-warning.svg" class="svg-icon" alt="warning">
+                    Weakness Logger — AI Powered</div>
 
                 <!-- Recurring Weakness Banner -->
                 <div class="recurring-banner" id="recurringBanner">
-                    <div class="recurring-banner-title"><img src="src/icons/icon-warning.svg" class="svg-icon" alt="warning"> Recurring Weakness Detected!</div>
+                    <div class="recurring-banner-title"><img src="src/icons/icon-warning.svg" class="svg-icon"
+                            alt="warning"> Recurring Weakness Detected!</div>
                     <div id="recurringItems"></div>
                 </div>
 
@@ -201,7 +207,8 @@
                     <button class="btn btn-ghost" id="deleteBtn" onclick="deleteCurrentTest()"
                         style="margin-right:auto; color:#ff4d4f; border-color:rgba(255,77,79,0.35); background:rgba(255,77,79,0.08);"
                         onmouseover="this.style.background='rgba(255,77,79,0.18)'"
-                        onmouseout="this.style.background='rgba(255,77,79,0.08)'"><img src="src/icons/icon-delete.svg" class="svg-icon" alt="delete"> Delete Test</button>
+                        onmouseout="this.style.background='rgba(255,77,79,0.08)'"><img src="src/icons/icon-delete.svg"
+                            class="svg-icon" alt="delete"> Delete Test</button>
                     <button class="btn btn-ghost" onclick="location.href='index.html'">Cancel</button>
                     <button class="btn btn-primary" id="saveBtn" onclick="saveDeepDive()">Save Analysis ✓</button>
                 </div>

@@ -16,16 +16,18 @@
 
 <body>
     <!-- Auth Guard Overlay -->
-    <div id="authGuard" style="position:fixed;inset:0;background:var(--bg-primary);z-index:99999;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:16px;">
-      <div style="font-size:48px;"><img src="src/icons/icon-logo.svg" class="svg-icon" alt="logo"></div>
-      <div style="color:var(--neon-blue);font-size:14px;font-weight:600;font-family:'Inter',sans-serif;">Checking authentication…</div>
+    <div id="authGuard"
+        style="position:fixed;inset:0;background:var(--bg-primary);z-index:99999;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:16px;">
+        <div style="font-size:48px;"><img src="src/icons/icon-logo.svg" class="svg-icon" alt="logo"></div>
+        <div style="color:var(--neon-blue);font-size:14px;font-weight:600;font-family:'Inter',sans-serif;">Checking
+            authentication…</div>
     </div>
 
     <nav class="sidebar">
-        <div class="sidebar-logo">
+        <a href="index.html" class="sidebar-logo" style="text-decoration: none; color: inherit; cursor: pointer;">
             <div class="logo-icon"><img src="src/icons/icon-logo.svg" class="svg-icon" alt="logo"></div>
             <span class="logo-text">EduMetrics <span class="logo-ai">AI</span></span>
-        </div>
+        </a>
         <ul class="sidebar-nav">
             <li class="nav-item" onclick="location.href='index.html'">
                 <span class="nav-icon"><img src="src/icons/icon-dashboard.svg" class="svg-icon" alt="dashboard"></span>
@@ -54,11 +56,13 @@
     <main class="main-content">
         <header class="page-header">
             <div class="header-left">
-                <h1 class="page-title"><img src="src/icons/icon-formula.svg" class="svg-icon" alt="formula"> Formula Deck</h1>
+                <h1 class="page-title"><img src="src/icons/icon-formula.svg" class="svg-icon" alt="formula"> Formula
+                    Deck</h1>
                 <p class="page-subtitle">Auto-generated flashcards from your missed formulas and weak topics</p>
             </div>
             <div class="header-right">
-                <button class="btn btn-ghost" onclick="addFormulaManually()"><img src="src/icons/icon-add.svg" class="svg-icon" alt="add"> Add Manually</button>
+                <button class="btn btn-ghost" onclick="addFormulaManually()"><img src="src/icons/icon-add.svg"
+                        class="svg-icon" alt="add"> Add Manually</button>
                 <button class="btn btn-primary" onclick="clearReviewed()">Clear Reviewed</button>
             </div>
         </header>
@@ -73,14 +77,16 @@
                 </div>
             </div>
             <div class="stat-card">
-                <div class="stat-icon" style="color:var(--neon-red)"><img src="src/icons/icon-warning.svg" class="svg-icon" alt="warning"></div>
+                <div class="stat-icon" style="color:var(--neon-red)"><img src="src/icons/icon-warning.svg"
+                        class="svg-icon" alt="warning"></div>
                 <div class="stat-info">
                     <div class="stat-value" id="statPending">0</div>
                     <div class="stat-label">Pending Review</div>
                 </div>
             </div>
             <div class="stat-card">
-                <div class="stat-icon" style="color:var(--neon-green)"><img src="src/icons/icon-success.svg" class="svg-icon" alt="success"></div>
+                <div class="stat-icon" style="color:var(--neon-green)"><img src="src/icons/icon-success.svg"
+                        class="svg-icon" alt="success"></div>
                 <div class="stat-info">
                     <div class="stat-value" id="statReviewed">0</div>
                     <div class="stat-label">Reviewed</div>
@@ -138,14 +144,14 @@
 
 
 
-  <!-- Firebase SDKs -->
-  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
-  <!-- App -->
-  <script src="src/firebase.js"></script>
-  <script src="src/store.js"></script>
-  <script src="src/formula-deck.js"></script>
+    <!-- Firebase SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+    <!-- App -->
+    <script src="src/firebase.js"></script>
+    <script src="src/store.js"></script>
+    <script src="src/formula-deck.js"></script>
 </body>
 
 </html>

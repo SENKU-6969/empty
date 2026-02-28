@@ -111,9 +111,28 @@ body {
   display: flex;
   align-items: center;
   gap: 10px;
-  padding: 0 20px 24px;
+  padding: 12px 20px;
+  /* Better hit area */
   border-bottom: 1px solid var(--border);
   margin-bottom: 12px;
+  cursor: pointer !important;
+  pointer-events: auto !important;
+  transition: var(--transition);
+  text-decoration: none;
+  color: inherit;
+  position: relative;
+  z-index: 1000;
+}
+
+/* Prevent browser extensions or SVGs from intercepting clicks on the logo */
+.sidebar-logo * {
+  pointer-events: none !important;
+}
+
+.sidebar-logo:hover {
+  background: var(--glass);
+  opacity: 1;
+  /* Reset previous opacity rule */
 }
 
 .logo-icon {
