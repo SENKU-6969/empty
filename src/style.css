@@ -531,6 +531,8 @@ body {
 .chart-wrapper {
   position: relative;
   height: 340px;
+  background: linear-gradient(180deg, #0F172A 0%, #020617 100%);
+  border-radius: var(--radius-md);
 }
 
 .chart-empty {
