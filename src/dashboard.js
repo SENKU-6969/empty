@@ -162,7 +162,7 @@ function renderChart(tests) {
           titleColor: '#E5E7EB', bodyColor: '#9CA3AF', padding: 14,
           callbacks: {
             title: items => tests[items[0].dataIndex]?.name || '',
-            afterBody: items => { const t = tests[items[0].dataIndex]; return t ? [`<img src="src/icons/icon-activity.svg" class="svg-icon" alt="activity"> ${formatDate(t.date)}`, `<img src="src/icons/icon-hint.svg" class="svg-icon" alt="hint"> Click to open Deep Dive`] : []; }
+            afterBody: items => { const t = tests[items[0].dataIndex]; return t ? [`📅 ${formatDate(t.date)}`, `↗ Click to open Deep Dive`] : []; }
           }
         }
       },
