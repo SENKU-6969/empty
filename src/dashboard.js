@@ -131,18 +131,18 @@ function renderChart(tests) {
   const labels = tests.map(t => t.name.length > 15 ? t.name.slice(0, 13) + '…' : t.name);
   const ctx = canvas.getContext('2d');
   const blueGrad = ctx.createLinearGradient(0, 0, 0, 340);
-  blueGrad.addColorStop(0, 'rgba(0,180,255,0.3)'); blueGrad.addColorStop(1, 'rgba(0,180,255,0.02)');
+  blueGrad.addColorStop(0, 'rgba(59,130,246,0.3)'); blueGrad.addColorStop(1, 'rgba(59,130,246,0.02)');
   const redGrad = ctx.createLinearGradient(0, 0, 0, 340);
-  redGrad.addColorStop(0, 'rgba(255,61,90,0.3)'); redGrad.addColorStop(1, 'rgba(255,61,90,0.02)');
+  redGrad.addColorStop(0, 'rgba(239,68,68,0.25)'); redGrad.addColorStop(1, 'rgba(239,68,68,0.01)');
 
   if (chart) chart.destroy();
 
   const datasets = [];
   if (showMarks) {
-    datasets.push({ label: 'Marks', data: tests.map(t => t.marks), borderColor: '#00b4ff', backgroundColor: blueGrad, borderWidth: 2.5, pointRadius: 6, pointHoverRadius: 9, pointBackgroundColor: '#00b4ff', pointBorderColor: '#07090f', pointBorderWidth: 2, tension: 0.35, fill: true, yAxisID: 'y' });
+    datasets.push({ label: 'Marks', data: tests.map(t => t.marks), borderColor: '#3B82F6', backgroundColor: blueGrad, borderWidth: 2.5, pointRadius: 6, pointHoverRadius: 9, pointBackgroundColor: '#3B82F6', pointBorderColor: '#0B0F14', pointBorderWidth: 2, tension: 0.35, fill: true, yAxisID: 'y' });
   }
   if (showRank) {
-    datasets.push({ label: 'Rank', data: tests.map(t => t.rank), borderColor: '#ff3d5a', backgroundColor: redGrad, borderWidth: 2.5, pointRadius: 6, pointHoverRadius: 9, pointBackgroundColor: '#ff3d5a', pointBorderColor: '#07090f', pointBorderWidth: 2, tension: 0.35, fill: true, yAxisID: 'y1' });
+    datasets.push({ label: 'Rank', data: tests.map(t => t.rank), borderColor: '#EF4444', backgroundColor: redGrad, borderWidth: 2.5, pointRadius: 6, pointHoverRadius: 9, pointBackgroundColor: '#EF4444', pointBorderColor: '#0B0F14', pointBorderWidth: 2, tension: 0.35, fill: true, yAxisID: 'y1' });
   }
 
   chart = new Chart(ctx, {
@@ -158,8 +158,8 @@ function renderChart(tests) {
       plugins: {
         legend: { display: false },
         tooltip: {
-          backgroundColor: 'rgba(14,17,23,0.95)', borderColor: 'rgba(0,180,255,0.3)', borderWidth: 1,
-          titleColor: '#e8edf5', bodyColor: '#8892a4', padding: 14,
+          backgroundColor: 'rgba(17,24,39,0.97)', borderColor: 'rgba(59,130,246,0.35)', borderWidth: 1,
+          titleColor: '#E5E7EB', bodyColor: '#9CA3AF', padding: 14,
           callbacks: {
             title: items => tests[items[0].dataIndex]?.name || '',
             afterBody: items => { const t = tests[items[0].dataIndex]; return t ? [`<img src="src/icons/icon-activity.svg" class="svg-icon" alt="activity"> ${formatDate(t.date)}`, `<img src="src/icons/icon-hint.svg" class="svg-icon" alt="hint"> Click to open Deep Dive`] : []; }
@@ -167,9 +167,9 @@ function renderChart(tests) {
         }
       },
       scales: {
-        x: { grid: { color: 'rgba(255,255,255,0.04)' }, ticks: { color: '#8892a4', font: { family: 'Inter', size: 11 } } },
-        y: { display: showMarks, type: 'linear', position: 'left', grid: { color: 'rgba(255,255,255,0.04)' }, ticks: { color: '#00b4ff', font: { family: 'JetBrains Mono', size: 11 } }, title: { display: true, text: '← Marks', color: '#00b4ff', font: { size: 11 } } },
-        y1: { display: showRank, type: 'linear', position: 'right', reverse: true, grid: { drawOnChartArea: false }, min: 1, ticks: { color: '#ff3d5a', font: { family: 'JetBrains Mono', size: 11 } }, title: { display: true, text: 'Rank →', color: '#ff3d5a', font: { size: 11 } } }
+        x: { grid: { color: 'rgba(255,255,255,0.04)' }, ticks: { color: '#9CA3AF', font: { family: 'Inter', size: 11 } } },
+        y: { display: showMarks, type: 'linear', position: 'left', grid: { color: 'rgba(255,255,255,0.04)' }, ticks: { color: '#3B82F6', font: { family: 'JetBrains Mono', size: 11 } }, title: { display: true, text: '← Marks', color: '#3B82F6', font: { size: 11 } } },
+        y1: { display: showRank, type: 'linear', position: 'right', reverse: true, grid: { drawOnChartArea: false }, min: 1, ticks: { color: '#EF4444', font: { family: 'JetBrains Mono', size: 11 } }, title: { display: true, text: 'Rank →', color: '#EF4444', font: { size: 11 } } }
       }
     }
   });
@@ -323,10 +323,10 @@ async function exportDashboard() {
   try {
     const { jsPDF } = window.jspdf;
     const pdf = new jsPDF({ orientation: 'landscape', unit: 'mm', format: 'a4' });
-    const canvas = await html2canvas(document.getElementById('exportTarget'), { scale: 2, backgroundColor: '#0e1117', logging: false });
+    const canvas = await html2canvas(document.getElementById('exportTarget'), { scale: 2, backgroundColor: '#111827', logging: false });
     const W = pdf.internal.pageSize.getWidth(), H = pdf.internal.pageSize.getHeight();
-    pdf.setFillColor(7, 9, 15); pdf.rect(0, 0, W, H, 'F');
-    pdf.setFont('helvetica', 'bold'); pdf.setFontSize(18); pdf.setTextColor(0, 180, 255);
+    pdf.setFillColor(11, 15, 20); pdf.rect(0, 0, W, H, 'F');
+    pdf.setFont('helvetica', 'bold'); pdf.setFontSize(18); pdf.setTextColor(59, 130, 246);
     pdf.text('EduMetrics AI — Performance Report', 14, 14);
     pdf.setFontSize(10); pdf.setTextColor(136, 146, 164);
     pdf.text(`Generated: ${new Date().toLocaleDateString('en-IN', { dateStyle: 'long' })}`, 14, 21);
@@ -334,15 +334,15 @@ async function exportDashboard() {
     pdf.addImage(canvas.toDataURL('image/png'), 'PNG', 14, 28, W - 28, Math.min(imgH, H - 60));
     const tests = (await getTestsSortedByDate()).reverse();
     if (tests.length) {
-      pdf.addPage(); pdf.setFillColor(7, 9, 15); pdf.rect(0, 0, W, H, 'F');
-      pdf.setFont('helvetica', 'bold'); pdf.setFontSize(14); pdf.setTextColor(0, 180, 255); pdf.text('Test History', 14, 16);
-      let y = 26; pdf.setFontSize(9); pdf.setTextColor(136, 146, 164);
+      pdf.addPage(); pdf.setFillColor(11, 15, 20); pdf.rect(0, 0, W, H, 'F');
+      pdf.setFont('helvetica', 'bold'); pdf.setFontSize(14); pdf.setTextColor(59, 130, 246); pdf.text('Test History', 14, 16);
+      let y = 26; pdf.setFontSize(9); pdf.setTextColor(156, 163, 175);
       pdf.text('Test', 14, y); pdf.text('Date', 90, y); pdf.text('Marks', 130, y); pdf.text('%', 155, y); pdf.text('Rank', 170, y);
       y += 2; pdf.setDrawColor(30, 35, 55); pdf.line(14, y, W - 14, y); y += 6;
       for (const t of tests) {
         if (y > H - 14) { pdf.addPage(); y = 14; }
         pdf.setTextColor(232, 237, 245); pdf.text(t.name.slice(0, 35), 14, y);
-        pdf.setTextColor(136, 146, 164); pdf.text(formatDate(t.date), 90, y); pdf.text(`${t.marks}/${t.maxMarks}`, 130, y);
+        pdf.setTextColor(156, 163, 175); pdf.text(formatDate(t.date), 90, y); pdf.text(`${t.marks}/${t.maxMarks}`, 130, y);
         pdf.text(`${t.percentage}%`, 155, y); pdf.text(t.rank ? `#${t.rank}` : '—', 170, y); y += 8;
       }
     }
