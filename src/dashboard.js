@@ -121,6 +121,21 @@ function toggleChartDataset(datasetName) {
   renderChart(getFilteredTests());
 }
 
+// ---- Soft glow plugin for Chart.js ----
+const softGlowPlugin = {
+  id: 'softGlow',
+  beforeDatasetDraw(chart, args) {
+    const color = chart.data.datasets[args.index].borderColor;
+    const ctx = chart.ctx;
+    ctx.save();
+    ctx.shadowBlur = 10;
+    ctx.shadowColor = color;
+  },
+  afterDatasetDraw(chart) {
+    chart.ctx.restore();
+  }
+};
+
 // ---- Chart ----
 function renderChart(tests) {
   const canvas = document.getElementById('performanceChart');
@@ -139,18 +154,16 @@ function renderChart(tests) {
 
   const datasets = [];
   if (showMarks) {
-    datasets.push({ label: 'Marks', data: tests.map(t => t.marks), borderColor: '#3B82F6', backgroundColor: blueGrad, borderWidth: 2.5, pointRadius: 6, pointHoverRadius: 9, pointBackgroundColor: '#3B82F6', pointBorderColor: '#0B0F14', pointBorderWidth: 2, tension: 0.35, fill: true, yAxisID: 'y' });
+    datasets.push({ label: 'Marks', data: tests.map(t => t.marks), borderColor: '#3B82F6', backgroundColor: blueGrad, borderWidth: 2, pointRadius: 5, pointHoverRadius: 8, pointBackgroundColor: 'rgba(59,130,246,0.75)', pointBorderColor: 'rgba(59,130,246,0.25)', pointBorderWidth: 4, tension: 0.35, fill: true, yAxisID: 'y' });
   }
   if (showRank) {
-    datasets.push({ label: 'Rank', data: tests.map(t => t.rank), borderColor: '#EF4444', backgroundColor: redGrad, borderWidth: 2.5, pointRadius: 6, pointHoverRadius: 9, pointBackgroundColor: '#EF4444', pointBorderColor: '#0B0F14', pointBorderWidth: 2, tension: 0.35, fill: true, yAxisID: 'y1' });
+    datasets.push({ label: 'Rank', data: tests.map(t => t.rank), borderColor: '#EF4444', backgroundColor: redGrad, borderWidth: 2, pointRadius: 5, pointHoverRadius: 8, pointBackgroundColor: 'rgba(239,68,68,0.75)', pointBorderColor: 'rgba(239,68,68,0.25)', pointBorderWidth: 4, tension: 0.35, fill: true, yAxisID: 'y1' });
   }
 
   chart = new Chart(ctx, {
     type: 'line',
-    data: {
-      labels,
-      datasets
-    },
+    data: { labels, datasets },
+    plugins: [softGlowPlugin],
     options: {
       responsive: true, maintainAspectRatio: false,
       interaction: { intersect: false, mode: 'index' },
