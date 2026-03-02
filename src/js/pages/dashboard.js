@@ -316,7 +316,7 @@ function showToast(msg) {
 // ---- PDF Export ----
 async function exportDashboard() {
   const btn = document.getElementById('exportBtn');
-  btn.disabled = true; btn.textContent = '⏳ Exporting…';
+  btn.disabled = true; btn.innerHTML = '<span><img src="assets/icons/icon-export.svg" class="svg-icon" alt="export"></span> Exporting…';
   try {
     const { jsPDF } = window.jspdf;
     const pdf = new jsPDF({ orientation: 'landscape', unit: 'mm', format: 'a4' });
