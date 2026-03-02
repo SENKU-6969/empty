@@ -11,40 +11,40 @@
     <link
         href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap"
         rel="stylesheet" />
-    <link rel="stylesheet" href="src/style.css" />
+    <link rel="stylesheet" href="src/css/style.css" />
 </head>
 
 <body>
     <!-- Auth Guard Overlay -->
     <div id="authGuard"
         style="position:fixed;inset:0;background:var(--bg-primary);z-index:99999;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:16px;">
-        <div style="font-size:48px;"><img src="src/icons/icon-logo.svg" class="svg-icon" alt="logo"></div>
+        <div style="font-size:48px;"><img src="assets/icons/icon-logo.svg" class="svg-icon" alt="logo"></div>
         <div style="color:var(--neon-blue);font-size:14px;font-weight:600;font-family:'Inter',sans-serif;">Checking
             authentication…</div>
     </div>
 
     <nav class="sidebar">
         <a href="index.html" class="sidebar-logo" style="text-decoration: none; color: inherit; cursor: pointer;">
-            <div class="logo-icon"><img src="src/icons/icon-logo.svg" class="svg-icon" alt="logo"></div>
+            <div class="logo-icon"><img src="assets/icons/icon-logo.svg" class="svg-icon" alt="logo"></div>
             <span class="logo-text">EduMetrics <span class="logo-ai">AI</span></span>
         </a>
         <ul class="sidebar-nav">
             <li class="nav-item" onclick="location.href='index.html'">
-                <span class="nav-icon"><img src="src/icons/icon-dashboard.svg" class="svg-icon" alt="dashboard"></span>
+                <span class="nav-icon"><img src="assets/icons/icon-dashboard.svg" class="svg-icon" alt="dashboard"></span>
                 <span class="nav-label">Dashboard</span>
             </li>
             <li class="nav-item" onclick="location.href='formula-deck.html'">
-                <span class="nav-icon"><img src="src/icons/icon-formula.svg" class="svg-icon" alt="formula"></span>
+                <span class="nav-icon"><img src="assets/icons/icon-formula.svg" class="svg-icon" alt="formula"></span>
                 <span class="nav-label">Formula Deck</span>
             </li>
             <li class="nav-item active" onclick="location.href='ai-insights.html'">
-                <span class="nav-icon"><img src="src/icons/icon-ai-nav.svg" class="svg-icon" alt="ai"></span>
+                <span class="nav-icon"><img src="assets/icons/icon-ai-nav.svg" class="svg-icon" alt="ai"></span>
                 <span class="nav-label">AI Insights</span>
             </li>
         </ul>
         <div class="sidebar-footer">
             <div class="student-card">
-                <div class="student-avatar"><img src="src/icons/icon-avatar.svg" class="svg-icon" alt="avatar"></div>
+                <div class="student-avatar"><img src="assets/icons/icon-avatar.svg" class="svg-icon" alt="avatar"></div>
                 <div class="student-info">
                     <div class="student-name">PCM Student</div>
                     <div class="student-goal">JEE 2026</div>
@@ -56,7 +56,7 @@
     <main class="main-content">
         <header class="page-header">
             <div class="header-left">
-                <h1 class="page-title"><img src="src/icons/icon-ai-nav.svg" class="svg-icon" alt="ai"> AI Insights</h1>
+                <h1 class="page-title"><img src="assets/icons/icon-ai-nav.svg" class="svg-icon" alt="ai"> AI Insights</h1>
                 <p class="page-subtitle">Emergent intelligence — patterns, predictions, and personalized guidance</p>
             </div>
         </header>
@@ -82,9 +82,9 @@
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
     <!-- App -->
-    <script src="src/firebase.js"></script>
-    <script src="src/store.js"></script>
-    <script src="src/ai-insights.js"></script>
+    <script src="src/js/core/firebase.js"></script>
+    <script src="src/js/core/store.js"></script>
+    <script src="src/js/pages/ai-insights.js"></script>
 </body>
 
 </html>

@@ -11,14 +11,14 @@
     <link
         href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap"
         rel="stylesheet" />
-    <link rel="stylesheet" href="src/style.css" />
+    <link rel="stylesheet" href="src/css/style.css" />
 </head>
 
 <body>
     <!-- Auth Guard Overlay -->
     <div id="authGuard"
         style="position:fixed;inset:0;background:var(--bg-primary);z-index:99999;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:16px;">
-        <div style="font-size:48px;"><img src="src/icons/icon-logo.svg" class="svg-icon" alt="logo"></div>
+        <div style="font-size:48px;"><img src="assets/icons/icon-logo.svg" class="svg-icon" alt="logo"></div>
         <div style="color:var(--neon-blue);font-size:14px;font-weight:600;font-family:'Inter',sans-serif;">Checking
             authentication…</div>
     </div>
@@ -26,26 +26,26 @@
     <!-- Sidebar -->
     <nav class="sidebar">
         <a href="index.html" class="sidebar-logo" style="text-decoration: none; color: inherit; cursor: pointer;">
-            <div class="logo-icon"><img src="src/icons/icon-logo.svg" class="svg-icon" alt="logo"></div>
+            <div class="logo-icon"><img src="assets/icons/icon-logo.svg" class="svg-icon" alt="logo"></div>
             <span class="logo-text">EduMetrics <span class="logo-ai">AI</span></span>
         </a>
         <ul class="sidebar-nav">
             <li class="nav-item active" onclick="location.href='index.html'">
-                <span class="nav-icon"><img src="src/icons/icon-dashboard.svg" class="svg-icon" alt="dashboard"></span>
+                <span class="nav-icon"><img src="assets/icons/icon-dashboard.svg" class="svg-icon" alt="dashboard"></span>
                 <span class="nav-label">Dashboard</span>
             </li>
             <li class="nav-item" onclick="location.href='formula-deck.html'">
-                <span class="nav-icon"><img src="src/icons/icon-formula.svg" class="svg-icon" alt="formula"></span>
+                <span class="nav-icon"><img src="assets/icons/icon-formula.svg" class="svg-icon" alt="formula"></span>
                 <span class="nav-label">Formula Deck</span>
             </li>
             <li class="nav-item" onclick="location.href='ai-insights.html'">
-                <span class="nav-icon"><img src="src/icons/icon-ai-nav.svg" class="svg-icon" alt="ai"></span>
+                <span class="nav-icon"><img src="assets/icons/icon-ai-nav.svg" class="svg-icon" alt="ai"></span>
                 <span class="nav-label">AI Insights</span>
             </li>
         </ul>
         <div class="sidebar-footer">
             <div class="student-card">
-                <div class="student-avatar"><img src="src/icons/icon-avatar.svg" class="svg-icon" alt="avatar"></div>
+                <div class="student-avatar"><img src="assets/icons/icon-avatar.svg" class="svg-icon" alt="avatar"></div>
                 <div class="student-info">
                     <div class="student-name">PCM Student</div>
                     <div class="student-goal">JEE 2026</div>
@@ -75,7 +75,7 @@
 
         <!-- Ghost Mistake Alert (top-level AI Alert) -->
         <div class="ghost-alert" id="ghostAlert">
-            <div class="ghost-alert-title"><img src="src/icons/icon-ghost.svg" class="svg-icon" alt="ghost"> Ghost
+            <div class="ghost-alert-title"><img src="assets/icons/icon-ghost.svg" class="svg-icon" alt="ghost"> Ghost
                 Mistake Detected</div>
             <div class="ghost-alert-body" id="ghostAlertBody"></div>
         </div>
@@ -85,7 +85,7 @@
 
             <!-- Subject Breakdown -->
             <div class="section-card">
-                <div class="section-card-title"><img src="src/icons/icon-avatar.svg" class="svg-icon" alt="avatar">
+                <div class="section-card-title"><img src="assets/icons/icon-avatar.svg" class="svg-icon" alt="avatar">
                     Subject-wise Marks</div>
                 <div class="subject-grid">
                     <div class="subject-input-group">
@@ -117,7 +117,7 @@
                 <div id="efficiencySection" style="margin-top:20px; display:none;">
                     <div class="section-card-title"
                         style="font-size:12px; color:var(--text-secondary); margin-bottom:10px; text-transform:uppercase; letter-spacing:0.5px;">
-                        <img src="src/icons/icon-logo.svg" class="svg-icon" alt="logo"> Efficiency: Time vs Marks
+                        <img src="assets/icons/icon-logo.svg" class="svg-icon" alt="logo"> Efficiency: Time vs Marks
                     </div>
                     <div class="efficiency-bars" id="effBars"></div>
                     <div class="efficiency-legend"
@@ -130,7 +130,7 @@
 
             <!-- Time Analysis -->
             <div class="section-card">
-                <div class="section-card-title"><img src="src/icons/icon-activity.svg" class="svg-icon" alt="time"> Time
+                <div class="section-card-title"><img src="assets/icons/icon-activity.svg" class="svg-icon" alt="time"> Time
                     Analysis</div>
                 <div>
                     <div class="slider-group">
@@ -174,12 +174,12 @@
 
             <!-- Weakness Logging -->
             <div class="section-card full-width">
-                <div class="section-card-title"><img src="src/icons/icon-warning.svg" class="svg-icon" alt="warning">
+                <div class="section-card-title"><img src="assets/icons/icon-warning.svg" class="svg-icon" alt="warning">
                     Weakness Logger — AI Powered</div>
 
                 <!-- Recurring Weakness Banner -->
                 <div class="recurring-banner" id="recurringBanner">
-                    <div class="recurring-banner-title"><img src="src/icons/icon-warning.svg" class="svg-icon"
+                    <div class="recurring-banner-title"><img src="assets/icons/icon-warning.svg" class="svg-icon"
                             alt="warning"> Recurring Weakness Detected!</div>
                     <div id="recurringItems"></div>
                 </div>
@@ -224,7 +224,7 @@
                     <button class="btn btn-ghost" id="deleteBtn" onclick="deleteCurrentTest()"
                         style="margin-right:auto; color:#ff4d4f; border-color:rgba(255,77,79,0.35); background:rgba(255,77,79,0.08);"
                         onmouseover="this.style.background='rgba(255,77,79,0.18)'"
-                        onmouseout="this.style.background='rgba(255,77,79,0.08)'"><img src="src/icons/icon-delete.svg"
+                        onmouseout="this.style.background='rgba(255,77,79,0.08)'"><img src="assets/icons/icon-delete.svg"
                             class="svg-icon" alt="delete"> Delete Test</button>
                     <button class="btn btn-ghost" onclick="location.href='index.html'">Cancel</button>
                     <button class="btn btn-primary" id="saveBtn" onclick="saveDeepDive()">Save Analysis ✓</button>
@@ -247,9 +247,9 @@
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
     <!-- App -->
-    <script src="src/firebase.js"></script>
-    <script src="src/store.js"></script>
-    <script src="src/deep-dive.js"></script>
+    <script src="src/js/core/firebase.js"></script>
+    <script src="src/js/core/store.js"></script>
+    <script src="src/js/pages/deep-dive.js"></script>
 </body>
 
 </html>
