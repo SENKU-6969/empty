@@ -10,7 +10,7 @@
     <link
         href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap"
         rel="stylesheet" />
-    <link rel="stylesheet" href="src/style.css" />
+    <link rel="stylesheet" href="src/css/style.css" />
     <style>
         /* ---- Import page extras ---- */
         .import-hero {
@@ -520,7 +520,7 @@
     <!-- Auth Guard -->
     <div id="authGuard"
         style="position:fixed;inset:0;background:var(--bg-primary);z-index:99999;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:16px;">
-        <div style="font-size:48px;"><img src="src/icons/icon-logo.svg" class="svg-icon" alt="logo"></div>
+        <div style="font-size:48px;"><img src="assets/icons/icon-logo.svg" class="svg-icon" alt="logo"></div>
         <div style="color:var(--neon-blue);font-size:14px;font-weight:600;font-family:'Inter',sans-serif;">Checking
             authentication…</div>
     </div>
@@ -528,26 +528,26 @@
     <!-- Sidebar -->
     <nav class="sidebar">
         <a href="index.html" class="sidebar-logo" style="text-decoration: none; color: inherit; cursor: pointer;">
-            <div class="logo-icon"><img src="src/icons/icon-logo.svg" class="svg-icon" alt="logo"></div>
+            <div class="logo-icon"><img src="assets/icons/icon-logo.svg" class="svg-icon" alt="logo"></div>
             <span class="logo-text">EduMetrics <span class="logo-ai">AI</span></span>
         </a>
         <ul class="sidebar-nav">
             <li class="nav-item active" onclick="location.href='index.html'">
-                <span class="nav-icon"><img src="src/icons/icon-dashboard.svg" class="svg-icon" alt="dashboard"></span>
+                <span class="nav-icon"><img src="assets/icons/icon-dashboard.svg" class="svg-icon" alt="dashboard"></span>
                 <span class="nav-label">Dashboard</span>
             </li>
             <li class="nav-item" onclick="location.href='formula-deck.html'">
-                <span class="nav-icon"><img src="src/icons/icon-formula.svg" class="svg-icon" alt="formula"></span>
+                <span class="nav-icon"><img src="assets/icons/icon-formula.svg" class="svg-icon" alt="formula"></span>
                 <span class="nav-label">Formula Deck</span>
             </li>
             <li class="nav-item" onclick="location.href='ai-insights.html'">
-                <span class="nav-icon"><img src="src/icons/icon-ai-nav.svg" class="svg-icon" alt="ai"></span>
+                <span class="nav-icon"><img src="assets/icons/icon-ai-nav.svg" class="svg-icon" alt="ai"></span>
                 <span class="nav-label">AI Insights</span>
             </li>
         </ul>
         <div class="sidebar-footer">
             <div class="student-card">
-                <div class="student-avatar"><img src="src/icons/icon-avatar.svg" class="svg-icon" alt="avatar"></div>
+                <div class="student-avatar"><img src="assets/icons/icon-avatar.svg" class="svg-icon" alt="avatar"></div>
                 <div class="student-info">
                     <div class="student-name">PCM Student</div>
                     <div class="student-goal">JEE 2026</div>
@@ -693,7 +693,7 @@
              CLASSIC IMPORT SECTION
         ═══════════════════════════════════════════════════════ -->
         <div class="import-hero">
-            <div class="import-hero-icon"><img src="src/icons/icon-import.svg" class="svg-icon" alt="import"></div>
+            <div class="import-hero-icon"><img src="assets/icons/icon-import.svg" class="svg-icon" alt="import"></div>
             <div>
                 <h2>Classic import (basic data only)</h2>
                 <p>Downloads a JSON file via the basic bookmarklet below — captures test name, score, date and rank
@@ -707,7 +707,7 @@
             <div class="step-card">
                 <div class="step-num">1</div>
                 <h3>Add the bookmarklet</h3>
-                <p>Drag the <strong>"<img src="src/icons/icon-import.svg" class="svg-icon" alt="inbox"> Import to
+                <p>Drag the <strong>"<img src="assets/icons/icon-import.svg" class="svg-icon" alt="inbox"> Import to
                         EduMetrics"</strong> button below to your browser's bookmarks bar.</p>
             </div>
             <div class="step-card">
@@ -726,17 +726,17 @@
 
         <!-- Classic Bookmarklet -->
         <div class="section-card" style="margin-bottom:28px;">
-            <div class="section-card-title"><img src="src/icons/icon-tag.svg" class="svg-icon" alt="tag"> Step 1 — Get
+            <div class="section-card-title"><img src="assets/icons/icon-tag.svg" class="svg-icon" alt="tag"> Step 1 — Get
                 the Classic Bookmarklet</div>
             <p style="font-size:13px;color:var(--text-muted);margin-bottom:14px;">
                 Show your browser's bookmarks bar (<kbd>Ctrl+Shift+B</kbd>), then drag the button below onto it.
             </p>
             <div class="bookmarklet-box">
                 <a id="bookmarkletLink" class="bookmarklet-link" title="Drag me to your bookmarks bar!">
-                    <img src="src/icons/icon-import.svg" class="svg-icon" alt="inbox"> Import to EduMetrics
+                    <img src="assets/icons/icon-import.svg" class="svg-icon" alt="inbox"> Import to EduMetrics
                 </a>
                 <div class="bookmarklet-hint">
-                    <img src="src/icons/icon-pointer.svg" class="svg-icon" alt="pointer"> <strong>Drag this to your
+                    <img src="assets/icons/icon-pointer.svg" class="svg-icon" alt="pointer"> <strong>Drag this to your
                         bookmarks bar.</strong><br>
                     Then visit the CollegeDoors portal dashboard and click it — your tests download as a JSON file.
                 </div>
@@ -745,13 +745,13 @@
 
         <!-- Upload Section -->
         <div class="section-card">
-            <div class="section-card-title"><img src="src/icons/icon-import.svg" class="svg-icon" alt="folder"> Step 3 —
+            <div class="section-card-title"><img src="assets/icons/icon-import.svg" class="svg-icon" alt="folder"> Step 3 —
                 Upload JSON File</div>
 
             <div id="errorMsg"></div>
 
             <div class="upload-zone" id="uploadZone" onclick="document.getElementById('importFile').click()">
-                <div class="upload-zone-icon"><img src="src/icons/icon-export.svg" class="svg-icon" alt="export"></div>
+                <div class="upload-zone-icon"><img src="assets/icons/icon-export.svg" class="svg-icon" alt="export"></div>
                 <p>Click to select <strong>collegedoors-tests.json</strong>, or drag &amp; drop it here</p>
                 <button class="btn btn-ghost" type="button" style="pointer-events:none;">Choose File</button>
                 <input type="file" id="importFile" accept=".json,application/json" />
@@ -760,7 +760,7 @@
             <!-- Preview Table -->
             <div id="previewSection">
                 <div class="preview-header">
-                    <h3><img src="src/icons/icon-export.svg" class="svg-icon" alt="receipt"> Test Preview</h3>
+                    <h3><img src="assets/icons/icon-export.svg" class="svg-icon" alt="receipt"> Test Preview</h3>
                     <span id="previewCount"></span>
                 </div>
                 <div class="import-table-wrap">
@@ -800,9 +800,9 @@
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
     <!-- App -->
-    <script src="src/firebase.js"></script>
-    <script src="src/store.js"></script>
-    <script src="src/import.js"></script>
+    <script src="src/js/core/firebase.js"></script>
+    <script src="src/js/core/store.js"></script>
+    <script src="src/js/pages/import.js"></script>
 
     <script>
         /* ================================================================

@@ -11,7 +11,7 @@
   <link
     href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap"
     rel="stylesheet" />
-  <link rel="stylesheet" href="src/style.css" />
+  <link rel="stylesheet" href="src/css/style.css" />
   <style>
     body {
       display: flex;
@@ -294,7 +294,7 @@
   <div class="login-wrapper">
     <!-- Logo -->
     <a href="index.html" class="login-logo" style="text-decoration: none; color: inherit; cursor: pointer;">
-      <div class="login-logo-icon"><img src="src/icons/icon-logo.svg" class="svg-icon" alt="logo"></div>
+      <div class="login-logo-icon"><img src="assets/icons/icon-logo.svg" class="svg-icon" alt="logo"></div>
       <div class="login-logo-text">EduMetrics <span class="login-logo-ai">AI</span></div>
     </a>
 
@@ -347,7 +347,7 @@
   <!-- Firebase SDKs -->
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
-  <script src="src/firebase.js"></script>
+  <script src="src/js/core/firebase.js"></script>
   <script>
     let currentTab = 'signin';
 
@@ -362,7 +362,7 @@
 
       document.getElementById('tabSignIn').classList.toggle('active', !isSignup);
       document.getElementById('tabSignUp').classList.toggle('active', isSignup);
-      document.getElementById('titleText').textContent = isSignup ? 'Create your account <img src="src/icons/icon-avatar.svg" class="svg-icon" alt="avatar">' : 'Welcome back 👋';
+      document.getElementById('titleText').textContent = isSignup ? 'Create your account <img src="assets/icons/icon-avatar.svg" class="svg-icon" alt="avatar">' : 'Welcome back 👋';
       document.getElementById('subtitleText').textContent = isSignup
         ? 'Start tracking your PCM journey with AI-powered insights.'
         : 'Sign in to sync your study data across all devices.';
