@@ -121,21 +121,6 @@ function toggleChartDataset(datasetName) {
   renderChart(getFilteredTests());
 }
 
-// ---- Soft glow plugin for Chart.js ----
-const softGlowPlugin = {
-  id: 'softGlow',
-  beforeDatasetDraw(chart, args) {
-    const color = chart.data.datasets[args.index].borderColor;
-    const ctx = chart.ctx;
-    ctx.save();
-    ctx.shadowBlur = 10;
-    ctx.shadowColor = color;
-  },
-  afterDatasetDraw(chart) {
-    chart.ctx.restore();
-  }
-};
-
 // ---- Chart ----
 function renderChart(tests) {
   const canvas = document.getElementById('performanceChart');
@@ -163,7 +148,6 @@ function renderChart(tests) {
   chart = new Chart(ctx, {
     type: 'line',
     data: { labels, datasets },
-    plugins: [softGlowPlugin],
     options: {
       responsive: true, maintainAspectRatio: false,
       interaction: { intersect: false, mode: 'index' },
