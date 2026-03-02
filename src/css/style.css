@@ -1,9 +1,9 @@
-/* ============================================================
-   EduMetrics AI — Global Stylesheet
+/*  
+   EduMetrics 
    Dark theme with intentional blue/cyan accents
-   ============================================================ */
+    */
 
-/* ---- CSS Variables ---- */
+
 :root {
   --bg-primary: #0B0F14;
   --bg-surface: #111827;
@@ -43,6 +43,10 @@
 
   --glass: rgba(255, 255, 255, 0.03);
   --glass-border: rgba(255, 255, 255, 0.06);
+
+  /* 3-level elevation hierarchy */
+  --shadow-level-2: 0 6px 20px rgba(0, 0, 0, 0.25);
+  --shadow-level-3: 0 12px 40px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(59, 130, 246, 0.08);
 
   --transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
 }
@@ -96,11 +100,8 @@ body {
 /* ---- Sidebar ---- */
 .sidebar {
   width: var(--sidebar-width);
-  background: rgba(17, 24, 39, 0.75);
-  /* --bg-surface with opacity */
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border-right: 1px solid var(--border);
+  background: #0F172A;
+  border-right: none;
   display: flex;
   flex-direction: column;
   position: fixed;
@@ -368,12 +369,14 @@ body {
   align-items: center;
   gap: 16px;
   transition: var(--transition);
+  box-shadow: var(--shadow-level-2);
 }
 
 .stat-card:hover {
   border-color: var(--border-glow);
   background: var(--bg-surface-2);
   transform: translateY(-2px);
+  box-shadow: var(--shadow-level-3);
 }
 
 .stat-icon {
@@ -466,6 +469,7 @@ body {
   padding: 28px;
   position: relative;
   overflow: hidden;
+  box-shadow: var(--shadow-level-2);
 }
 
 .chart-card::before {
@@ -664,12 +668,14 @@ body {
   transition: var(--transition);
   position: relative;
   overflow: hidden;
+  box-shadow: var(--shadow-level-2);
 }
 
 .test-row:hover {
   border-color: rgba(59, 130, 246, 0.25);
   background: var(--bg-surface-2);
   transform: translateX(4px);
+  box-shadow: var(--shadow-level-3);
 }
 
 .test-row-indicator {
@@ -782,7 +788,7 @@ body {
   max-height: 90vh;
   overflow-y: auto;
   animation: slideUp 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-  box-shadow: 0 25px 80px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(0, 180, 255, 0.1);
+  box-shadow: var(--shadow-level-3);
 }
 
 @keyframes slideUp {
@@ -966,10 +972,12 @@ textarea {
   border-radius: var(--radius-lg);
   padding: 24px;
   transition: var(--transition);
+  box-shadow: var(--shadow-level-2);
 }
 
 .section-card:hover {
   border-color: rgba(59, 130, 246, 0.15);
+  box-shadow: var(--shadow-level-3);
 }
 
 .section-card-title {
