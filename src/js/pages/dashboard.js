@@ -139,10 +139,10 @@ function renderChart(tests) {
 
   const datasets = [];
   if (showMarks) {
-    datasets.push({ label: 'Marks', data: tests.map(t => t.marks), borderColor: '#3B82F6', backgroundColor: blueGrad, borderWidth: 2, pointRadius: 5, pointHoverRadius: 8, pointBackgroundColor: 'rgba(59,130,246,0.75)', pointBorderColor: 'rgba(59,130,246,0.25)', pointBorderWidth: 4, tension: 0.35, fill: true, yAxisID: 'y' });
+    datasets.push({ label: 'Marks', data: tests.map(t => t.marks), borderColor: '#3B82F6', backgroundColor: blueGrad, borderWidth: 3, pointRadius: 5, pointHoverRadius: 8, pointBackgroundColor: 'rgba(59,130,246,0.85)', pointBorderColor: 'rgba(59,130,246,0.25)', pointBorderWidth: 4, tension: 0.35, fill: true, yAxisID: 'y' });
   }
   if (showRank) {
-    datasets.push({ label: 'Rank', data: tests.map(t => t.rank), borderColor: '#EF4444', backgroundColor: redGrad, borderWidth: 2, pointRadius: 5, pointHoverRadius: 8, pointBackgroundColor: 'rgba(239,68,68,0.75)', pointBorderColor: 'rgba(239,68,68,0.25)', pointBorderWidth: 4, tension: 0.35, fill: true, yAxisID: 'y1' });
+    datasets.push({ label: 'Rank', data: tests.map(t => t.rank), borderColor: 'rgba(239,68,68,0.6)', backgroundColor: redGrad, borderWidth: 1.5, pointRadius: 4, pointHoverRadius: 7, pointBackgroundColor: 'rgba(239,68,68,0.6)', pointBorderColor: 'rgba(239,68,68,0.15)', pointBorderWidth: 3, tension: 0.35, fill: true, yAxisID: 'y1' });
   }
 
   chart = new Chart(ctx, {
@@ -164,8 +164,8 @@ function renderChart(tests) {
         }
       },
       scales: {
-        x: { grid: { color: 'rgba(255,255,255,0.04)' }, ticks: { color: '#9CA3AF', font: { family: 'Inter', size: 11 } } },
-        y: { display: showMarks, type: 'linear', position: 'left', grid: { color: 'rgba(255,255,255,0.04)' }, ticks: { color: '#3B82F6', font: { family: 'JetBrains Mono', size: 11 } }, title: { display: true, text: '← Marks', color: '#3B82F6', font: { size: 11 } } },
+        x: { grid: { color: 'rgba(255,255,255,0.06)' }, ticks: { color: '#9CA3AF', font: { family: 'Inter', size: 11 } } },
+        y: { display: showMarks, type: 'linear', position: 'left', grid: { color: 'rgba(255,255,255,0.06)' }, ticks: { color: '#3B82F6', font: { family: 'JetBrains Mono', size: 11 } }, title: { display: true, text: '← Marks', color: '#3B82F6', font: { size: 11 } } },
         y1: { display: showRank, type: 'linear', position: 'right', reverse: true, grid: { drawOnChartArea: false }, min: 1, ticks: { color: '#EF4444', font: { family: 'JetBrains Mono', size: 11 } }, title: { display: true, text: 'Rank →', color: '#EF4444', font: { size: 11 } } }
       }
     }
