@@ -188,8 +188,9 @@ body {
 }
 
 .nav-item:hover {
-  background: var(--glass);
+  background: rgba(255, 255, 255, 0.05);
   color: var(--text-primary);
+  transform: translateX(4px);
 }
 
 .nav-item.active {
@@ -317,6 +318,11 @@ body {
   border: none;
   transition: var(--transition);
   letter-spacing: 0.2px;
+  will-change: transform;
+}
+
+.btn:active {
+  transform: scale(0.97);
 }
 
 .btn-primary {
@@ -375,7 +381,7 @@ body {
 .stat-card:hover {
   border-color: var(--border-glow);
   background: var(--bg-surface-2);
-  transform: translateY(-2px);
+  transform: translateY(-4px);
   box-shadow: var(--shadow-level-3);
 }
 
@@ -535,8 +541,9 @@ body {
   border: 1px solid var(--border);
   background: transparent;
   color: var(--text-secondary);
-  transition: var(--transition);
+  transition: all 0.3s ease;
   font-family: inherit;
+  will-change: transform, background, box-shadow;
 }
 
 .chip:hover {
@@ -680,7 +687,7 @@ body {
 .test-row:hover {
   border-color: rgba(59, 130, 246, 0.25);
   background: var(--bg-surface-2);
-  transform: translateX(4px);
+  transform: translateX(4px) translateY(-2px);
   box-shadow: var(--shadow-level-3);
 }
 
@@ -983,6 +990,7 @@ textarea {
 
 .section-card:hover {
   border-color: rgba(59, 130, 246, 0.15);
+  transform: translateY(-4px);
   box-shadow: var(--shadow-level-3);
 }
 
