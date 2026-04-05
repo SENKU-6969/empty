@@ -12,20 +12,19 @@
     href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap"
     rel="stylesheet" />
   <link rel="stylesheet" href="src/css/style.css" />
+  <link rel="icon" type="image/svg+xml" href="assets/icons/icon-logo.svg" />
 </head>
 
 <body>
   <!-- Auth Guard Overlay: hides page until Firebase confirms auth -->
-  <div id="authGuard"
-    style="position:fixed;inset:0;background:var(--bg-primary);z-index:99999;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:16px;">
-    <div style="font-size:48px;"><img src="assets/icons/icon-logo.svg" class="svg-icon" alt="logo"></div>
-    <div style="color:var(--neon-blue);font-size:14px;font-weight:600;font-family:'Inter',sans-serif;">Checking
-      authentication…</div>
+  <div id="authGuard" class="auth-guard">
+    <div class="auth-guard-logo"><img src="assets/icons/icon-logo.svg" class="svg-icon" alt="logo"></div>
+    <div class="auth-guard-label">Checking authentication…</div>
   </div>
 
   <!-- Sidebar -->
   <nav class="sidebar" id="sidebar">
-    <a href="index.html" class="sidebar-logo" style="text-decoration: none; color: inherit; cursor: pointer;">
+    <a href="index.html" class="sidebar-logo">
       <div class="logo-icon"><img src="assets/icons/icon-logo.svg" class="svg-icon" alt="logo"></div>
       <span class="logo-text">EduMetrics <span class="logo-ai">AI</span></span>
     </a>
@@ -69,8 +68,7 @@
         <button class="btn btn-ghost" id="exportBtn" onclick="exportDashboard()">
           <span><img src="assets/icons/icon-export.svg" class="svg-icon" alt="export"></span> Export PDF
         </button>
-        <button class="btn btn-ghost" onclick="location.href='import.html'"
-          style="border-color:rgba(0,212,255,0.3);color:var(--neon-blue);">
+        <button class="btn btn-ghost btn-import-portal" onclick="location.href='import.html'">
           <span><img src="assets/icons/icon-import.svg" class="svg-icon" alt="import"></span> Import Portal
         </button>
       </div>
@@ -163,9 +161,8 @@
     </section>
 
     <!-- Footer -->
-    <footer
-      style="margin-top:40px; padding:20px 0; text-align:center; border-top:1px solid var(--border); color:var(--text-muted); font-size:12px;">
-      Made with ❤️ by <span style="color:var(--neon-blue); font-weight:600;">Vaibhav Bolia</span>
+    <footer class="page-footer">
+      Made with ❤️ by <span class="footer-name">Vaibhav Bolia</span>
     </footer>
   </main>
 

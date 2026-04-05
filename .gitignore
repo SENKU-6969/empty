@@ -30,3 +30,4 @@ __pycache__/
 # Temporary files
 *.tmp
 *.temp
+msg-replace.txt

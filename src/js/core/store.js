@@ -245,8 +245,8 @@ function getGraphAIAnnotations(sorted) {
 
 
 function updateUserDisplay(user) {
-  const nameEl = document.querySelector('.student-name');
-  const goalEl = document.querySelector('.student-goal');
+  const nameEl = document.getElementById('sidebarUserName');
+  const goalEl = document.getElementById('sidebarUserGoal');
   if (nameEl) nameEl.textContent = user.displayName || user.email.split('@')[0];
   if (goalEl) goalEl.textContent = user.email;
 }
